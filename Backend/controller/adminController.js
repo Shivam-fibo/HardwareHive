@@ -27,14 +27,28 @@ export const getUnapprovedRegistrations = async (req, res) => {
 };
 
 // ✅ Approve Registration
+import Registration from "../models/Registration.js";
+import User from "../models/User.js"; // Import your User model
+
 export const approveRegistration = async (req, res) => {
   try {
+    const { email, password } = req.body;
     await Registration.findByIdAndUpdate(req.params.id, { isApproved: true });
-    res.json({ message: "Registration approved successfully" });
+    const updatedUser = await User.findOneAndUpdate(
+      { email: email },
+      { password: password, isApproved: true },
+      { new: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ message: "Registration approved and password updated" });
   } catch (error) {
-    res.status(500).json({ message: "Error approving Registration" });
+    console.error("Error approving registration:", error);
+    res.status(500).json({ message: "Error approving registration" });
   }
 };
+
 
 // ✅ Reject Registration
 export const rejectRegistration = async (req, res) => {

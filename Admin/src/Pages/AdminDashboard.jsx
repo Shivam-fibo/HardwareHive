@@ -53,12 +53,13 @@ const AdminDashboard = () => {
         { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: randomPassword })
+          body: JSON.stringify({email: userEmail, password: randomPassword })
         }
       );
   
       if (approveResponse.ok) {
         toast.success("User approved! Email sent.");
+
         fetchUsers();
       } else {
         toast.error("Approval failed.");

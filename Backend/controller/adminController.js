@@ -1,7 +1,5 @@
 import Registration from "../model/registrationModel.js";
 
-
-
 export const loginAdmin = (req, res) => {
     const { email, password } = req.body;
   
@@ -26,15 +24,14 @@ export const getUnapprovedRegistrations = async (req, res) => {
   }
 };
 
-// ✅ Approve Registration
-import Registration from "../models/Registration.js";
-import User from "../models/User.js"; // Import your User model
+
 
 export const approveRegistration = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("request body", req.body)
     await Registration.findByIdAndUpdate(req.params.id, { isApproved: true });
-    const updatedUser = await User.findOneAndUpdate(
+    const updatedUser = await Registration.findOneAndUpdate(
       { email: email },
       { password: password, isApproved: true },
       { new: true }

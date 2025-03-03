@@ -10,6 +10,7 @@ const registrationSchema = new mongoose.Schema({
   state: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   isApproved: { type: Boolean, default: false },
+  password: { type: String, required: false },
 });
 
 const Registration = mongoose.model("Registration", registrationSchema);

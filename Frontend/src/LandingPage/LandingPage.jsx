@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -19,6 +19,8 @@ const Home = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate()
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,7 +61,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/user/login", {
+      const response = await fetch("http://localhost:5000/api/login/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,6 +73,7 @@ const Home = () => {
 
       if (response.ok) {
         toast.success("Login successful!");
+        navigate("/home")
         setIsLoginModalOpen(false);
       } else {
         toast.error(result.message || "Invalid credentials");

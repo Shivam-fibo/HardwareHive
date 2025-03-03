@@ -4,7 +4,9 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import registrationRoutes from "./router/registrationRoutes.js";
+import loginRoutes from "./router/loginRoutes.js"
 import adminRoutes from "./router/adminRouter.js";
+import uploadRoutes from "./router/uploadRouter.js"
 dotenv.config();
 
 const app = express();
@@ -16,7 +18,9 @@ app.use(express.json());
 
 
 app.use("/api/user", registrationRoutes);
+app.use("/api/login/user", loginRoutes )
 app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes)
 
 connectDB();
 

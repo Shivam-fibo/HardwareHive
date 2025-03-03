@@ -1,20 +1,24 @@
-import { useState } from 'react'
-import { Toaster } from 'react-hot-toast'
-import Home from './LandingPage/Home'
-import Footer from './Home/Footer'
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import LandingPage from './LandingPage/LandingPage';
+import Home from './Home/Home';
+import Footer from './Home/Footer';
+
 
 function App() {
-
-
-
   return (
-   <div>
-   <Home />
-   <Footer/>
-   <Toaster />
-
-   </div>
-  )
+    <Router>
+      <div>
+        <Toaster />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<Home/>}/>
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default App;

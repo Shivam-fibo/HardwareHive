@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import AdminLogin from "./Pages/AdminLogin";
 import Home from "./Pages/Home";
 import AdminDashboard from "./Pages/AdminDashboard"
+import AddProduct from "./Pages/AddProduct";
 import { Toaster } from 'react-hot-toast'
 const PrivateRoute = ({ element }) => {
   const { isAdminLoggedIn } = useAuth();
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/login" element={<AdminLogin />} />
           <Route path="/home" element={<PrivateRoute element={<Home />} />} />
           <Route path="/dashboard" element={<PrivateRoute element={<AdminDashboard/>} />}/>
+          <Route path="/addProduct" element={<PrivateRoute element={<AddProduct/>} />}/>
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </Router>

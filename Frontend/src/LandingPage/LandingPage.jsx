@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import Footer from "../Home/Footer";
 import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
@@ -86,8 +87,8 @@ const Home = () => {
   const images = Array.from({ length: 15 }, (_, i) => `/images/img${i + 1}.jpg`);
 
   return (
-    <div  className="sm:bg-contain sm:bg-no-repeat" style={{ backgroundImage: "url('/images/background.jpg')", height:"909px"}}>
-    <nav className="  text-4xl font-semibold text-amber-100 font-stretch-110%  p-4  sm:text-xl">
+    <div  className=" sm:bg-contain sm:bg-no-repeat" style={{ backgroundImage: "url('/images/background.jpg')", height:"863px"}}>
+    <nav className="text-xl sm:text-3xl font-bold text-white p-4">
     SS POWER TOOL
   </nav>
     <div className="text-white">
@@ -95,11 +96,11 @@ const Home = () => {
      
 
       {/* Main Section with Background Image */}
-      <div className="text-center py-20 mb-64 px-4   bg-center">
+      <div className="text-center py-20 mt-20 px-4   bg-center">
         <h1 className="text-3xl font-bold">MULTI-BRAND POWER TOOLS</h1>
         <h2 className="text-2xl font-bold">SPARE PARTS B2B PORTAL</h2>
 
-        <div className="flex flex-col items-center gap-4 mt-6">
+        <div className="flex flex-col items-center gap-6 mt-12">
           <button className="bg-blue-500 text-white py-2 px-6 rounded-lg text-lg font-bold" onClick={() => setIsLoginModalOpen(true)}>
             LOGIN
           </button>
@@ -154,6 +155,7 @@ const Home = () => {
         </div>
       )}
     </div>
+    <Footer />
     </div>
   );
 };

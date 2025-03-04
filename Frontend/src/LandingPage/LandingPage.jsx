@@ -36,7 +36,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/user/register", {
+      const response = await fetch("https://hardwarehive-backend.onrender.com/api/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/login/user/login", {
+      const response = await fetch("https://hardwarehive-backend.onrender.com/api/login/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

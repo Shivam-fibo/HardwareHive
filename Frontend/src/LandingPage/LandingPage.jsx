@@ -36,7 +36,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://hardwarehive-backend.onrender.com/api/user/register", {
+      const response = await fetch("http://localhost:5000/api/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://hardwarehive-backend.onrender.com/api/login/user/login", {
+      const response = await fetch("http://localhost:5000/api/login/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,14 +86,16 @@ const Home = () => {
   const images = Array.from({ length: 15 }, (_, i) => `/images/img${i + 1}.jpg`);
 
   return (
-    <div className="bg-blue-900 text-white">
+    <div  className="sm:bg-contain sm:bg-no-repeat" style={{ backgroundImage: "url('/images/background.jpg')", height:"909px"}}>
+    <nav className="  text-4xl font-semibold text-amber-100 font-stretch-110%  p-4  sm:text-xl">
+    SS POWER TOOL
+  </nav>
+    <div className="text-white">
       {/* Navbar */}
-      <nav className="bg-white text-red-600 font-bold text-xl p-4">
-        SS POWER TOOL
-      </nav>
+     
 
       {/* Main Section with Background Image */}
-      <div className="relative text-center py-20 px-4 bg-cover bg-center" style={{ backgroundImage: "url('https://via.placeholder.com/1500x500')" }}>
+      <div className="text-center py-20 mb-64 px-4   bg-center">
         <h1 className="text-3xl font-bold">MULTI-BRAND POWER TOOLS</h1>
         <h2 className="text-2xl font-bold">SPARE PARTS B2B PORTAL</h2>
 
@@ -106,15 +108,16 @@ const Home = () => {
           </button>
         </div>
       </div>
+     
 
       {/* Hero Section with Images */}
-      <div className="py-8 px-6 text-center bg-blue-800">
+       {/* <div className="py-8 px-6 text-center mt-20">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {images.map((src, index) => (
             <img key={index} src={src} alt={`Product ${index + 1}`} className="w-24 h-24 object-cover mx-auto" />
           ))}
         </div>
-      </div>
+      </div>  */}
 
       {/* Registration Modal */}
       {isRegistrationModalOpen && (
@@ -150,6 +153,7 @@ const Home = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

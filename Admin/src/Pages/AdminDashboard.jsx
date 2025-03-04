@@ -9,7 +9,7 @@ const AdminDashboard = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/admin/registrations"
+        "https://hardwarehive-backend.onrender.com/api/admin/registrations"
       );
       const data = await response.json();
       console.log("data", data);
@@ -49,7 +49,7 @@ const AdminDashboard = () => {
   
     
       const approveResponse = await fetch(
-        `http://localhost:5000/api/admin/registrations/${id}/approve`, 
+        `https://hardwarehive-backend.onrender.com/api/admin/registrations/${id}/approve`, 
         { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
     setIsLoading(true);
     try {
       await fetch(
-        `http://localhost:5000/api/admin/registrations/${id}/reject`,
+        `https://hardwarehive-backend.onrender.com/api/admin/registrations/${id}/reject`,
         { method: "POST" }
       );
       toast.success("User rejected!");

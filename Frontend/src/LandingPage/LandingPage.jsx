@@ -87,10 +87,16 @@ const Home = () => {
   const images = Array.from({ length: 15 }, (_, i) => `/images/img${i + 1}.jpg`);
 
   return (
-    <div  className=" sm:bg-contain sm:bg-no-repeat" style={{ backgroundImage: "url('/images/background.jpg')", height:"863px"}}>
-    <nav className="text-xl sm:text-3xl font-bold text-white p-4">
-    SS POWER TOOL
-  </nav>
+    <div  className="" style={{ backgroundImage: "url('/images/background1.jpg')", }} >
+    <nav className="flex justify-between items-center text-xl sm:text-3xl font-bold text-white p-4">
+  <div>SS POWER TOOL</div>
+  <button 
+  className="bg-transparent border-1 sm:border-2 text-white py-1 px-2 sm:px-2 rounded-lg text-sm sm:text-xl font-bold cursor-pointer"
+>
+  PRODUCT
+</button>
+</nav>
+
     <div className="text-white">
       {/* Navbar */}
      
@@ -155,6 +161,7 @@ const Home = () => {
         </div>
       )}
     </div>
+      
     <Footer />
     </div>
   );

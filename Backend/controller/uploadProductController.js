@@ -2,7 +2,7 @@ import cloudinary from "../config/cloudinary.js";
 import Product from "../model/productModel.js";
 import multer from "multer";
 
-const upload = multer({ storage: multer.memoryStorage() });
+export const upload = multer({ storage: multer.memoryStorage() });
 
 export const uploadProduct = async (req, res) => {
   try {
@@ -34,4 +34,18 @@ export const uploadProduct = async (req, res) => {
   }
 };
 
-export { upload };
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find(); // Get all products
+    res.json(products);
+  } catch (error) {
+    console.error("Fetch Products Error:", error);
+    res.status(500).json({ error: "Failed to fetch products" });
+  }
+};
+
+export const getProductDetails = async (req, res) =>{
+  
+}
+
+

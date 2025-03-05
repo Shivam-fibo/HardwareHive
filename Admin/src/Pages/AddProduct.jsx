@@ -26,7 +26,7 @@ const AddProduct = () => {
     formData.append("image", image);
 
     try {
-      const response = await fetch("https://hardwarehive-backend.onrender.com/api/upload/uploadProduct", {
+      const response = await fetch("http://localhost:5000/api/upload/uploadProduct", {
         method: "POST",
         body: formData,
       });

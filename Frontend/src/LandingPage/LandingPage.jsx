@@ -87,7 +87,7 @@ const Home = () => {
   const images = Array.from({ length: 15 }, (_, i) => `/images/img${i + 1}.jpg`);
 
   return (
-    <div  className="" style={{ backgroundImage: "url('/images/background1.jpg')", }} >
+    <div  className="" style={{ backgroundImage: "url('/images/background2.jpg')", }} >
     <nav className="flex justify-between items-center text-xl sm:text-3xl font-bold text-white p-4">
   <div>SS POWER TOOL</div>
   <button 

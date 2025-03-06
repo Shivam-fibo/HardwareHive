@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+
+
+
 import Footer from "../Home/Footer";
 import { useNavigate } from "react-router-dom";
 const Home = () => {
@@ -24,8 +27,8 @@ const Home = () => {
 
   return (
     <div
-      className="h-[730px]"
-      style={{
+      className="h-[740px] bg-gray-800"
+      style={{ 
         backgroundImage: `url(${bgImage})`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
@@ -35,25 +38,32 @@ const Home = () => {
     >
       <nav className="flex justify-between items-center text-xl sm:text-3xl font-bold text-white p-4">
         <div>SS POWER TOOL</div>
-        <button
-          className="bg-zinc-700 hover:bg-zinc-600 border-1 sm:border-2 text-white py-1 px-2 sm:px-2 rounded-lg text-sm sm:text-xl font-bold cursor-pointer"
-          onClick={() => navigate("/allProductShow")}
-        >
-          PRODUCT
-        </button>
+        <div className="flex items-center">
+  <button
+    className="flex flex-col items-center bg-zinc-700 hover:bg-zinc-600 border-1 sm:border-2 text-white py-1 px-2 sm:px-2 rounded-lg text-sm sm:text-xl font-bold cursor-pointer"
+    onClick={() => navigate("/allProductShow")}
+  >
+    PRODUCT
+  </button>
+</div>
+
       </nav>
 
-      <div className="text-white">
+      <div className="text-white ">
         {/* Navbar */}
 
         {/* Main Section with Background Image */}
-        <div className="text-center py-20 mt-20 px-4 bg-center">
+        <div className="text-center py-20 mt-10 px-4 bg-center">
           <h1 className="text-xl sm:text-3xl font-bold">
             MULTI-BRAND POWER TOOLS
           </h1>
           <h2 className="text-base sm:text-2xl font-bold">
             SPARE PARTS B2B PORTAL
           </h2>
+          <h3 className="text-sm sm:text-xl font-semibold">
+            If any query while register, login or product purchase
+            contact us: 91 9804611111
+          </h3>
 
           <div className="flex flex-col items-center gap-6 mt-12">
             <button
@@ -73,8 +83,9 @@ const Home = () => {
 
         {/* Registration Modal */}
       </div>
+      <div className="h-24 bg-zinc-700 mt-42"></div>
 
-      <Footer mt="mt-38" />
+      <Footer mt="" />
     </div>
   );
 };

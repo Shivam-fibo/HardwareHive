@@ -1,4 +1,5 @@
 import { FaYoutube, FaFacebookF, FaInstagram } from "react-icons/fa";
+import { CiMobile3 } from "react-icons/ci";
 import {
   Users,
   Package,
@@ -28,12 +29,8 @@ const Footer = ({ mt = "mt-36" }) => {
             {/* Download Buttons */}
             <div className="flex flex-col md:flex-row gap-2 mt-2 md:mt-0">
               <button className="bg-white text-black px-3 py-1 rounded-md flex items-center justify-center gap-1 text-sm shadow-sm border">
-                <FaGooglePlay size={16} />
-                Download for Android
-              </button>
-              <button className="bg-white text-black px-3 py-1 rounded-md flex items-center justify-center gap-1 text-sm shadow-sm border">
-                <AiFillApple size={16} />
-                Download for iOS
+                <CiMobile3 size={16} />
+                Download Mobile App
               </button>
             </div>
           </div>
@@ -102,16 +99,17 @@ const Footer = ({ mt = "mt-36" }) => {
           <div className="text-center md:text-left">
             <p className="font-bold mb-2">Contact Us</p>
             <div className="space-y-1 text-sm">
-              <p>Gramstrong e-services Private Limited</p>
-              <p>CIN- U29308WB2022PTC251024</p>
-              <p>2nd Floor, Shree Hardware Building,</p>
-              <p>Nachan Road, Benachity, Durgapur-713213</p>
-              <p>West Bengal, India</p>
+              <p>S S GROUP</p>
+              <p>GST NO. 06ADRPG7908H1Z9</p>
+              <p> SHOP NO. 259/E</p>
+              <p>GAUSHALA MARKET NEAR SHYAM MANDIR, </p>
+              <p>NARNAUL, DISTRICT MAHENDRAGARH</p>
+              <p> PIN NO. 123001 HARYANA</p>
               <p className="mt-2">
-                <span className="font-semibold">Email:</span> support@SSPOWERTOOL.com
+                <span className="font-semibold">Email:</span> SSPOWERTOOL.IN@GMAIL.COM
               </p>
               <p>
-                <span className="font-semibold">Phone:</span> 7829-055-044
+                <span className="font-semibold">CONTACT NO: </span>  +91 9804611111, 9992707172
               </p>
             </div>
           </div>

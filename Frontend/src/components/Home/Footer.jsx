@@ -10,9 +10,9 @@ import {
 import { FaGooglePlay } from "react-icons/fa";
 import { AiFillApple } from "react-icons/ai";
 
-const Footer = () => {
+const Footer = ({ mt = "mt-36" }) => {
   return (
-    <footer className="bg-gray-800 text-white py-6 md:py-10 px-4 md:px-5">
+    <footer className={`${mt} bg-gray-800 text-white py-6 md:py-10 px-4 md:px-5`}>
       <div className="container mx-auto">
         {/* Top Section: Logo and Download Buttons */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
@@ -42,13 +42,13 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-end gap-2">
             <p className="text-white text-center md:text-right">Keep in touch</p>
             <div className="flex gap-2">
-              <button className="bg-yellow-400 p-2 rounded-full text-black">
+              <button className=" p-2 rounded-full text-white">
                 <FaYoutube size={20} />
               </button>
-              <button className="bg-yellow-400 p-2 rounded-full text-black">
+              <button className=" p-2 rounded-full text-white">
                 <FaFacebookF size={20} />
               </button>
-              <button className="bg-yellow-400 p-2 rounded-full text-black">
+              <button className=" p-2 rounded-full text-white">
                 <FaInstagram size={20} />
               </button>
             </div>

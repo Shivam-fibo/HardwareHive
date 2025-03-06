@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import LandingPage from './LandingPage/LandingPage';
-import Home from './Home/Home';
-import ProductDetails from './Home/ProductDetails';
-import Footer from './Home/Footer';
+import LandingPage from './components/LandingPage/LandingPage';
+import Home from './components/Home/Home';
+import ProductDetails from './components/Home/ProductDetails';
+import AllPrdouctShow from './components/LandingPage/AllProductShow'
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 
 
 function App() {
@@ -15,7 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<Home/>}/>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path='/allProductShow' element={<AllPrdouctShow/>} />
         </Routes>
       </div>
     </Router>

@@ -46,7 +46,7 @@ const Home = () => {
           </div>
         </nav>
 
-        <div className="text-yellow-100">
+        <div className="text-white">
           {/* Main Section with Background Image */}
           <div className="text-center py-20 mt-10 px-4 bg-center">
             <h1 className="text-xl sm:text-3xl font-bold">

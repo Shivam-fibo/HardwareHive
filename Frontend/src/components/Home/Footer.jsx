@@ -11,7 +11,7 @@ import {
 import { FaGooglePlay } from "react-icons/fa";
 import { AiFillApple } from "react-icons/ai";
 
-const Footer = ({ mt = "mt-36" }) => {
+const Footer = ({ mt = "mt-0" }) => {
   return (
     <footer className={`${mt} bg-gray-800 text-white py-6 md:py-10 px-4 md:px-5`}>
       <div className="container mx-auto">

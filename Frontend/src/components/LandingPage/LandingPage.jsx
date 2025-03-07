@@ -46,7 +46,7 @@ const Home = () => {
         </div>
       </nav>
 
-      <div className="text-yellow-100 h-[816px] ">
+      <div className="text-yellow-200 h-[816px] ">
         {/* Navbar */}
 
         {/* Main Section with Background Image */}
@@ -58,7 +58,8 @@ const Home = () => {
             SPARE PARTS B2B PORTAL
           </h2>
           <h3 className="text-sm sm:text-xl font-semibold">
-          NEED HELP WITH REGISTER, LOGIN AND PURHCASING? CONTACT US +91 9804611111 
+        <p>  NEED HELP WITH REGISTER, LOGIN AND PURHCASING ?  </p>
+       <p>   CONTACT US +91 9804611111  </p>
           </h3>
 
           <div className="flex flex-col items-center gap-6 mt-12">

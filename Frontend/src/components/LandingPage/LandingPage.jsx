@@ -35,7 +35,7 @@ const Home = () => {
       }}
     >
       <nav className="flex justify-between items-center text-xl sm:text-3xl font-bold text-white p-4">
-        <div>SS POWER TOOL</div>
+        <div className="sm:text-yellow-200 text-yellow-100">SS POWER TOOL</div>
         <div className="flex items-center">
           <button
             className="flex flex-col items-center bg-zinc-700 hover:bg-zinc-600 border-1 sm:border-2 text-white py-1 px-2 sm:px-2 rounded-lg text-sm sm:text-xl font-bold cursor-pointer"
@@ -46,7 +46,7 @@ const Home = () => {
         </div>
       </nav>
 
-      <div className="text-yellow-200 h-[816px] ">
+      <div className="sm:text-yellow-200 text-yellow-100 h-[816px] ">
         {/* Navbar */}
 
         {/* Main Section with Background Image */}

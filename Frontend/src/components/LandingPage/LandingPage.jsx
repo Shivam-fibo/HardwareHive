@@ -38,7 +38,7 @@ const Home = () => {
         <div className="sm:text-yellow-200 text-yellow-100">SS POWER TOOL</div>
         <div className="flex items-center">
           <button
-            className="flex flex-col items-center bg-zinc-700 hover:bg-zinc-600 border-1 sm:border-2 text-white py-1 px-2 sm:px-2 rounded-lg text-sm sm:text-xl font-bold cursor-pointer"
+            className="flex flex-col items-center bg-zinc-700 hover:bg-zinc-600 border-1 sm:border-2 sm:text-yellow-200 text-yellow-100 py-1 px-2 sm:px-2 rounded-lg text-sm sm:text-xl font-bold cursor-pointer"
             onClick={() => navigate("/allProductShow")}
           >
             PRODUCT

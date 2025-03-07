@@ -30,7 +30,7 @@ const Footer = ({ mt = "mt-36" }) => {
             <div className="flex flex-col md:flex-row gap-2 mt-2 md:mt-0">
               <button className="bg-white text-black px-3 py-1 rounded-md flex items-center justify-center gap-1 text-sm shadow-sm border">
                 <CiMobile3 size={16} />
-                Download Mobile App
+                DOWNLOAD MOBILE APP
               </button>
             </div>
           </div>

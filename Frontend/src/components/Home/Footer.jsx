@@ -1,20 +1,11 @@
 import { FaYoutube, FaFacebookF, FaInstagram } from "react-icons/fa";
 import { CiMobile3 } from "react-icons/ci";
-import {
-  Users,
-  Package,
-  Store,
-  Truck,
-  CreditCard,
-  RefreshCcw,
-} from "lucide-react";
-import { FaGooglePlay } from "react-icons/fa";
-import { AiFillApple } from "react-icons/ai";
+
 
 const Footer = ({ mt = "mt-0" }) => {
   const images = Array.from(
-    { length: 13 },
-    (_, i) => `/images/img${i + 1}.jpg`
+    { length: 16 },
+    (_, i) => `/logo/img${i + 1}.jpg`
   );
   return (
     <footer
@@ -47,7 +38,7 @@ const Footer = ({ mt = "mt-0" }) => {
           {/* Social Media Section */}
           <div className="flex flex-col items-center md:items-end gap-2">
             <p className="sm:text-yellow-200 text-yellow-100 text-center md:text-right">
-              Keep in touch
+              KEEP IN TOUCH
             </p>
             <div className="flex gap-2">
               <button className=" p-2 rounded-full sm:text-yellow-200 text-yellow-100">
@@ -73,16 +64,16 @@ const Footer = ({ mt = "mt-0" }) => {
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
     {/* Logos Section - Takes 50% width */}
     <div className="md:col-span-1 lg:col-span-1">
-  <div className="grid grid-cols-3 sm:grid-cols-3 gap-4">
+  <div className="grid grid-cols-4 sm:grid-cols-4 gap-4">
     {images.map((src, index) => (
       <div 
         key={index} 
-        className="w-20 h-20  sm:w-24 sm:h-24 flex items-center justify-center border border-gray-700"
+        className="w-20 h-6  sm:w-24 sm:h-8 flex items-center justify-center"
       >
         <img
           src={src}
           alt={`Product ${index + 1}`}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
     ))}
@@ -92,16 +83,16 @@ const Footer = ({ mt = "mt-0" }) => {
 
     {/* Quick Links Section - Centered on mobile */}
     <div className="sm:ml-64 text-center md:text-left">
-      <p className="font-bold mb-2">Quick Links</p>
+      <p className="font-bold mb-2">QUICK LINKS</p>
       <ul className="space-y-1">
-        <li className="hover:text-yellow-400 transition-colors">About Us</li>
-        <li className="hover:text-yellow-400 transition-colors">Privacy Policy</li>
+        <li className="hover:text-yellow-400 transition-colors">ABOUT US</li>
+        <li className="hover:text-yellow-400 transition-colors">PRIVACY POLICY</li>
       </ul>
     </div>
 
     {/* Contact Us Section */}
     <div className="text-center md:text-left">
-      <p className="font-bold mb-2">Contact Us</p>
+      <p className="font-bold mb-2">CONTACT US</p>
       <div className="space-y-1 text-sm">
         <p>S S GROUP</p>
         <p>GST NO. 06ADRPG7908H1Z9</p>

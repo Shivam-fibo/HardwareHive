@@ -7,6 +7,7 @@ import registrationRoutes from "./router/registrationRoutes.js";
 import loginRoutes from "./router/loginRoutes.js"
 import adminRoutes from "./router/adminRouter.js";
 import uploadRoutes from "./router/uploadProductRouter.js"
+import showAllProductRoutes from "./router/showAllProductRouter.js"
 dotenv.config();
 
 const app = express();
@@ -15,14 +16,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
 
 app.use("/api/user", registrationRoutes);
 app.use("/api/login/user", loginRoutes )
 app.use("/api/admin", adminRoutes);
-app.use("/api/upload", uploadRoutes)
+app.use("/api/upload", uploadRoutes);
+app.use("/api/showAllProduct", showAllProductRoutes)
 
 connectDB();
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+export default app;
+

@@ -3,7 +3,7 @@ import { useState } from "react";
 const AddProduct = () => {
   const [title, setTitle] = useState("");
   const [subheading, setSubheading] = useState("");
-  const [category,setCategory] = useState("")
+  const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,12 +21,12 @@ const AddProduct = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("subheading", subheading);
-    formData.append("category", category)
+    formData.append("category", category);
     formData.append("price", price);
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:5000/api/upload/uploadProduct", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/upload/uploadProduct", {
         method: "POST",
         body: formData,
       });
@@ -36,6 +36,7 @@ const AddProduct = () => {
         setMessage("Product uploaded successfully!");
         setTitle("");
         setSubheading("");
+        setCategory("");
         setPrice("");
         setImage(null);
       } else {
@@ -50,58 +51,59 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Upload Product</h2>
-      {message && <p className="text-green-600">{message}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-6">
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-center">Upload Product</h2>
+        {message && <p className="text-green-400 text-center">{message}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Product Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Subheading"
-          value={subheading}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setSubheading(e.target.value)}
-          className="w-full p-2 border rounded"
-        />
-        
-        <input
-          type="number"
-          placeholder="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          className="w-full p-2 border rounded"
-          required
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-full p-2 border rounded"
-          required
-        />
+            type="text"
+            placeholder="Product Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Subheading"
+            value={subheading}
+            onChange={(e) => setSubheading(e.target.value)}
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+          />
+          <input
+            type="text"
+            placeholder="Category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+          />
+          <input
+            type="number"
+            placeholder="Price"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+            required
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+            required
+          />
 
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded w-full"
-          disabled={loading}
-        >
-          {loading ? "Uploading..." : "Upload Product"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 hover:bg-blue-600 transition-all text-white font-semibold px-4 py-2 rounded"
+            disabled={loading}
+          >
+            {loading ? "Uploading..." : "Upload Product"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

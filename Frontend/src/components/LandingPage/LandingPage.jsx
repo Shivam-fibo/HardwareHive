@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+
 
 import Footer from "../Home/Footer";
 import { useNavigate } from "react-router-dom";

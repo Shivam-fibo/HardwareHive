@@ -9,7 +9,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`https://hardware-hive-backend.vercel.app/api/upload/getProduct/${id}`);
+        const response = await fetch(`http://localhost:5000/api/upload/getProduct/${id}`);
         const data = await response.json();
         setProduct(data);
       } catch (error) {

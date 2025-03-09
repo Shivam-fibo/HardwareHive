@@ -8,11 +8,8 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(
-        "https://hardware-hive-backend.vercel.app/api/admin/registrations"
-      );
+      const response = await fetch("http://localhost:5000/api/admin/registrations");
       const data = await response.json();
-      console.log("data", data);
       setUsers(data);
     } catch (error) {
       toast.error("Error fetching users");
@@ -24,42 +21,36 @@ const AdminDashboard = () => {
   }, []);
 
   const handleApprove = async (id, userEmail, userName) => {
+    console.log("Sending email to:", userEmail);
     setIsLoading(true);
+  
     try {
-    
       const randomPassword = Math.floor(100000 + Math.random() * 900000).toString();
   
-     
-      const emailResult = await emailjs.send(
-        "service_ryufc3l",
-        "template_vy2dg4g", 
-        {
-          to_email: userEmail,
-          to_name: userName,
-          message: `Hello ${userName},\n\nYour registration has been approved!\n\nHere is your password: ${randomPassword}\n\nUse this password to log in.\n\nThank you,\nAdmin Team`,
-        },
-        "KnjO-QIdG8BKdkm0x"
-      );
+      // Step 1: Send email first
+      const emailResponse = await fetch("http://localhost:5000/api/admin/sendEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),
+      });
   
-      if (emailResult.status !== 200) {
-        toast.error("Failed to send email! Approval aborted.");
+      if (!emailResponse.ok) {
+        toast.error("Email sending failed. Approval aborted.");
         setIsLoading(false);
         return;
       }
   
-    
-      const approveResponse = await fetch(
-        `https://hardware-hive-backend.vercel.app/api/admin/registrations/${id}/approve`, 
-        { 
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({email: userEmail, password: randomPassword })
-        }
-      );
+      toast.success("Email sent successfully! Now approving the user...");
+  
+      // Step 2: Approve user only after successful email
+      const approveResponse = await fetch(`http://localhost:5000/api/admin/registrations/${id}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),
+      });
   
       if (approveResponse.ok) {
-        toast.success("User approved! Email sent.");
-
+        toast.success("User approved successfully!");
         fetchUsers();
       } else {
         toast.error("Approval failed.");
@@ -72,23 +63,7 @@ const AdminDashboard = () => {
     }
   };
   
-
-  const handleReject = async (id) => {
-    setIsLoading(true);
-    try {
-      await fetch(
-        `https://hardware-hive-backend.vercel.app/api/admin/registrations/${id}/reject`,
-        { method: "POST" }
-      );
-      toast.success("User rejected!");
-      fetchUsers(); // Refresh list
-    } catch (error) {
-      toast.error("Error rejecting user");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <h2 className="text-2xl font-bold text-center mb-6">Admin Dashboard</h2>
@@ -106,9 +81,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="space-x-2">
                     <button
-                      onClick={() =>
-                        handleApprove(user._id, user.email, user.name)
-                      }
+                      onClick={() => handleApprove(user._id, user.email, user.name)}
                       disabled={isLoading}
                       className={`${
                         isLoading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
@@ -131,12 +104,13 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                   <div className="border-t pt-2">
                     <p>
-                      <span className="font-semibold">Company:</span>{" "}
-                      {user.companyName}
+                      <span className="font-semibold">Company:</span> {user.companyName}
                     </p>
                     <p>
-                      <span className="font-semibold">Mobile:</span>{" "}
-                      {user.mobile}
+                      <span className="font-semibold">Mobile:</span> {user.mobile}
+                    </p>
+                    <p>
+                      <span className="font-semibold">WhatsApp:</span> {user.whatsapp}
                     </p>
                     <p>
                       <span className="font-semibold">Registration Date:</span>{" "}
@@ -148,24 +122,44 @@ const AdminDashboard = () => {
                       <span className="font-semibold">City:</span> {user.city}
                     </p>
                     <p>
-                      <span className="font-semibold">District:</span>{" "}
-                      {user.district}
+                      <span className="font-semibold">District:</span> {user.district}
                     </p>
                     <p>
                       <span className="font-semibold">State:</span> {user.state}
                     </p>
+                    <p>
+                      <span className="font-semibold">Pincode:</span> {user.pincode}
+                    </p>
                   </div>
                 </div>
+
+                <div className="border-t pt-2 mt-2">
+                  <p>
+                    <span className="font-semibold">GST Type:</span> {user.gstType}
+                  </p>
+                  {user.gstType === "gst" && (
+                    <p>
+                      <span className="font-semibold">GST Number:</span> {user.gstNumber || "N/A"}
+                    </p>
+                  )}
+                </div>
+
+                {user.visitingCardUrl && (
+                  <div className="mt-4">
+                    <p className="font-semibold">Visiting Card:</p>
+                    <img
+                      src={user.visitingCardUrl}
+                      alt="Visiting Card"
+                      className="w-40 h-auto border rounded-lg"
+                    />
+                  </div>
+                )}
 
                 <div className="mt-2 pt-2 border-t">
                   <p>
                     <span className="font-semibold">Status:</span>
                     <span
-                      className={
-                        user.isApproved
-                          ? "text-green-600 ml-1"
-                          : "text-yellow-600 ml-1"
-                      }
+                      className={user.isApproved ? "text-green-600 ml-1" : "text-yellow-600 ml-1"}
                     >
                       {user.isApproved ? "Approved" : "Pending"}
                     </span>

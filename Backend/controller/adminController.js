@@ -1,5 +1,4 @@
 import Registration from "../model/registrationModel.js";
-
 export const loginAdmin = (req, res) => {
     const { email, password } = req.body;
   
@@ -56,3 +55,5 @@ export const rejectRegistration = async (req, res) => {
     res.status(500).json({ message: "Error rejecting Registration" });
   }
 };
+
+

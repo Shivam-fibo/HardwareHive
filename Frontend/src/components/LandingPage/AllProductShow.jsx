@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const DisplayImages = () => {
   const [images, setImages] = useState([]);
@@ -6,7 +7,7 @@ const DisplayImages = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/showAllProduct/images");
+        const response = await fetch("https://hardware-hive-backend.vercel.app/api/showAllProduct/images");
         const data = await response.json();
         if (response.ok) {
           setImages(data);
@@ -21,13 +22,24 @@ const DisplayImages = () => {
     fetchImages();
   }, []);
 
+  const navigate = useNavigate()
+
   return (
-<div className="min-h-screen p-6 bg-gray-800 text-gray-200">
-  <div className="max-w-6xl mx-auto">
+<div className="min-h-screen  bg-gray-800 text-gray-200">
+
+<nav className="flex justify-between items-center text-xl sm:text-3xl font-bold text-white p-4">
+  <div className="sm:text-yellow-200 text-yellow-100 cursor-pointer" onClick={() => navigate("/")}>SS POWER TOOL</div>
+  
+
+  
+  <div className="w-24"></div>
+</nav>
+
     <div className="mb-8">
-      <h2 className="text-2xl text-center font-bold text-gray-200">
-        All Products
-      </h2>
+    <h2 className="text-3xl font-bold underline sm:text-yellow-200 text-yellow-100 flex-1 text-center">
+    PRODUCT
+  </h2>
+     
     </div>
 
     {images.length === 0 ? (
@@ -39,7 +51,7 @@ const DisplayImages = () => {
         {images.map((img, index) => (
           <div 
             key={index} 
-            className="bg-gray-700 rounded-lg shadow-md overflow-hidden flex items-center justify-center w-40 h-40 mx-auto"
+            className="bg-gray-700 rounded-lg shadow-md overflow-hidden flex items-center justify-center  mx-auto"
           >
             <img 
               src={img.url} 
@@ -51,7 +63,7 @@ const DisplayImages = () => {
       </div>
     )}
   </div>
-</div>
+
 
   );
 };

@@ -41,7 +41,7 @@ const Register = () => {
         formData.append("visitingCard", visitingCard);
       }
 
-      const response = await fetch("https://hardware-hive-backend.vercel.app/api/user/register", {
+      const response = await fetch("https://hardware-hive.vercel.app/api/user/register", {
         method: "POST",
         body: formData,
       });

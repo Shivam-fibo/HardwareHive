@@ -8,7 +8,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://hardware-hive-backend.vercel.app/api/admin/registrations");
+      const response = await fetch("https://hardware-hive.vercel.app/api/admin/registrations");
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
       const randomPassword = Math.floor(100000 + Math.random() * 900000).toString();
   
       // Step 1: Send email first
-      const emailResponse = await fetch("https://hardware-hive-backend.vercel.app/api/admin/sendEmail", {
+      const emailResponse = await fetch("https://hardware-hive.vercel.app/api/admin/sendEmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
       toast.success("Email sent successfully! Now approving the user...");
   
       // Step 2: Approve user only after successful email
-      const approveResponse = await fetch(`https://hardware-hive-backend.vercel.app/api/admin/registrations/${id}/approve`, {
+      const approveResponse = await fetch(`https://hardware-hive.vercel.app/api/admin/registrations/${id}/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),

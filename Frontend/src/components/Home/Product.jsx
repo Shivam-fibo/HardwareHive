@@ -8,7 +8,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("https://hardware-hive-backend.vercel.app/api/upload/getallProduct");
+        const response = await fetch("https://hardware-hive.vercel.app/api/upload/getallProduct");
         const data = await response.json();
         setProducts(data);
       } catch (error) {

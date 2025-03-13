@@ -7,17 +7,34 @@ const Home = () => {
   const [bgImage, setBgImage] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [loginFormData, setLoginFormData] = useState({ email: "", password: "" });
+  const [loginFormData, setLoginFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [registrationFormData, setRegistrationFormData] = useState({
-    name: "", companyName: "", mobile: "", whatsapp: "", email: "",
-    city: "", district: "", state: "", pincode: "", gstType: "non-gst", gstNumber: ""
+    name: "",
+    companyName: "",
+    mobile: "",
+    whatsapp: "",
+    email: "",
+    city: "",
+    district: "",
+    state: "",
+    pincode: "",
+    gstType: "non-gst",
+    gstNumber: "",
   });
   const [visitingCard, setVisitingCard] = useState(null);
+  const [isStepTwo, setIsStepTwo] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const updateBackground = () => {
-      setBgImage(window.innerWidth < 768 ? "/images/background3.jpg" : "/images/background2.jpg");
+      setBgImage(
+        window.innerWidth < 768
+          ? "/images/background3.jpg"
+          : "/images/background2.jpg"
+      );
     };
     updateBackground();
     window.addEventListener("resize", updateBackground);
@@ -32,11 +49,14 @@ const Home = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/login/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginFormData),
-      });
+      const response = await fetch(
+        "https://hardware-hive.vercel.app/api/login/user/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(loginFormData),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -56,6 +76,13 @@ const Home = () => {
     setRegistrationFormData({ ...registrationFormData, [name]: value });
   };
 
+
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setRegistrationFormData({ ...registrationFormData, [name]: value });
+  };
+
   const handleFileChange = (e) => {
     setVisitingCard(e.target.files[0]);
   };
@@ -71,10 +98,13 @@ const Home = () => {
         formData.append("visitingCard", visitingCard);
       }
 
-      const response = await fetch("https://hardware-hive.vercel.app/api/user/register", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://hardware-hive.vercel.app/api/user/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -113,8 +143,12 @@ const Home = () => {
 
       <div className="sm:text-yellow-200 text-yellow-100 h-[816px]">
         <div className="text-center py-20 mt-10 px-4 bg-center">
-          <h1 className="text-xl sm:text-3xl font-bold">MULTI-BRAND POWER TOOLS</h1>
-          <h2 className="text-base sm:text-2xl font-bold">SPARE PARTS B2B PORTAL</h2>
+          <h1 className="text-xl sm:text-3xl font-bold">
+            MULTI-BRAND POWER TOOLS
+          </h1>
+          <h2 className="text-base sm:text-2xl font-bold">
+            SPARE PARTS B2B PORTAL
+          </h2>
           <h3 className="text-sm sm:text-xl font-semibold">
             <p>NEED HELP WITH REGISTER, LOGIN, AND PURCHASING?</p>
             <p>CONTACT US +91 9804611111</p>
@@ -122,7 +156,7 @@ const Home = () => {
 
           <div className="flex flex-col items-center gap-6 mt-12">
             <button
-              className="bg-blue-500 text-white py-2 px-6 rounded-lg text-lg font-bold"
+              className="bg-blue-500 text-white py-2 px-6 rounded-lg text-lg font-bold transition-transform duration-600 ease-out"
               onClick={() => setShowLoginModal(true)}
             >
               LOGIN
@@ -139,198 +173,199 @@ const Home = () => {
 
       {/* Login Modal */}
       {showLoginModal && (
-        <div className="fixed inset-0 flex items-center justify-center ">
-        <div className="relative bg-gray-700 p-6 rounded-lg w-96 shadow-2xl">
-            {/* Close Button - Moved to top right */}
-            <button
-              className="absolute top-2 right-2 text-white text-xl hover:text-gray-300"
-              onClick={() => setShowLoginModal(false)}
-            >
-              ✖
-            </button>
-            <h2 className="text-xl font-bold mb-4 text-white text-center">LOGIN</h2>
-            <form onSubmit={handleLoginSubmit} className="space-y-3">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="w-full p-2 border bg-gray-600 text-white"
+  <div className="fixed inset-0 flex items-center justify-center bg-transparent">
+    <div className="relative bg-white p-6 rounded-lg w-96 shadow-2xl border border-gray-300">
+      {/* Close Button */}
+      <button
+        className="absolute top-4 right-4 text-gray-600 text-xl hover:text-gray-800"
+        onClick={() => setShowLoginModal(false)}
+      >
+        ✖
+      </button>
 
-                onChange={handleLoginInputChange}
-                required
-              />
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="w-full p-2 border bg-gray-600 text-white"
+      {/* Header */}
+      <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
+        LOGIN
+      </h2>
 
-                onChange={handleLoginInputChange}
-                required
-              />
-              <div className="text-left">
-                <button
-                  type="button"
-                  onClick={() => navigate("/forgot-password")}
-                  className="text-blue-400 text-sm"
-                >
-                  Forgot Password?
-                </button>
-              </div>
-              <button type="submit" className="bg-blue-500 text-white w-full p-2 rounded">
-                Login
-              </button>
-            </form>
-          </div>
+      {/* Form */}
+      <form onSubmit={handleLoginSubmit} className="space-y-3">
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="w-full p-3 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none"
+          onChange={handleLoginInputChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          className="w-full p-3 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none"
+          onChange={handleLoginInputChange}
+          required
+        />
+
+        {/* Forgot Password */}
+        <div className="text-left">
+          <button
+            type="button"
+            onClick={() => navigate("/forgot-password")}
+            className="text-blue-500 text-sm hover:underline"
+          >
+            Forgot Password?
+          </button>
         </div>
-      )}
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="bg-blue-500 text-white w-full p-3 rounded-lg font-semibold hover:bg-blue-600"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+)}
+
 
       {/* Register Modal */}
       {showRegisterModal && (
-        <div className="fixed inset-0 flex items-center justify-center">
-          <div className="relative bg-gray-700 bg-opacity-90 p-6 rounded-lg w-96 shadow-2xl my-8 overflow-y-auto"
-               style={{ maxHeight: "90vh", scrollbarWidth: "none", msOverflowStyle: "none" }}>
-            {/* Hide scrollbar for Chrome, Safari, and Opera */}
-            <style jsx>{`
-              div::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
-            {/* Close Button */}
+  <div
+    className="fixed inset-0 flex items-center justify-center bg-black/30 
+               transition-opacity duration-300 ease-out"
+  >
+    <div
+      className="relative bg-white/90 p-6 rounded-lg w-96 shadow-lg border border-gray-300
+                 backdrop-blur-lg transition-transform duration-300 ease-out scale-100"
+      style={{
+        maxHeight: "90vh",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+    >
+      {/* Close Button */}
+      <button
+        className="absolute top-2 right-2 text-gray-600 text-xl hover:text-gray-800 
+                   transition-transform duration-300 ease-out active:scale-90"
+        onClick={() => {
+          setShowRegisterModal(false);
+          setIsStepTwo(false);
+        }}
+      >
+        ✖
+      </button>
+
+      <h2 className="text-xl font-bold mb-4 text-gray-800 text-center">
+        REGISTER
+      </h2>
+
+      <form onSubmit={handleRegisterSubmit} className="space-y-4">
+        {!isStepTwo ? (
+          <>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              name="companyName"
+              placeholder="Company Name"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="tel"
+              name="mobile"
+              placeholder="Mobile Number"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+             <input
+              type="text"
+              name="city"
+              placeholder="Address"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
             <button
-              className="absolute top-2 right-2 text-white text-xl hover:text-gray-300"
-              onClick={() => setShowRegisterModal(false)}
+              type="button"
+              onClick={() => setIsStepTwo(true)}
+              className="bg-blue-500 text-white w-full p-3 rounded-lg 
+                         transition-transform duration-300 ease-out active:scale-95 shadow-md"
             >
-              ✖
+              Next
             </button>
-            <h2 className="text-xl font-bold mb-4 text-white text-center">REGISTER</h2>
-            <form onSubmit={handleRegisterSubmit} className="space-y-3">
-              <input 
-                type="text" 
-                name="name" 
-                placeholder="Full Name" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="companyName" 
-                placeholder="Company Name*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="tel" 
-                name="mobile" 
-                placeholder="Mobile Number*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="tel" 
-                name="whatsapp" 
-                placeholder="WhatsApp Number*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="email" 
-                name="email" 
-                placeholder="Email*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="city" 
-                placeholder="City*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="district" 
-                placeholder="District*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="pincode" 
-                placeholder="Pincode*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
-              <input 
-                type="text" 
-                name="state" 
-                placeholder="State*" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleRegisterInputChange} 
-                required 
-              />
+          </>
+        ) : (
+          <>
+           
+            <input
+              type="text"
+              name="district"
+              placeholder="District"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              name="pincode"
+              placeholder="Pincode"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              required
+              className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400"
+            />
+            <label className="my-2">Visiting Card</label>
+          <input type="file" name="visitingCard" className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400" onChange={handleFileChange} accept="image/*" />
 
-              <label className="block text-white">Visiting Card</label>
-              <input 
-                type="file" 
-                name="visitingCard" 
-                className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                onChange={handleFileChange} 
-                accept="image/*" 
-              />
-
-              <p className="text-white">GST Type:</p>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input 
-                    type="radio" 
-                    name="gstType" 
-                    value="gst" 
-                    checked={registrationFormData.gstType === "gst"} 
-                    onChange={handleRegisterInputChange} 
-                    className="mr-2" 
-                  /> 
-                  GST
-                </label>
-                <label className="flex items-center">
-                  <input 
-                    type="radio" 
-                    name="gstType" 
-                    value="non-gst" 
-                    checked={registrationFormData.gstType === "non-gst"} 
-                    onChange={handleRegisterInputChange} 
-                    className="mr-2" 
-                  /> 
-                  Non-GST
-                </label>
-              </div>
-
-              {registrationFormData.gstType === "gst" && (
-                <input 
-                  type="text" 
-                  name="gstNumber" 
-                  placeholder="Enter GST Number" 
-                  className="w-full p-2 border bg-gray-600 bg-opacity-50 text-white rounded" 
-                  onChange={handleRegisterInputChange} 
-                  required 
-                />
-              )}
-
-              <button type="submit" className="bg-blue-500 text-white w-full p-2 rounded">
-                Submit
-              </button>
-            </form>
+          <p className="text-black mt-2">GST Type:</p>
+          <div className="flex space-x-4">
+          <label className="flex items-center">
+              <input type="radio" name="gstType" value="gst" checked={registrationFormData.gstType === "gst"} onChange={handleInputChange} className="mr-2" /> GST
+            </label>
+            <label className="flex items-center">
+              <input type="radio" name="gstType" value="non-gst" checked={registrationFormData.gstType === "non-gst"} onChange={handleInputChange} className="mr-2" /> Non-GST
+            </label>
+           
           </div>
-        </div>
-      )}
+
+          {registrationFormData.gstType === "gst" && (
+            <input type="text" name="gstNumber" placeholder="Enter GST Number" className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-400" onChange={handleInputChange} required />
+          )}
+            <button
+              type="submit"
+              className="bg-blue-500 text-white w-full p-3 rounded-lg 
+                         transition-transform duration-300 ease-out active:scale-95 shadow-md"
+            >
+              Submit
+            </button>
+          </>
+        )}
+      </form>
+      
+    </div>
+  </div>
+)}
+
 
       <Footer mt="0px" />
     </div>

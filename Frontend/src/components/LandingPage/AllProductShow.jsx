@@ -57,7 +57,7 @@ const DisplayImages = () => {
             <img 
               src={img.url} 
               alt={`Product ${index + 1}`} 
-              className="w-full h-full object-contain" 
+              className="w-40 h-40 object-contain" 
             />
           </div>
         ))}

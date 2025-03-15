@@ -4,11 +4,12 @@ import Header from './Header'
 import Hero from './Hero'
 import Footer from './Footer'
 import Products from './Product'
+import Navbar from './Navbar'
 const Home = () => {
   return (
     <div>
-        <NavigationBar/>
         <Header/>
+        <Navbar/>
         <Hero/>
         <Products/>
         <Footer/>

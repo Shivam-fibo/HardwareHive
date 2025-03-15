@@ -7,7 +7,7 @@ const DisplayImages = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch("https://hardware-hive.vercel.app/api/showAllProduct/images");
+        const response = await fetch("http://localhost:5000/api/showAllProduct/images");
         const data = await response.json();
         console.log("recived data is", data)
         if (response.ok) {

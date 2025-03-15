@@ -3,10 +3,13 @@ import Footer from "../Home/Footer";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+
 const Home = () => {
   const [bgImage, setBgImage] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+
   const [loginFormData, setLoginFormData] = useState({
     email: "",
     password: "",
@@ -50,7 +53,7 @@ const Home = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://hardware-hive.vercel.app/api/login/user/login",
+        "http://localhost:5000/api/login/user/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -60,7 +63,9 @@ const Home = () => {
 
       const result = await response.json();
       if (response.ok) {
+        console.log("result is ", result)
         toast.success("Login successful!");
+        navigate("/home");
         setShowLoginModal(false); // Close modal on success
       } else {
         toast.error(result.message || "Invalid credentials");
@@ -70,11 +75,6 @@ const Home = () => {
     }
   };
 
-  // Registration form handlers
-  const handleRegisterInputChange = (e) => {
-    const { name, value } = e.target;
-    setRegistrationFormData({ ...registrationFormData, [name]: value });
-  };
 
 
 
@@ -99,7 +99,7 @@ const Home = () => {
       }
 
       const response = await fetch(
-        "https://hardware-hive.vercel.app/api/user/register",
+        "http://localhost:5000/api/user/register",
         {
           method: "POST",
           body: formData,
@@ -115,6 +115,26 @@ const Home = () => {
       }
     } catch (error) {
       toast.error("Failed to submit registration");
+    }
+  };
+
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/user/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotPasswordEmail }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("Password sent to your email successfully!");
+        setShowForgotPasswordModal(false);
+      } else {
+        toast.error(result.message || "Failed to send password");
+      }
+    } catch (error) {
+      toast.error("Error sending password");
     }
   };
 
@@ -211,7 +231,7 @@ const Home = () => {
         <div className="text-left">
           <button
             type="button"
-            onClick={() => navigate("/forgot-password")}
+            onClick={() => { setShowLoginModal(false); setShowForgotPasswordModal(true); }}
             className="text-blue-500 text-sm hover:underline"
           >
             Forgot Password?
@@ -229,6 +249,19 @@ const Home = () => {
     </div>
   </div>
 )}
+
+{showForgotPasswordModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent">
+          <div className="relative bg-white p-6 rounded-lg w-96 shadow-2xl border border-gray-300">
+            <button className="absolute top-4 right-4 text-gray-600 text-xl" onClick={() => setShowForgotPasswordModal(false)}>✖</button>
+            <h2 className="text-xl font-bold mb-4 text-center">Forgot Password</h2>
+            <form onSubmit={handleForgotPasswordSubmit}>
+              <input type="email" placeholder="Enter your email" className="w-full p-3 border rounded-lg bg-gray-100" onChange={(e) => setForgotPasswordEmail(e.target.value)} required />
+              <button type="submit" className="bg-blue-500 text-white w-full p-3 rounded-lg mt-4">Send Password</button>
+            </form>
+          </div>
+        </div>
+      )}
 
 
       {/* Register Modal */}

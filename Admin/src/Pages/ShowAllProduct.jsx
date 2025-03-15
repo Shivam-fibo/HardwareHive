@@ -17,7 +17,7 @@ const ShowAllProduct = () => {
   const fetchImages = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/showAllProduct/images");
+      const response = await fetch("https://hardware-hive.vercel.app/api/showAllProduct/images");
       const data = await response.json();
       setAllImages(data);
     } catch (error) {
@@ -44,7 +44,7 @@ const ShowAllProduct = () => {
 
     try {
       setUploading(true);
-      const response = await fetch("http://localhost:5000/api/showAllProduct/upload", {
+      const response = await fetch("https://hardware-hive.vercel.app/api/showAllProduct/upload", {
         method: "POST",
         body: formData,
       });
@@ -69,7 +69,7 @@ const ShowAllProduct = () => {
   const handleDelete = async (id) => {
     try {
       setDeleting(id);
-      const response = await fetch(`http://localhost:5000/api/showAllProduct/${id}`, {
+      const response = await fetch(`https://hardware-hive.vercel.app/api/showAllProduct/${id}`, {
         method: "DELETE",
       });
 

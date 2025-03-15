@@ -53,7 +53,7 @@ const Home = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "http://localhost:5000/api/login/user/login",
+        "https://hardware-hive.vercel.app/api/login/user/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -99,7 +99,7 @@ const Home = () => {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/user/register",
+        "https://hardware-hive.vercel.app/api/user/register",
         {
           method: "POST",
           body: formData,
@@ -121,7 +121,7 @@ const Home = () => {
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/user/forgot-password", {
+      const response = await fetch("https://hardware-hive.vercel.app/api/user/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: forgotPasswordEmail }),

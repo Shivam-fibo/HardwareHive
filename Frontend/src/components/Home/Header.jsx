@@ -4,7 +4,7 @@ import { PiPhoneCallLight } from "react-icons/pi";
 import { FaRegUser } from "react-icons/fa";
 import { IoIosMic } from "react-icons/io";
 import { RiCustomerServiceFill } from "react-icons/ri";
-import { FaUserCog } from "react-icons/fa";
+
 import { FaYoutube } from "react-icons/fa";
 
 
@@ -65,15 +65,13 @@ export default function Header() {
 
       {/* Right Section: Social & Contact */}
       <div className="flex items-center space-x-3">
-  <button className="p-3 text-white shadow-md transition duration-300 transform hover:scale-110 hover:bg-opacity-80">
+  <button className="p-3 text-white  transition duration-300 transform hover:scale-110 hover:bg-opacity-80">
     <FaYoutube className="text-4xl" />
   </button>
-  <button className="p-3 text-white shadow-md transition duration-300 transform hover:scale-110 hover:bg-opacity-80">
+  <button className="p-3 text-white  transition duration-300 transform hover:scale-110 hover:bg-opacity-80">
     <RiCustomerServiceFill className="text-4xl" />
   </button>
-  <button className="p-3 text-white shadow-md transition duration-300 transform hover:scale-110 hover:bg-opacity-80">
-    <FaUserCog className="text-4xl" />
-  </button>
+ 
 
 </div>
 

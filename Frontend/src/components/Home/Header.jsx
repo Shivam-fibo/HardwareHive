@@ -18,7 +18,7 @@ export default function Header() {
   return (
     <nav className="bg-[#2557AB] p-4 flex items-center justify-between h-15">
       {/* Logo Section */}
-      <div className=" text-white font-bold text-3xl p-2 rounded">
+      <div className=" text-white font-bold text-2xl p-2 rounded">
         SS POWER TOOL
       </div>
 

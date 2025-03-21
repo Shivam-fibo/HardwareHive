@@ -11,32 +11,36 @@ const Hero = () => {
           backgroundPosition: "center",
         }}
       >
-       
-        <div className="absolute top-36 left-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"></div>
-        <div className="absolute top-36 right-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"></div>
-        <div className="absolute bottom-8 left-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"></div>
-        <div className="absolute bottom-8 right-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"></div>
+        {/* Background Circles */}
+        <div className="absolute top-36 left-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"   style={{ transform: "perspective(500px) rotateX(-130deg)" }}></div>
+        <div className="absolute top-36 right-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"   style={{ transform: "perspective(500px) rotateX(-130deg)" }}></div>
+        <div className="absolute bottom-8 left-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"   style={{ transform: "perspective(500px) rotateX(-130deg)" }}></div>
+        <div className="absolute bottom-8 right-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60"   style={{ transform: "perspective(500px) rotateX(-130deg)" }}></div>
 
-        {/* Images */}
+        {/* Plate-Like Positioned Images */}
         <img
           src="/images/bearing.png"
           alt="Bearing"
           className="absolute top-40 left-10 w-40"
+        
         />
         <img
           src="/images/coupling.png"
           alt="Coupling"
           className="absolute top-40 right-10 w-40"
+          style={{ transform: "perspective(500px) rotateX(25deg)" }}
         />
         <img
           src="/images/motor.png"
           alt="Motor"
           className="absolute bottom-10 left-10 w-40"
+          style={{ transform: "perspective(500px) rotateX(25deg)" }}
         />
         <img
           src="/images/armature.png"
           alt="Armature"
           className="absolute bottom-10 right-10 w-40"
+          style={{ transform: "perspective(500px) rotateX(25deg)" }}
         />
 
         {/* Text Section */}
@@ -44,7 +48,7 @@ const Hero = () => {
           <h2 className="text-3xl font-bold uppercase">
             Multi-Brand Power Tools
           </h2>
-          <h1 className="text-3xl  mt-2">SPARE PARTS B2B PORTAL</h1>
+          <h1 className="text-3xl mt-2">SPARE PARTS B2B PORTAL</h1>
           <p className="text-lg mt-2">
             Need help with register, login, and purchasing?
           </p>

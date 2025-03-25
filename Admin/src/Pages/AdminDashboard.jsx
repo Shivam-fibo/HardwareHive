@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import emailjs from "@emailjs/browser";
+
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -8,8 +8,9 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/admin/registrations");
+      const response = await fetch("http://localhost:5000/api/admin/registrations");
       const data = await response.json();
+      console.log(data)
       setUsers(data);
     } catch (error) {
       toast.error("Error fetching users");
@@ -20,30 +21,14 @@ const AdminDashboard = () => {
     fetchUsers();
   }, []);
 
-  const handleApprove = async (id, userEmail, userName) => {
+  const handleApprove = async (id, userEmail, userName, userWhatsapp) => {
+    const randomPassword = Math.floor(100000 + Math.random() * 900000).toString();
     console.log("Sending email to:", userEmail);
-    setIsLoading(true);
+   userWhatsapp = `+91${userWhatsapp.trim()}`
   
     try {
-      const randomPassword = Math.floor(100000 + Math.random() * 900000).toString();
-  
-      // Step 1: Send email first
-      const emailResponse = await fetch("https://hardware-hive.vercel.app/api/admin/sendEmail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),
-      });
-  
-      if (!emailResponse.ok) {
-        toast.error("Email sending failed. Approval aborted.");
-        setIsLoading(false);
-        return;
-      }
-  
-      toast.success("Email sent successfully! Now approving the user...");
-  
-      // Step 2: Approve user only after successful email
-      const approveResponse = await fetch(`https://hardware-hive.vercel.app/api/admin/registrations/${id}/approve`, {
+      
+      const approveResponse = await fetch(`http://localhost:5000/api/admin/registrations/${id}/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),
@@ -55,12 +40,17 @@ const AdminDashboard = () => {
       } else {
         toast.error("Approval failed.");
       }
-    } catch (error) {
+    } 
+    
+    catch (error) {
       console.error("Error in approval process:", error);
       toast.error(`Error: ${error.message || "Failed to approve user"}`);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
+
+
+    const message = `Hello ${userName}, your account has been approved. Your password is: ${randomPassword}`;
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${userWhatsapp}?text=${encodedMessage}`, "_blank");
   };
   
   
@@ -81,8 +71,8 @@ const AdminDashboard = () => {
                   </div>
                   <div className="space-x-2">
                     <button
-                      onClick={() => handleApprove(user._id, user.email, user.name)}
-                      disabled={isLoading}
+                      onClick={() => handleApprove(user._id, user.email, user.name, user.whatsapp)}
+                
                       className={`${
                         isLoading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
                       } text-white px-4 py-2 rounded transition-colors duration-200`}
@@ -91,7 +81,7 @@ const AdminDashboard = () => {
                     </button>
                     <button
                       onClick={() => handleReject(user._id)}
-                      disabled={isLoading}
+               
                       className={`${
                         isLoading ? "bg-gray-400" : "bg-red-500 hover:bg-red-600"
                       } text-white px-4 py-2 rounded transition-colors duration-200`}
@@ -134,26 +124,15 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="border-t pt-2 mt-2">
-                  <p>
-                    <span className="font-semibold">GST Type:</span> {user.gstType}
-                  </p>
-                  {user.gstType === "gst" && (
+                  
+               
                     <p>
                       <span className="font-semibold">GST Number:</span> {user.gstNumber || "N/A"}
                     </p>
-                  )}
+         
                 </div>
 
-                {user.visitingCardUrl && (
-                  <div className="mt-4">
-                    <p className="font-semibold">Visiting Card:</p>
-                    <img
-                      src={user.visitingCardUrl}
-                      alt="Visiting Card"
-                      className="w-40 h-auto border rounded-lg"
-                    />
-                  </div>
-                )}
+                
 
                 <div className="mt-2 pt-2 border-t">
                   <p>

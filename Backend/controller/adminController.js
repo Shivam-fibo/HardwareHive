@@ -16,7 +16,7 @@ export const loginAdmin = (req, res) => {
 // ✅ Get all unapproved Registrations
 export const getUnapprovedRegistrations = async (req, res) => {
   try {
-    const Registrations = await Registration.find({ isApproved: false }); // Fetch only unapproved Registrations
+    const Registrations = await Registration.find(); // Fetch only unapproved Registrations
     res.json(Registrations);
   } catch (error) {
     res.status(500).json({ message: "Error fetching Registrations" });

@@ -4,6 +4,7 @@ const AddProduct = () => {
   const [title, setTitle] = useState("");
   const [subheading, setSubheading] = useState("");
   const [category, setCategory] = useState("");
+  const [productInfo, setProductInfo] =  useState("")
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,7 @@ const AddProduct = () => {
     formData.append("title", title);
     formData.append("subheading", subheading);
     formData.append("category", category);
+    formData.append("productInfo", productInfo)
     formData.append("price", price);
     formData.append("image", image);
 
@@ -37,6 +39,7 @@ const AddProduct = () => {
         setTitle("");
         setSubheading("");
         setCategory("");
+        setProductInfo("");
         setPrice("");
         setImage(null);
       } else {
@@ -78,6 +81,13 @@ const AddProduct = () => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+          />
+          <input
+          type="text"
+          placeholder="Information about product"
+          value={productInfo}
+          onChange={(e) =>setProductInfo(e.target.value)}
+          className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
           />
           <input
             type="number"

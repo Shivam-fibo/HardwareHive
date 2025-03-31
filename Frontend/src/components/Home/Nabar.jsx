@@ -13,7 +13,7 @@ import { IoMdDownload } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
 
 
-
+import CartIcon from "./CartIcon";
 
 
 export default function Navbar() {
@@ -46,7 +46,7 @@ export default function Navbar() {
            ACCESSORIES
           </button>
           <div className="h-12 w-1 bg-white "></div>
-
+          <CartIcon/>
           <button className="px-3 py-1  font-bold   flex items-center text-white ">
 
             <IoMdDownload className = "mr-2 mt-1"/> DOWNLOAD

@@ -14,7 +14,7 @@ export const loginUser = async (request, response) => {
       return response.status(400).json({ message: "Invalid credentials" });
     }
 
-    return response.status(200).json({ message: "OK" });
+    return response.status(200).json({ message: "OK", user });
   } catch (error) {
     return response.status(500).json({ message: "Server error" });
   }

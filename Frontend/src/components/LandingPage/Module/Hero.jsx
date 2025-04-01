@@ -12,6 +12,8 @@ const Hero = () => {
     navigate("/register")
   }
 
+  // 753904
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
     
@@ -25,6 +27,7 @@ const Hero = () => {
       const result = await response.json();
       if (response.ok) {
         toast.success("Login successful!");
+        localStorage.setItem("user", JSON.stringify(result.user));
         navigate("/home");
       } else {
         toast.error(result.message || "Invalid credentials");

@@ -9,11 +9,12 @@ import LandingPage2 from './components/LandingPage/LandingPage2';
 import { CartProvider } from './components/context/CartContext.jsx';
 import CartPage from './components/Home/CartPage';
 import ProductList from './components/Home/ProductList';
+import UserProfile from "./components/Home/UserProfile.jsx"
 
 function App() {
   return (
     <Router>
-      <CartProvider> {/* ✅ Wrap everything inside CartProvider */}
+      <CartProvider> 
         <Toaster />
         <Routes>
           <Route path="/" element={<LandingPage2 />} />
@@ -22,7 +23,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/allProductShow" element={<AllPrdouctShow />} />
           <Route path="/cart" element={<CartPage />} />
-          <Route path="/products" element={<ProductList />} /> {/* Ensure this is inside CartProvider */}
+          <Route path="/products" element={<ProductList />} />
+          <Route path ="/user" element={<UserProfile/>}/>
         </Routes>
       </CartProvider>
     </Router>

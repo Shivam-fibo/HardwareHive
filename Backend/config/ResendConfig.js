@@ -23,7 +23,7 @@ export const sendEmail = () => {
       subject: "Hello User",
       htmlbody: `<div><b>Hello User</b></div>`,
     })
-    .then(() => console.log("✅ Email sent successfully!"))
+    .then(() => console.log("Email sent successfully!"))
     .catch((error) => {
       console.error("❌ Email sending failed:", error.message);
 

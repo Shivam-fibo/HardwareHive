@@ -1,24 +1,17 @@
 import { useState } from "react";
 import { FaFileDownload } from "react-icons/fa";
-
-
 import { FaCartArrowDown } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
-
-
 import { IoMdDownload } from "react-icons/io";
-
-
-
 import { FaUserCircle } from "react-icons/fa";
-
-
+import { useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
 
 
 export default function Navbar() {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-// bg-[#2557AB]
+ 
+    const navigate = useNavigate()
+
   return (
     <nav className=" bg-[#2557AB] h-12 p-4 border-t-4 border-white  flex items-center justify-between">
       {/* Left Section: Home & Categories */}
@@ -53,7 +46,7 @@ export default function Navbar() {
           </button>
           <button className="px-3 py-1  font-bold   flex items-center text-white ">
 
-            <FaUserCircle className = "mr-2"/> ACCOUNT
+            <FaUserCircle className = "mr-2" onClick={() => navigate("/user")}/> ACCOUNT
             </button>
   
         </div>

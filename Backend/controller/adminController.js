@@ -13,7 +13,7 @@ export const loginAdmin = (req, res) => {
   };
   
 
-// ✅ Get all unapproved Registrations
+// Get all unapproved Registrations
 export const getUnapprovedRegistrations = async (req, res) => {
   try {
     const Registrations = await Registration.find(); // Fetch only unapproved Registrations
@@ -46,7 +46,7 @@ export const approveRegistration = async (req, res) => {
 };
 
 
-// ✅ Reject Registration
+// Reject Registration
 export const rejectRegistration = async (req, res) => {
   try {
     await Registration.findByIdAndDelete(req.params.id);

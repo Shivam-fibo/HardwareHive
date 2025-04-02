@@ -78,6 +78,15 @@ export const placeOrder = async (req, res) => {
   }
 };
 
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().populate("userId", "name email companyName mobile address city state pincode gstNumber"); // Fetch user details
 
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 

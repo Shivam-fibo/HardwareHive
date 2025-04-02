@@ -33,6 +33,13 @@ const Home = () => {
             >
               Show All Products
             </button>
+
+            <button 
+              onClick={() => navigate("/getAllOrder")} 
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center font-medium"
+            >
+              Show Order Placed
+            </button>
           </div>
           
           <div className="bg-gray-700 px-6 py-4">

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Only store user ID
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "Registration", required: true }, // Only store user ID
     items: [
       {
         title: String,

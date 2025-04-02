@@ -1,4 +1,5 @@
 import Registration from "../model/registrationModel.js";
+import Order from "../model/orderModel.js";
 export const loginAdmin = (req, res) => {
     const { email, password } = req.body;
   
@@ -55,5 +56,28 @@ export const rejectRegistration = async (req, res) => {
     res.status(500).json({ message: "Error rejecting Registration" });
   }
 };
+
+
+
+
+export const placeOrder = async (req, res) => {
+  try {
+    const { userId, items, totalAmount } = req.body;
+
+    if (!userId || !items || items.length === 0) {
+      return res.status(400).json({ message: "Invalid order data" });
+    }
+
+    const newOrder = new Order({ userId, items, totalAmount, status: "Pending" });
+    await newOrder.save();
+
+    res.status(201).json({ message: "Order placed successfully!", order: newOrder });
+  } catch (error) {
+    console.error("Error placing order:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
 
 

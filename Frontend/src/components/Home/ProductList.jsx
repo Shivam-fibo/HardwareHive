@@ -3,7 +3,7 @@ import { useCart } from "../context/CartContext";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
-  const { cart, addToCart, debugCart } = useCart();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {

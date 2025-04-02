@@ -4,6 +4,40 @@ import { useCart } from "../context/CartContext";
 const CartPage = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
 
+
+  const handlePlaceOrder = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user) {
+        alert("User not logged in. Please log in first.");
+        return;
+      }
+  
+      const response = await fetch("http://localhost:5000/api/admin/placeOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user._id, // Send only user ID
+          items: cart,
+          totalAmount: totalPrice,
+        }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        alert("Order placed successfully!");
+        clearCart();
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place order. Please try again.");
+    }
+  };
+  
+  
+
   useEffect(() => {
     console.log("CartPage mounted, cart:", cart);
     
@@ -73,7 +107,7 @@ const CartPage = () => {
             ))}
             <hr className="my-2" />
             <h2 className="text-xl font-bold">Total Amount ₹{totalPrice}</h2>
-            <button className="mt-4 bg-green-500 text-white px-6 py-2 rounded-md w-full">
+            <button className="mt-4 bg-green-500 text-white px-6 py-2 rounded-md w-full"  onClick={handlePlaceOrder}>
               Place Order
             </button>
           </div>

@@ -46,3 +46,23 @@ export const registerUser = async (req, res) => {
     res.status(500).json({ message: "Server error, please try again" });
   }
 };
+
+
+export const updateUser = async (req, res) => {
+  try {
+    const updatedUser = await Registration.findByIdAndUpdate(
+      req.params.id, 
+      req.body, 
+      { new: true, runValidators: true } 
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

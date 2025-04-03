@@ -1,145 +1,94 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { FaEdit } from "react-icons/fa"; // Import edit icon
 
-const Profile = () => {
-  const [user, setUser] = useState({});
+export default function Profile() {
+  const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedUser, setUpdatedUser] = useState({});
-  const userId = localStorage.getItem("userId");
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/user/${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-        setUpdatedUser(data);
-      })
-      .catch((err) => console.error("Error fetching user:", err));
-  }, [userId]);
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setFormData(parsedUser);
+    }
+  }, []);
 
+  // Handle input change
   const handleChange = (e) => {
-    setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission (API call)
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/user/update/${userId}`, {
+      const response = await fetch(`http://localhost:5000/api/user/update/${user._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedUser),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        alert("Profile updated successfully!");
+        const updatedUser = await response.json();
+        localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
         setUser(updatedUser);
-        setIsEditing(false);
+        setIsEditing(false); // Exit edit mode
+        alert("Profile updated successfully!");
       } else {
-        alert("Error updating profile");
+        alert("Failed to update profile.");
       }
     } catch (error) {
-      alert("Update failed");
+      console.error("Error updating profile:", error);
     }
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen flex flex-col items-center">
-      <h1 className="text-2xl font-bold mb-4">User Profile</h1>
-      
-      {/* User Info Display */}
-      <div className="bg-white p-6 rounded-lg shadow-md w-96">
-        {Object.entries(user).map(([key, value]) =>
-          key !== "_id" && key !== "password" && key !== "__v" ? (
-            <p key={key} className="mb-2">
-              <strong>{key.toUpperCase()}:</strong> {value}
-            </p>
-          ) : null
-        )}
-        <button
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
-          onClick={() => setIsEditing(true)}
-        >
-          Edit Profile
-        </button>
-      </div>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold flex items-center">
+        User Profile
+        <FaEdit 
+          className="ml-2 text-blue-500 cursor-pointer" 
+          onClick={() => setIsEditing(!isEditing)} 
+        />
+      </h2>
 
-      {/* Edit Popup */}
-      {isEditing && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
-            <button className="absolute top-2 right-2 text-gray-600" onClick={() => setIsEditing(false)}>✖</button>
-            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-            
-            {Object.keys(updatedUser).map(
-              (key) =>
-                key !== "_id" && key !== "password" && key !== "__v" && (
-                  <input
-                    key={key}
-                    className="w-full p-2 border mb-2"
-                    name={key}
-                    value={updatedUser[key]}
-                    onChange={handleChange}
-                    placeholder={key.replace(/([A-Z])/g, " $1").toUpperCase()}
-                  />
-                )
-            )}
-            <button
-              className="bg-green-500 text-white px-4 py-2 mt-4"
-              onClick={handleSave}
-            >
-              Save Changes
-            </button>
-          </div>
-        </div>
-      )}
+      {user ? (
+  <div className="mt-4 space-y-2">
+    {isEditing ? (
+      <>
+        <input type="text" name="name" value={formData.name} onChange={handleChange} className="border p-2 w-full" />
+        <input type="email" name="email" value={formData.email} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="companyName" value={formData.companyName} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="mobile" value={formData.mobile} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="address" value={formData.address} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="city" value={formData.city} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="district" value={formData.district} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="state" value={formData.state} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="pincode" value={formData.pincode} onChange={handleChange} className="border p-2 w-full" />
+        <input type="text" name="gstNumber" value={formData.gstNumber} onChange={handleChange} className="border p-2 w-full" />
+
+        <button onClick={handleSave} className="bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+      </>
+    ) : (
+      <>
+        <p><strong>Name:</strong> {user.name}</p>
+        <p><strong>Email:</strong> {user.email}</p>
+        <p><strong>Company:</strong> {user.companyName}</p>
+        <p><strong>Mobile:</strong> {user.mobile}</p>
+        <p><strong>WhatsApp:</strong> {user.whatsapp}</p>
+        <p><strong>Address:</strong> {user.address}, {user.city}, {user.state}</p>
+        <p><strong>District:</strong> {user.district}</p>
+        <p><strong>Pincode:</strong> {user.pincode}</p>
+        <p><strong>GST Number:</strong> {user.gstNumber}</p>
+      </>
+    )}
+  </div>
+) : (
+  <p>No user logged in</p>
+)}
+
     </div>
   );
-};
-
-export default Profile;
-// 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { useEffect, useState } from "react";
-
-// export default function Profile() {
-//   const [user, setUser] = useState(null);
-
-//   useEffect(() => {
-//     const storedUser = localStorage.getItem("user");
-//     if (storedUser) {
-//       setUser(JSON.parse(storedUser));
-//     }
-//   }, []);
-
-//   return (
-//     <div className="p-6">
-//       <h2 className="text-2xl font-bold">User Profile</h2>
-//       {user ? (
-//         <div className="mt-4">
-//           <p><strong>Name:</strong> {user.name}</p>
-//           <p><strong>Email:</strong> {user.email}</p>
-//           <p><strong>Company:</strong> {user.companyName}</p>
-//           <p><strong>Mobile:</strong> {user.mobile}</p>
-//           <p><strong>Address:</strong> {user.address}, {user.city}, {user.state}</p>
-//         </div>
-//       ) : (
-//         <p>No user logged in</p>
-//       )}
-//     </div>
-//   );
-// }
+}

@@ -1,5 +1,5 @@
 import Registration from "../model/registrationModel.js";
-
+import Order from "../model/orderModel.js";
 // Get User by ID
 export const getUser = async (req, res) => {
   try {
@@ -25,5 +25,19 @@ export const updateUser = async (req, res) => {
     res.status(200).json({ message: "Profile updated successfully", user: updatedUser });
   } catch (error) {
     res.status(500).json({ message: "Update failed" });
+  }
+};
+
+
+
+export const getOrderHistory = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const orders = await Order.find({ userId, status: "Confirm" });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching order history", error });
   }
 };

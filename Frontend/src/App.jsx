@@ -10,6 +10,7 @@ import { CartProvider } from './components/context/CartContext.jsx';
 import CartPage from './components/Home/CartPage';
 import ProductList from './components/Home/ProductList';
 import UserProfile from "./components/Home/UserProfile.jsx"
+import OrderHistory from './components/Home/OrderHistory.jsx';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/products" element={<ProductList />} />
           <Route path ="/user" element={<UserProfile/>}/>
+          <Route path ="/order" element={<OrderHistory/>}/>
         </Routes>
       </CartProvider>
     </Router>

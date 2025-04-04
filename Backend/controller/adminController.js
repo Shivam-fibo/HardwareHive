@@ -90,3 +90,44 @@ export const getAllOrders = async (req, res) => {
 };
 
 
+
+
+export const confirmOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findByIdAndUpdate(
+      id,
+      { status: "Confirm" },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json({ message: "Order confirmed successfully", order });
+  } catch (error) {
+    res.status(500).json({ message: "Error confirming order", error });
+  }
+};
+
+export const updateOrder = async(req, res) =>{
+  const { orderId, itemId, quantity } = req.body;
+
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    const item = order.items.id(itemId);
+    if (!item) return res.status(404).json({ message: "Item not found" });
+
+    item.quantity = quantity;
+    await order.save();
+
+    res.json({ message: "Quantity updated", order });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+}

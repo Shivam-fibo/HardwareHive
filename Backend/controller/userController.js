@@ -48,7 +48,7 @@ export const getOrderHistory = async (req, res) => {
 
 
 
-export const Notification = async(req, res) =>{
+export const Notifications = async(req, res) =>{
   const userId = req.params.userId;
 
   try {

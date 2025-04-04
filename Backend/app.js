@@ -6,8 +6,6 @@ import connectDB from "./config/db.js";
 import registrationRoutes from "./router/registrationRoutes.js";
 import loginRoutes from "./router/loginRoutes.js"
 import adminRoutes from "./router/adminRouter.js";
-import uploadRoutes from "./router/uploadProductRouter.js"
-import showAllProductRoutes from "./router/showAllProductRouter.js"
 import UserRouter from "./router/userRouter.js"
 
 dotenv.config();
@@ -35,8 +33,6 @@ app.use("/api/user", registrationRoutes);
 app.use("/api/login/user", loginRoutes )
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", UserRouter)
-app.use("/api/upload", uploadRoutes);
-app.use("/api/showAllProduct", showAllProductRoutes)
 
 connectDB();
 

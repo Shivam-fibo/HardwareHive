@@ -1,7 +1,7 @@
 import express from "express";
 import { loginAdmin, getUnapprovedRegistrations, approveRegistration, rejectRegistration, placeOrder, getAllOrders, confirmOrder, updateOrder } from "../controller/adminController.js";
 import {sendEmail} from "../config/ResendConfig.js"
-import { uploadProduct } from "../controller/uploadProductController.js";
+import { uploadProduct, upload } from "../controller/uploadProductController.js";
 import { uploadImage, getAllImages, uploadMiddleware, deleteImage } from "../controller/showAllProudctController.js"
 
 const router = express.Router();

@@ -1,5 +1,6 @@
 import Registration from "../model/registrationModel.js";
 import Order from "../model/orderModel.js";
+import Notification from "../model/NotificationModel.js";
 // Get User by ID
 export const getUser = async (req, res) => {
   try {
@@ -41,3 +42,36 @@ export const getOrderHistory = async (req, res) => {
     res.status(500).json({ message: "Error fetching order history", error });
   }
 };
+
+
+
+
+
+
+export const Notification = async(req, res) =>{
+  const userId = req.params.userId;
+
+  try {
+    // Get last checked time from DB (or set to oldest date)
+    let notification = await Notification.findOne({ userId });
+    if (!notification) {
+      notification = new Notification({ userId });
+      await notification.save();
+    }
+
+    // Find newly confirmed orders
+    const newConfirmedOrders = await Order.find({
+      userId: userId,
+      status: "Confirm",
+      updatedAt: { $gt: notification.lastChecked }
+    });
+
+    // Update last checked time in DB
+    notification.lastChecked = new Date();
+    await notification.save();
+
+    res.json(newConfirmedOrders);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+}

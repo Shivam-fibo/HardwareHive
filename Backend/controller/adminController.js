@@ -80,7 +80,7 @@ export const placeOrder = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("userId", "name email companyName mobile address city state pincode gstNumber"); // Fetch user details
+    const orders = await Order.find().populate("userId", "name email companyName mobile whatsapp address city state pincode gstNumber"); // Fetch user details
 
     res.status(200).json(orders);
   } catch (error) {

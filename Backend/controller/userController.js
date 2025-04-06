@@ -50,7 +50,9 @@ export const getOrderHistory = async (req, res) => {
 
 export const Notifications = async(req, res) =>{
   const userId = req.params.userId;
-
+  if (!userId) {
+    return res.status(400).json({ message: "User ID is required" });
+  }
   try {
     // Get last checked time from DB (or set to oldest date)
     let notification = await Notification.findOne({ userId });
@@ -59,19 +61,20 @@ export const Notifications = async(req, res) =>{
       await notification.save();
     }
 
-    // Find newly confirmed orders
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const newConfirmedOrders = await Order.find({
       userId: userId,
       status: "Confirm",
-      updatedAt: { $gt: notification.lastChecked }
+      updatedAt: { $gt: oneDayAgo }
     });
-
+    
     // Update last checked time in DB
     notification.lastChecked = new Date();
     await notification.save();
 
     res.json(newConfirmedOrders);
   } catch (error) {
+    console.log("error", error)
     res.status(500).json({ message: "Server error" });
   }
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import Header from "../LandingPage/Module/Header";
 export default function Register() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -48,6 +48,8 @@ export default function Register() {
   
 
   return (
+    <>
+    <Header/>
     <div
       className=" flex items-center justify-center h-screen w-full bg-[#013E70] px-4 mt-4"
       style={{
@@ -181,5 +183,6 @@ export default function Register() {
         )}
       </div>
     </div>
+    </>
   );
 }

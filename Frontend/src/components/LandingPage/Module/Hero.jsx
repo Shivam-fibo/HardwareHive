@@ -12,7 +12,6 @@ const Hero = () => {
     navigate("/register")
   }
 
-  // 753904
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -85,62 +84,59 @@ const Hero = () => {
           </p>
         </div>
       </div>
-       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-transparent">
-        <div className="relative bg-white p-6 rounded-lg w-96 shadow-2xl border border-gray-300">
-          {/* Close Button */}
-          <button
-            className="absolute top-4 right-4 text-gray-600 text-xl hover:text-gray-800"
-            onClick={() => setShowPopup(false)}
-          >
-            ✖
-          </button>
-    
-          {/* Header */}
-          <h2 className="text-xl font-bold mb-4 text-center text-gray-700">
-            LOGIN
-          </h2>
-    
-          {/* Form */}
-          <form onSubmit={handleLoginSubmit} className="space-y-3">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="w-full p-3 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none"
-              onChange={handleLoginInputChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="w-full p-3 border rounded-lg bg-gray-100 text-gray-800 focus:outline-none"
-              onChange={handleLoginInputChange}
-              required
-            />
-    
-            {/* Forgot Password */}
-            <div className="text-left">
-              <button
-                type="button"
-                onClick={() => { setShowLoginModal(false); setShowForgotPasswordModal(true); }}
-                className="text-blue-500 text-sm hover:underline"
-              >
-                Forgot Password?
-              </button>
-            </div>
-    
-            {/* Submit Button */}
+      {showPopup && (
+        // Overlay: Kept bg-transparent as requested
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent p-4">
+          {/* Modal Box: Increased padding, softer shadow, potentially more rounded */}
+          <div className="relative bg-white p-8 rounded-xl w-full max-w-md shadow-lg border border-gray-200 text-gray-900"> {/* Changed text color default for modal */}
+
+            {/* Close Button: Using SVG, subtle styling */}
             <button
-              type="submit"
-              className="bg-blue-500 text-white w-full p-3 rounded-lg font-semibold hover:bg-blue-600"
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1 transition duration-150 ease-in-out"
+              onClick={() => setShowPopup(false)}
+              aria-label="Close login modal"
             >
-              Login
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
-          </form>
+
+            {/* Modal Title: Larger, darker text, more bottom margin */}
+            <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+              Login
+            </h2>
+
+            {/* Login Form: Increased spacing */}
+            <form onSubmit={handleLoginSubmit} className="space-y-4">
+              {/* Email Input: Clean look, focus state using a blue closer to the theme */}
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address" // Slightly more descriptive placeholder
+                className="w-full p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition duration-150 ease-in-out" // Using blue-700 for focus ring
+                onChange={handleLoginInputChange}
+                required
+              />
+              {/* Password Input: Clean look, focus state using a blue closer to the theme */}
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                className="w-full p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent transition duration-150 ease-in-out" // Using blue-700 for focus ring
+                onChange={handleLoginInputChange}
+                required
+              />
+              {/* Submit Button: Using a blue closer to the theme's primary color */}
+              <button
+                type="submit"
+                // Using blue-800 (closer to #013E70) or blue-700 (closer to #014F7A)
+                className="bg-blue-800 text-white w-full p-3 rounded-lg font-semibold hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 transition duration-150 ease-in-out"
+              >
+                Login
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );

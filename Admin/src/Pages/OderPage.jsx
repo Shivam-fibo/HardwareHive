@@ -4,7 +4,7 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
 
   const updateItemQuantity = (orderId, itemId, newQuantity) => {
-    fetch(`http://localhost:5000/api/admin/updateQuantity`, {
+    fetch(`https://hardware-hive.vercel.app/api/admin/updateQuantity`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ orderId, itemId, quantity: newQuantity }),
@@ -29,7 +29,7 @@ const OrdersPage = () => {
     const fetchOrders = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/admin/getPlacedOrder"
+          "https://hardware-hive.vercel.app/api/admin/getPlacedOrder"
         );
         const data = await res.json();
         console.log("user order data is", data);
@@ -44,7 +44,7 @@ const OrdersPage = () => {
   const confirmOrder = async (orderId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/admin/confirm/${orderId}`,
+        `https://hardware-hive.vercel.app/api/admin/confirm/${orderId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

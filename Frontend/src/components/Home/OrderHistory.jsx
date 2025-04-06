@@ -12,7 +12,7 @@ const OrderHistory = () => {
       setUserId(user._id);
 
       // Fetch order history using user ID
-      fetch(`http://localhost:5000/api/user/history/${user._id}`)
+      fetch(`https://hardware-hive.vercel.app/api/user/history/${user._id}`)
         .then((res) => res.json())
         .then((data) => setOrders(data))
         .catch((error) => console.error("Error fetching order history:", error));

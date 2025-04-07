@@ -46,7 +46,7 @@ const fetchNotifications = async () => {
     };
     console.log("Request details:", requestInfo);
         
-    const res = await fetch(`https://hardware-hive.vercel.app/api/user/notifications/${user._id}`, requestInfo);
+    const res = await fetch(`http://localhost:5000/api/user/notifications/${user._id}`, requestInfo);
         
     console.log("Full response:", res);
     console.log("Response headers:", Object.fromEntries([...res.headers]));
@@ -132,7 +132,8 @@ const fetchNotifications = async () => {
 
 
                 {notifications.length > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+            <span className="absolute top-1 right-10 md:right-[8.5rem] bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+
               {notifications.length}
             </span>
           )}

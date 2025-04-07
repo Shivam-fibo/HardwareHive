@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("Pending");
 
   const updateItemQuantity = (orderId, itemId, newQuantity) => {
-    fetch(`https://hardware-hive.vercel.app/api/admin/updateQuantity`, {
+    fetch(`http://localhost:5000/api/admin/updateQuantity`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ orderId, itemId, quantity: newQuantity }),
@@ -18,18 +19,26 @@ const OrdersPage = () => {
 
   const chatWithUser = (mobile, name, items) => {
     const greeting = `Hello ${name},%0AThank you for your order! Here are your order details:%0A`;
-    const itemDetails = items.map(item => `- ${item.title} (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`).join("%0A");
-    const footer = "%0AWe appreciate your business! Let us know if you need any assistance.";
+    const itemDetails = items
+      .map(
+        (item) =>
+          `- ${item.title} (Qty: ${item.quantity}) - ₹${
+            item.price * item.quantity
+          }`
+      )
+      .join("%0A");
+    const footer =
+      "%0AWe appreciate your business! Let us know if you need any assistance.";
     const message = `${greeting}${itemDetails}${footer}`;
 
     window.open(`https://wa.me/+91${mobile}?text=${message}`, "_blank");
-};
+  };
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const res = await fetch(
-          "https://hardware-hive.vercel.app/api/admin/getPlacedOrder"
+          "http://localhost:5000/api/admin/getPlacedOrder"
         );
         const data = await res.json();
         console.log("user order data is", data);
@@ -44,14 +53,14 @@ const OrdersPage = () => {
   const confirmOrder = async (orderId) => {
     try {
       const res = await fetch(
-        `https://hardware-hive.vercel.app/api/admin/confirm/${orderId}`,
+        `http://localhost:5000/api/admin/confirm/${orderId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status: "Confirm" }),
         }
       );
-      const data = await res.json();
+      await res.json();
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === orderId ? { ...order, status: "Confirm" } : order
@@ -62,14 +71,44 @@ const OrdersPage = () => {
     }
   };
 
+  const filteredOrders = orders.filter(
+    (order) => order.status === statusFilter
+  );
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Orders</h1>
-      {orders.length === 0 ? (
-        <p className="text-center text-gray-500">No orders found</p>
+
+      <div className="flex gap-4 mb-6">
+        <button
+          className={`px-4 py-2 rounded-md ${
+            statusFilter === "Pending"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200 text-gray-800"
+          }`}
+          onClick={() => setStatusFilter("Pending")}
+        >
+          Pending
+        </button>
+        <button
+          className={`px-4 py-2 rounded-md ${
+            statusFilter === "Confirm"
+              ? "bg-green-600 text-white"
+              : "bg-gray-200 text-gray-800"
+          }`}
+          onClick={() => setStatusFilter("Confirm")}
+        >
+          Confirmed
+        </button>
+      </div>
+
+      {filteredOrders.length === 0 ? (
+        <p className="text-center text-gray-500">
+          No {statusFilter.toLowerCase()} orders found
+        </p>
       ) : (
         <div className="space-y-6">
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
             <div
               key={order._id}
               className="border p-4 rounded-lg shadow-md bg-white"
@@ -177,13 +216,14 @@ const OrdersPage = () => {
                   </div>
                 ))}
               </div>
-              <button
-                onClick={() => confirmOrder(order._id)}
-                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              >
-                Confirm Order
-              </button>
-
+              {order.status === "Pending" && (
+                <button
+                  onClick={() => confirmOrder(order._id)}
+                  className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                >
+                  Confirm Order
+                </button>
+              )}
               <button
                 onClick={() =>
                   chatWithUser(

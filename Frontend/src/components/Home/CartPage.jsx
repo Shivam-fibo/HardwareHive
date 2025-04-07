@@ -1,23 +1,24 @@
 import { useEffect } from "react";
 import { useCart } from "../context/CartContext";
-
+import {toast} from "react-hot-toast"
 const CartPage = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
 
 
   const handlePlaceOrder = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
-        alert("User not logged in. Please log in first.");
+        toast.error("User not logged in. Please log in first.");
         return;
       }
   
-      const response = await fetch("https://hardware-hive.vercel.app/api/admin/placeOrder", {
+  
+      const response = await fetch("http://localhost:5000/api/admin/placeOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: user._id, // Send only user ID
+          userId: user._id, 
           items: cart,
           totalAmount: totalPrice,
         }),
@@ -25,14 +26,14 @@ const CartPage = () => {
   
       const data = await response.json();
       if (response.ok) {
-        alert("Order placed successfully!");
+        toast.success("Order placed successfully!");
         clearCart();
       } else {
-        alert(`Error: ${data.message}`);
+        toast.error(`Error: ${data.message}`);
       }
     } catch (error) {
       console.error("Error placing order:", error);
-      alert("Failed to place order. Please try again.");
+      toast.error("Failed to place order. Please try again.");
     }
   };
   
@@ -54,66 +55,75 @@ const CartPage = () => {
 
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">All List Items ({cart.length})</h1>
-      
-   
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+  <h1 className="text-2xl sm:text-3xl font-bold mb-6">All List Items ({cart.length})</h1>
 
-      {cart.length === 0 ? (
-        <div className="text-center p-8 border rounded-lg">
-          <p className="text-xl text-gray-500">Your cart is empty</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-3 gap-4">
-          {/* Cart Items */}
-          <div className="col-span-2 space-y-4">
-            {cart.map((item) => (
-              <div key={item._id} className="border p-4 rounded-lg shadow-md flex">
-                <img src={item.image} alt={item.title} className="w-24 h-24 object-cover rounded-md" />
-                <div className="ml-4 flex-1">
-                  <h2 className="text-xl font-semibold">{item.title}</h2>
-                  <p className="text-gray-500">{item.subheading}</p>
-                  <p className="text-lg font-bold">₹{item.price}</p>
-                  <div className="flex items-center mt-2">
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) => updateQuantity(item._id, Number(e.target.value))}
-                      className="border p-2 w-16 text-center rounded-md"
-                    />
-                    <p className="ml-4">Total Price: ₹{item.price * item.quantity}</p>
-                  </div>
-                  <div className="mt-2">
-                    <button
-                      onClick={() => removeFromCart(item._id)}
-                      className="bg-black text-white px-4 py-2 rounded-md"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Price Summary */}
-          <div className="border p-4 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-2">Price Details</h2>
-            {cart.map((item) => (
-              <p key={item._id} className="text-gray-700">
-                {item.title} ({item.quantity} items) ₹{item.price * item.quantity}
-              </p>
-            ))}
-            <hr className="my-2" />
-            <h2 className="text-xl font-bold">Total Amount ₹{totalPrice}</h2>
-            <button className="mt-4 bg-green-500 text-white px-6 py-2 rounded-md w-full"  onClick={handlePlaceOrder}>
-              Place Order
-            </button>
-          </div>
-        </div>
-      )}
+  {cart.length === 0 ? (
+    <div className="text-center p-6 border rounded-lg shadow-sm bg-white">
+      <p className="text-lg sm:text-xl text-gray-500">Your cart is empty</p>
     </div>
+  ) : (
+    <div className="flex flex-col lg:flex-row gap-6">
+      
+      {/* Cart Items */}
+      <div className="flex-1 space-y-4">
+        {cart.map((item) => (
+          <div key={item._id} className="border rounded-lg shadow-sm p-4 flex flex-col sm:flex-row bg-white">
+            <img src={item.image} alt={item.title} className="w-full sm:w-28 h-28 object-cover rounded-md" />
+            
+            <div className="mt-4 sm:mt-0 sm:ml-4 flex flex-col justify-between flex-1">
+              <div>
+                <h2 className="text-lg sm:text-xl font-semibold">{item.title}</h2>
+                <p className="text-gray-500">{item.subheading}</p>
+                <p className="text-base font-bold mt-1">₹{item.price}</p>
+              </div>
+
+              <div className="mt-3">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => updateQuantity(item._id, Number(e.target.value))}
+                    className="border p-2 w-16 text-center rounded-md"
+                  />
+                  <p className="text-sm sm:text-base">Total: ₹{item.price * item.quantity}</p>
+                </div>
+                <button
+                  onClick={() => removeFromCart(item._id)}
+                  className="mt-2 text-red-600 hover:underline text-sm"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Price Summary */}
+      <div className="w-full lg:w-80 border rounded-lg shadow-md p-4 bg-white h-fit">
+        <h2 className="text-xl font-bold mb-4">Price Details</h2>
+        <div className="space-y-2">
+          {cart.map((item) => (
+            <p key={item._id} className="text-gray-700 text-sm">
+              {item.title} ({item.quantity}×) — ₹{item.price * item.quantity}
+            </p>
+          ))}
+        </div>
+        <hr className="my-3" />
+        <h3 className="text-lg font-bold">Total Amount: ₹{totalPrice}</h3>
+        <button
+          className="mt-4 bg-green-600 hover:bg-green-700 transition text-white px-4 py-2 rounded-md w-full"
+          onClick={handlePlaceOrder}
+        >
+          Place Order
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
   );
 };
 

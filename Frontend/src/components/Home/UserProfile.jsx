@@ -36,7 +36,7 @@ export default function Profile() {
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `https://hardware-hive.vercel.app/api/user/update/${user._id}`,
+        `http://localhost:5000/api/user/update/${user._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

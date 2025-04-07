@@ -8,7 +8,7 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/admin/registrations");
+      const response = await fetch("https://hardware-hive.vercel.app/api/admin/registrations");
       const data = await response.json();
       console.log(data)
       setUsers(data);
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   
     try {
       
-      const approveResponse = await fetch(`http://localhost:5000/api/admin/registrations/${id}/approve`, {
+      const approveResponse = await fetch(`https://hardware-hive.vercel.app/api/admin/registrations/${id}/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail, name: userName, password: randomPassword }),

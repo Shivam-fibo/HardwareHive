@@ -28,7 +28,7 @@ const AddProduct = () => {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:5000/api/admin/uploadProduct", {
+      const response = await fetch("https://hardware-hive.vercel.app/api/admin/uploadProduct", {
         method: "POST",
         body: formData,
       });

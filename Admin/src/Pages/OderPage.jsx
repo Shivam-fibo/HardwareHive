@@ -4,44 +4,11 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState("Pending");
 
-  const updateItemQuantity = (orderId, itemId, newQuantity) => {
-    fetch(`http://localhost:5000/api/admin/updateQuantity`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderId, itemId, quantity: newQuantity }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Quantity updated:", data);
-      })
-      .catch((error) => console.error("Error updating quantity:", error));
-  };
-
-  const chatWithUser = (mobile, name, items) => {
-    const greeting = `Hello ${name},%0AThank you for your order! Here are your order details:%0A`;
-    const itemDetails = items
-      .map(
-        (item) =>
-          `- ${item.title} (Qty: ${item.quantity}) - ₹${
-            item.price * item.quantity
-          }`
-      )
-      .join("%0A");
-    const footer =
-      "%0AWe appreciate your business! Let us know if you need any assistance.";
-    const message = `${greeting}${itemDetails}${footer}`;
-
-    window.open(`https://wa.me/+91${mobile}?text=${message}`, "_blank");
-  };
-
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:5000/api/admin/getPlacedOrder"
-        );
+        const res = await fetch("https://hardware-hive.vercel.app/api/admin/getPlacedOrder");
         const data = await res.json();
-        console.log("user order data is", data);
         setOrders(data);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -52,14 +19,11 @@ const OrdersPage = () => {
 
   const confirmOrder = async (orderId) => {
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/admin/confirm/${orderId}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: "Confirm" }),
-        }
-      );
+      const res = await fetch(`https://hardware-hive.vercel.app/api/admin/confirm/${orderId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "Confirm" }),
+      });
       await res.json();
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
@@ -71,9 +35,7 @@ const OrdersPage = () => {
     }
   };
 
-  const filteredOrders = orders.filter(
-    (order) => order.status === statusFilter
-  );
+  const filteredOrders = orders.filter((order) => order.status === statusFilter);
 
   return (
     <div className="p-6">
@@ -133,31 +95,21 @@ const OrdersPage = () => {
               <div className="mb-3">
                 <h3 className="text-lg font-semibold">User Details</h3>
                 <p>
-                  <strong>Name:</strong> {order.userId.name} (
-                  {order.userId.companyName})
+                  <strong>Name:</strong> {order.userId.name} ({order.userId.companyName})
                 </p>
-                <p>
-                  <strong>Email:</strong> {order.userId.email}
-                </p>
-                <p>
-                  <strong>Mobile:</strong> {order.userId.mobile}
-                </p>
-                <p>
-                  <strong>Whatsapp:</strong> {order.userId.whatsapp}
-                </p>
+                <p><strong>Email:</strong> {order.userId.email}</p>
+                <p><strong>Mobile:</strong> {order.userId.mobile}</p>
+                <p><strong>Whatsapp:</strong> {order.userId.whatsapp}</p>
                 <p>
                   <strong>Address:</strong> {order.userId.address},{" "}
-                  {order.userId.city}, {order.userId.state} -{" "}
-                  {order.userId.pincode}
+                  {order.userId.city}, {order.userId.state} - {order.userId.pincode}
                 </p>
-                <p>
-                  <strong>GST Number:</strong> {order.userId.gstNumber}
-                </p>
+                <p><strong>GST Number:</strong> {order.userId.gstNumber}</p>
               </div>
               <hr className="my-3" />
               <h3 className="text-lg font-semibold mb-2">Ordered Items</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {order.items.map((item, index) => (
+                {order.items.map((item) => (
                   <div
                     key={item._id}
                     className="flex items-center border p-3 rounded-md shadow-sm"
@@ -170,44 +122,6 @@ const OrdersPage = () => {
                     <div className="ml-4 flex-1">
                       <h4 className="font-semibold">{item.title}</h4>
                       <p className="text-gray-500">{item.subheading}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <label className="font-medium">Qty:</label>
-                        <input
-                          type="number"
-                          value={item.quantity}
-                          min="1"
-                          onChange={(e) => {
-                            const newQuantity = parseInt(e.target.value);
-                            setOrders((prevOrders) =>
-                              prevOrders.map((o) =>
-                                o._id === order._id
-                                  ? {
-                                      ...o,
-                                      items: o.items.map((i, idx) =>
-                                        idx === index
-                                          ? { ...i, quantity: newQuantity }
-                                          : i
-                                      ),
-                                    }
-                                  : o
-                              )
-                            );
-                          }}
-                          className="w-20 border rounded px-2 py-1"
-                        />
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(
-                              order._id,
-                              item._id,
-                              item.quantity
-                            )
-                          }
-                          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-                        >
-                          Update
-                        </button>
-                      </div>
                       <p className="mt-2 font-bold">
                         ₹{item.price} x {item.quantity} = ₹
                         {item.price * item.quantity}
@@ -224,18 +138,6 @@ const OrdersPage = () => {
                   Confirm Order
                 </button>
               )}
-              <button
-                onClick={() =>
-                  chatWithUser(
-                    order.userId.whatsapp,
-                    order.userId.name,
-                    order.items
-                  )
-                }
-                className="mt-4 ml-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              >
-                Chat with User
-              </button>
             </div>
           ))}
         </div>

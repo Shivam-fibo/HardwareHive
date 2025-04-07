@@ -13,13 +13,13 @@ dotenv.config();
 const app = express();
 
 
-// app.use(cors({
-//     origin: ['https://hardware-hive-zqfk.vercel.app', 'https://hardware-hive-6rck.vercel.app'],
-//     credentials: true
-// }));
+app.use(cors({
+    origin: ['https://hardware-hive-zqfk.vercel.app', 'https://hardware-hive-6rck.vercel.app'],
+    credentials: true
+}));
 
 
-app.use(cors())
+// app.use(cors())
 app.use(express.json());
 
 app.get("/", (req, res) => {

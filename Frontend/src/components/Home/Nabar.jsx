@@ -46,7 +46,7 @@ const fetchNotifications = async () => {
     };
     console.log("Request details:", requestInfo);
         
-    const res = await fetch(`http://localhost:5000/api/user/notifications/${user._id}`, requestInfo);
+    const res = await fetch(`https://hardware-hive.vercel.app/api/user/notifications/${user._id}`, requestInfo);
         
     console.log("Full response:", res);
     console.log("Response headers:", Object.fromEntries([...res.headers]));

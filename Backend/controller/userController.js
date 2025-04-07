@@ -61,7 +61,7 @@ export const Notifications = async(req, res) =>{
       await notification.save();
     }
 
-    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 10);
     const newConfirmedOrders = await Order.find({
       userId: userId,
       status: "Confirm",

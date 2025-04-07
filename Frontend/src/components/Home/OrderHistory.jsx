@@ -5,19 +5,21 @@ const OrderHistory = () => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    // Retrieve user data from localStorage
     const userData = localStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
       setUserId(user._id);
-
-      // Fetch order history using user ID
+  
       fetch(`https://hardware-hive.vercel.app/api/user/history/${user._id}`)
         .then((res) => res.json())
-        .then((data) => setOrders(data))
+        .then((data) => {
+          const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setOrders(sortedData);
+        })
         .catch((error) => console.error("Error fetching order history:", error));
     }
   }, []);
+  
 
   return (
     <div className="p-6">

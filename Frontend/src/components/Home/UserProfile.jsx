@@ -11,6 +11,8 @@ import {
   MapPin,
   CreditCard,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function Profile() {
@@ -26,6 +28,8 @@ export default function Profile() {
       setFormData(parsedUser);
     }
   }, []);
+  const navigate = useNavigate();
+
 
   // Handle input change
   const handleChange = (e) => {
@@ -70,7 +74,16 @@ export default function Profile() {
           <User className="mr-2 text-blue-600" size={20} />
           User Profile
         </h2>
+        <div className="flex gap-2">
+        <button
+      onClick={() => navigate("/order")}
+      className="flex items-center bg-indigo-600 text-white px-3 py-1 rounded-md text-sm"
+    >
+      View Orders
+    </button>
+
         {!isEditing ? (
+          
           <button 
             onClick={() => setIsEditing(true)} 
             className="flex items-center bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
@@ -78,6 +91,7 @@ export default function Profile() {
             <Edit size={14} className="mr-1" />
             Edit
           </button>
+
         ) : (
           <div className="flex space-x-2">
             <button 
@@ -97,7 +111,7 @@ export default function Profile() {
           </div>
         )}
       </div>
-
+</div>
       {user ? (
         <div className="mt-3">
           {isEditing ? (

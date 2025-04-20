@@ -6,7 +6,7 @@ export const upload = multer({ storage: multer.memoryStorage() });
 
 export const uploadProduct = async (req, res) => {
   try {
-    const { title, subheading, productInfo, category, price } = req.body;
+    const { title, subheading, productInfo, category, price, buyingPrice } = req.body;
 
     if (!req.file) return res.status(400).json({ error: "Image is required" });
 
@@ -24,6 +24,7 @@ export const uploadProduct = async (req, res) => {
       category,
       productInfo,
       price,
+      buyingPrice,
       image: result.secure_url,
     });
 
@@ -48,9 +49,9 @@ export const getAllProducts = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, subheading, productInfo, category, price } = req.body;
+    const { title, subheading, productInfo, category, price, buyingPrice } = req.body;
 
-    const updateData = { title, subheading, productInfo, category, price };
+    const updateData = { title, subheading, productInfo, category, price,  buyingPrice };
 
     // If a new image is uploaded
     if (req.file) {

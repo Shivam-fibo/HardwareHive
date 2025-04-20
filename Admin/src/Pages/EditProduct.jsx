@@ -9,6 +9,7 @@ const ProductManager = () => {
     category: "",
     productInfo: "",
     price: "",
+    buyingPrice: "",
     image: null,
   });
 
@@ -35,6 +36,7 @@ const ProductManager = () => {
         subheading: product.subheading,
         category: product.category,
         productInfo: product.productInfo,
+        buyingPrice: product.buyingPrice,
         price: product.price,
         image: null,
       });
@@ -59,6 +61,7 @@ const ProductManager = () => {
     form.append("category", formData.category);
     form.append("productInfo", formData.productInfo);
     form.append("price", formData.price);
+    form.append("buyingPrice", formData.buyingPrice);
     if (formData.image) {
       form.append("image", formData.image);
     }
@@ -167,6 +170,14 @@ const deleteProduct = async (productId) => {
               rows="4"
               className="border p-2 rounded"
             />
+            <input
+            type="number"
+            name="buyingPrice"
+            value={formData.buyingPrice}
+            onChange={handleChange}
+            placeholder="Buying Price"
+            className="border p-2 rounded"
+          />
             <input
               type="number"
               name="price"

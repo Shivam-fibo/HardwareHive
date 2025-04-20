@@ -9,6 +9,8 @@ const AddProduct = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [buyingPrice, setBuyingPrice] = useState("");
+
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -26,6 +28,8 @@ const AddProduct = () => {
     formData.append("productInfo", productInfo)
     formData.append("price", price);
     formData.append("image", image);
+    formData.append("buyingPrice", buyingPrice);
+
 
     try {
       const response = await fetch("https://hardware-hive.vercel.app/api/admin/uploadProduct", {
@@ -89,6 +93,15 @@ const AddProduct = () => {
           onChange={(e) =>setProductInfo(e.target.value)}
           className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
           />
+          <input
+          type="number"
+          placeholder="Buying Price"
+          value={buyingPrice}
+          onChange={(e) => setBuyingPrice(e.target.value)}
+          className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+          required
+        />
+
           <input
             type="number"
             placeholder="Price"

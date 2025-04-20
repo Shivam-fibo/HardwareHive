@@ -26,7 +26,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+// https://hardware-hive.vercel.app
     try {
       const response = await fetch("https://hardware-hive.vercel.app/api/user/register", {
         method: "POST",

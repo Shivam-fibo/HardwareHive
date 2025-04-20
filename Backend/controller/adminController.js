@@ -1,5 +1,6 @@
 import Registration from "../model/registrationModel.js";
 import Order from "../model/orderModel.js";
+import SibApiV3Sdk from 'sib-api-v3-sdk';
 export const loginAdmin = (req, res) => {
     const { email, password } = req.body;
   
@@ -26,23 +27,46 @@ export const getUnapprovedRegistrations = async (req, res) => {
 
 
 
+
+const generatePassword = () => Math.floor(100000 + Math.random() * 900000);
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = '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'; 
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+
 export const approveRegistration = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    console.log("request body", req.body)
+    const { email, name } = req.body;
+    console.log("Request body:", req.body);
+
+    const otp = generatePassword();
+
     await Registration.findByIdAndUpdate(req.params.id, { isApproved: true });
+
     const updatedUser = await Registration.findOneAndUpdate(
-      { email: email },
-      { password: password, isApproved: true },
+      { email },
+      { password: otp.toString(), isApproved: true },
       { new: true }
     );
+
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json({ message: "Registration approved and password updated" });
+    const sendSmtpEmail = {
+      sender: { name: 'SS Power Tool', email: 'sspowertool.in@gmail.com' },
+      to: [{ email, name }],
+      subject: 'SS Power Tool: Your Account Approval',
+      textContent: `Hi ${name},\n\nYour account has been approved.\nYour  password is: ${otp}\n\nPlease log in`,
+    };
+
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    res.json({
+      message: 'Registration approved, password updated, and email sent using Brevo API.',
+    });
   } catch (error) {
-    console.error("Error approving registration:", error);
-    res.status(500).json({ message: "Error approving registration" });
+    console.error('Error sending email via Brevo API:', error);
+    res.status(500).json({ message: 'Error approving registration' });
   }
 };
 

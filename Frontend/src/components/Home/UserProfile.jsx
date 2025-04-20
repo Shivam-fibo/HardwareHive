@@ -40,7 +40,7 @@ export default function Profile() {
   const handleSave = async () => {
     try {
       const response = await fetch(
-        `https://hardware-hive.vercel.app/api/user/update/${user._id}`,
+        `https://hardware-hive-backend.vercel.app/api/user/update/${user._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ export default function Profile() {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        localStorage.setItem("user", JSON.stringify(updatedUser)); // Update localStorage
+        localStorage.setItem("user", JSON.stringify(updatedUser)); 
         setUser(updatedUser);
         setIsEditing(false); // Exit edit mode
         alert("Profile updated successfully!");

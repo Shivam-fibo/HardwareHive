@@ -6,6 +6,7 @@ import Home from "./Pages/Home";
 import AdminDashboard from "./Pages/AdminDashboard"
 import AddProduct from "./Pages/AddProduct";
 import ShowAllProduct from "./Pages/ShowAllProduct";
+import EditProduct from "./Pages/EditProduct";
 import { Toaster } from 'react-hot-toast'
 import OrdersPage from "./Pages/OderPage";
 const PrivateRoute = ({ element }) => {
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/home" element={<PrivateRoute element={<Home />} />} />
           <Route path="/dashboard" element={<PrivateRoute element={<AdminDashboard/>} />}/>
           <Route path="/addProduct" element={<PrivateRoute element={<AddProduct/>} />}/>
+          <Route path="/editProduct" element={<PrivateRoute element={<EditProduct/>} />}/>
           <Route path="/addShowAllProduct" element={<PrivateRoute element={<ShowAllProduct/>} />}/>
           <Route path="/getAllOrder" element={<PrivateRoute element={<OrdersPage/>} />}/>
           

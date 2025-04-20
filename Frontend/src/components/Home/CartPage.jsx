@@ -14,7 +14,7 @@ const CartPage = () => {
       }
   
   
-      const response = await fetch("https://hardware-hive.vercel.app/api/admin/placeOrder", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/admin/placeOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -45,8 +45,64 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-export const getProductDetails = async (req, res) =>{
-  
-}
+export const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, subheading, productInfo, category, price } = req.body;
+
+    const updateData = { title, subheading, productInfo, category, price };
+
+    // If a new image is uploaded
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "products" },
+          (error, result) => (error ? reject(error) : resolve(result))
+        );
+        uploadStream.end(req.file.buffer);
+      });
+      updateData.image = result.secure_url;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedProduct) return res.status(404).json({ error: "Product not found" });
+
+    res.json({ message: "Product updated successfully", product: updatedProduct });
+  } catch (error) {
+    console.error("Product Update Error:", error);
+    res.status(500).json({ error: "Product update failed" });
+  }
+};
+
+
+
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+
+    // Extract public_id from image URL
+    const urlParts = product.image.split("/");
+    const publicIdWithExtension = urlParts[urlParts.length - 1];
+    const publicId = `products/${publicIdWithExtension.split(".")[0]}`;
+
+    // Delete image from Cloudinary
+    await cloudinary.uploader.destroy(publicId);
+
+    // Delete product from DB
+    await Product.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Product and image deleted successfully" });
+  } catch (error) {
+    console.error("Delete Product Error:", error);
+    res.status(500).json({ error: "Failed to delete product" });
+  }
+};
+
+
 
 

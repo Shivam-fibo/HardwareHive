@@ -10,7 +10,7 @@ const OrderHistory = () => {
       const user = JSON.parse(userData);
       setUserId(user._id);
   
-      fetch(`https://hardware-hive-backend.vercel.app/api/user/history/${user._id}`)
+      fetch(`https://hardware-hive.vercel.app/api/user/history/${user._id}`)
         .then((res) => res.json())
         .then((data) => {
           const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

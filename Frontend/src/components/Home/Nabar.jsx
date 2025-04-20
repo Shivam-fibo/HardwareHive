@@ -51,7 +51,7 @@ function Header() {
       console.log("Request details:", requestInfo);
 
       const res = await fetch(
-        `https://hardware-hive-backend.vercel.app/api/user/notifications/${user._id}`,
+        `https://hardware-hive.vercel.app/api/user/notifications/${user._id}`,
         requestInfo
       );
 

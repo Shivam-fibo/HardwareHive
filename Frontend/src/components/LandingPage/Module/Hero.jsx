@@ -22,7 +22,7 @@ const Hero = () => {
 
     try {
       const response = await fetch(
-        "https://hardware-hive-backend.vercel.app/api/login/user/login",
+        "https://hardware-hive.vercel.app/api/login/user/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -52,7 +52,7 @@ const Hero = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://hardware-hive-backend.vercel.app/api/login/user/password",
+        "https://hardware-hive.vercel.app/api/login/user/password",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

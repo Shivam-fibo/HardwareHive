@@ -9,7 +9,7 @@ const filteredOrders = orders.filter(order =>
 );
   
   const updateItemQuantity = (orderId, itemId, newQuantity) => {
-    fetch(`https://hardware-hive-backend.vercel.app/api/admin/updateQuantity`, {
+    fetch(`https://hardware-hive.vercel.app/api/admin/updateQuantity`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ orderId, itemId, quantity: newQuantity }),
@@ -34,7 +34,7 @@ const filteredOrders = orders.filter(order =>
     const fetchOrders = async () => {
       try {
         const res = await fetch(
-          "https://hardware-hive-backend.vercel.app/api/admin/getPlacedOrder"
+          "https://hardware-hive.vercel.app/api/admin/getPlacedOrder"
         );
         const data = await res.json();
         console.log("user order data is", data);
@@ -49,7 +49,7 @@ const filteredOrders = orders.filter(order =>
   const confirmOrder = async (orderId) => {
     try {
       const res = await fetch(
-        `https://hardware-hive-backend.vercel.app/api/admin/confirm/${orderId}`,
+        `https://hardware-hive.vercel.app/api/admin/confirm/${orderId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

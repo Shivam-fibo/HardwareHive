@@ -15,7 +15,7 @@ const ProductManager = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://hardware-hive-backend.vercel.app/api/admin/getAllProducts");
+        const res = await fetch("https://hardware-hive.vercel.app/api/admin/getAllProducts");
         const data = await res.json();
         setProducts(data);
       } catch (error) {
@@ -64,7 +64,7 @@ const ProductManager = () => {
     }
 
     try {
-      const res = await fetch(`https://hardware-hive-backend.vercel.app/api/admin/products/${editProductId}`, {
+      const res = await fetch(`https://hardware-hive.vercel.app/api/admin/products/${editProductId}`, {
         method: "PUT",
         body: form,
       });
@@ -88,7 +88,7 @@ const deleteProduct = async (productId) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
   
     try {
-      const res = await fetch(`https://hardware-hive-backend.vercel.app/api/admin/products/${productId}`, {
+      const res = await fetch(`https://hardware-hive.vercel.app/api/admin/products/${productId}`, {
         method: "DELETE",
       });
   

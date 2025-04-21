@@ -9,22 +9,23 @@ const upload = multer({ storage });
 // Image Upload Controller
 export const uploadImage = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
+    const { category } = req.body;
+
+    if (!req.file || !category) {
+      return res.status(400).json({ error: "File and category are required" });
     }
 
     const fileBase64 = `data:image/png;base64,${req.file.buffer.toString("base64")}`;
+    const result = await cloudinary.uploader.upload(fileBase64, { folder: "mern_project" });
 
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(fileBase64, {
-      folder: "mern_project",
+    const newImage = new showAllProductModel({
+      url: result.secure_url,
+      category,
     });
 
-    // Store Image URL in MongoDB
-    const newImage = new showAllProductModel({ url: result.secure_url });
     await newImage.save();
-
     res.json({ success: true, url: result.secure_url });
+
   } catch (error) {
     console.error("Image upload error:", error);
     res.status(500).json({ error: "Image upload failed" });
@@ -35,12 +36,18 @@ export const uploadImage = async (req, res) => {
 export const getAllImages = async (req, res) => {
   try {
     const images = await showAllProductModel.find();
-    res.json(images);
+    const imageDetails = images.map(image => ({
+      url: image.url,
+      category: image.category
+    }));
+
+    res.json(imageDetails);
   } catch (error) {
     console.error("Fetching images error:", error);
     res.status(500).json({ error: "Failed to fetch images" });
   }
 };
+
 
 // Delete Image Controller
 export const deleteImage = async (req, res) => {
@@ -54,8 +61,7 @@ export const deleteImage = async (req, res) => {
       return res.status(404).json({ error: "Image not found" });
     }
     
-    // Extract public_id from the Cloudinary URL
-    // The URL format is typically: https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/mern_project/abcdef123456.jpg
+    
     const urlParts = image.url.split('/');
     const publicIdWithExtension = urlParts[urlParts.length - 1];
     const publicId = `mern_project/${publicIdWithExtension.split('.')[0]}`; // Get folder/filename without extension

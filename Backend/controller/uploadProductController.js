@@ -6,7 +6,7 @@ export const upload = multer({ storage: multer.memoryStorage() });
 
 export const uploadProduct = async (req, res) => {
   try {
-    const { title, subheading, productInfo, category, price, buyingPrice } = req.body;
+    const { title, subheading, productInfo, category,subCategory, price, buyingPrice } = req.body;
 
     if (!req.file) return res.status(400).json({ error: "Image is required" });
 
@@ -22,6 +22,7 @@ export const uploadProduct = async (req, res) => {
       title,
       subheading,
       category,
+      subCategory,
       productInfo,
       price,
       buyingPrice,
@@ -38,7 +39,7 @@ export const uploadProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find(); // Get all products
+    const products = await Product.find(); 
     res.json(products);
   } catch (error) {
     console.error("Fetch Products Error:", error);
@@ -49,9 +50,9 @@ export const getAllProducts = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, subheading, productInfo, category, price, buyingPrice } = req.body;
+    const { title, subheading, productInfo, category,subCategory, price, buyingPrice } = req.body;
 
-    const updateData = { title, subheading, productInfo, category, price,  buyingPrice };
+    const updateData = { title, subheading, productInfo, category,subCategory, price,  buyingPrice };
 
     // If a new image is uploaded
     if (req.file) {

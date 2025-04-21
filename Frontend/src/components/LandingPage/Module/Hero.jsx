@@ -33,7 +33,7 @@ const Hero = () => {
       const result = await response.json();
       if (response.ok) {
         toast.success("Login successful!");
-        localStorage.setItem("user", JSON.stringify(result.user));
+        sessionStorage.setItem("user", JSON.stringify(result.user));
         navigate("/home");
       } else {
         toast.error(result.message || "Invalid credentials");
@@ -139,14 +139,14 @@ const Hero = () => {
 
           <button
             onClick={() => setShowPopup(true)}
-            className="mt-6 bg-white text-black px-6 py-2"
+            className="mt-6 bg-white rounded-xl w-32 text-blue-700 font-semibold px-6 py-2"
           >
-            Login with Single Key
+            Login
           </button>
 
-          <p className="mt-4 text-sm italic">
+          <p className="mt-4 text-lg italic">
             <a onClick={handelRegister} className="text-blue-300 underline">
-              Don’t have a single key ID yet? Click here to register
+             Click here to register
             </a>
           </p>
         </div>

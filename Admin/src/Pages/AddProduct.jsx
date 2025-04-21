@@ -4,6 +4,7 @@ const AddProduct = () => {
   const [title, setTitle] = useState("");
   const [subheading, setSubheading] = useState("");
   const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
   const [productInfo, setProductInfo] =  useState("")
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
@@ -25,6 +26,7 @@ const AddProduct = () => {
     formData.append("title", title);
     formData.append("subheading", subheading);
     formData.append("category", category);
+    formData.append("subCategory", subCategory);
     formData.append("productInfo", productInfo)
     formData.append("price", price);
     formData.append("image", image);
@@ -43,6 +45,7 @@ const AddProduct = () => {
         setTitle("");
         setSubheading("");
         setCategory("");
+        setSubCategory("");
         setProductInfo("");
         setPrice("");
         setImage(null);
@@ -79,13 +82,27 @@ const AddProduct = () => {
             onChange={(e) => setSubheading(e.target.value)}
             className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
           />
+         <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
+          required
+        >
+          <option value="">Select Category</option>
+          <option value="Machinery">Machinery</option>
+          <option value="Spare Parts">Spare Parts</option>
+          <option value="Brands">Brands</option>
+          <option value="Accessories">Accessories</option>
+        </select>
+
           <input
-            type="text"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+           type="text"
+           placeholder="SubCategory"
+           value={subCategory}
+           onChange={(e) => setSubCategory(e.target.value)}
             className="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white"
-          />
+           
+           />
           <input
           type="text"
           placeholder="Information about product"

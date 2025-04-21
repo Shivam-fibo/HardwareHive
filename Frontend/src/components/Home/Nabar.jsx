@@ -37,9 +37,9 @@ function Header() {
   }, []);
 
   const fetchNotifications = async () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user || !user._id)
-      return console.warn("User ID not found in localStorage");
+      return console.warn("User ID not found in sessionStorage");
 
     console.log("Using user ID:", user._id);
 

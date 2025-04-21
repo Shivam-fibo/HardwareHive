@@ -21,7 +21,7 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = sessionStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
@@ -50,7 +50,7 @@ export default function Profile() {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        localStorage.setItem("user", JSON.stringify(updatedUser)); 
+        sessionStorage.setItem("user", JSON.stringify(updatedUser)); 
         setUser(updatedUser);
         setIsEditing(false); // Exit edit mode
         alert("Profile updated successfully!");

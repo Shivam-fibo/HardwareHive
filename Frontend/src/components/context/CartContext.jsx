@@ -6,24 +6,24 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   
-  // Load cart from localStorage on initial render
+  // Load cart from sessionStorage on initial render
   useEffect(() => {
     try {
-      const storedCart = localStorage.getItem("cart");
+      const storedCart = sessionStorage.getItem("cart");
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       }
     } catch (error) {
-      console.error("Error loading cart from localStorage:", error);
+      console.error("Error loading cart from sessionStorage:", error);
     }
   }, []);
 
-  // Save cart to localStorage whenever it changes
+  // Save cart to sessionStorage whenever it changes
   useEffect(() => {
     try {
-      localStorage.setItem("cart", JSON.stringify(cart));
+      sessionStorage.setItem("cart", JSON.stringify(cart));
     } catch (error) {
-      console.error("Error saving cart to localStorage:", error);
+      console.error("Error saving cart to sessionStorage:", error);
     }
   }, [cart]);
 
@@ -46,7 +46,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem("cart");
+    sessionStorage.removeItem("cart");
   };
   const removeFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((item) => item._id !== productId));

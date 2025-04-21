@@ -7,7 +7,7 @@ const CartPage = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(sessionStorage.getItem("user"));
       if (!user) {
         toast.error("User not logged in. Please log in first.");
         return;
@@ -42,12 +42,12 @@ const CartPage = () => {
   useEffect(() => {
     console.log("CartPage mounted, cart:", cart);
     
-    // Debug check: verify localStorage directly
+    // Debug check: verify sessionStorage directly
     try {
-      const storedCart = localStorage.getItem("cart");
-      console.log("Direct localStorage check in CartPage:", storedCart ? JSON.parse(storedCart) : "No cart found");
+      const storedCart = sessionStorage.getItem("cart");
+      console.log("Direct sessionStorage check in CartPage:", storedCart ? JSON.parse(storedCart) : "No cart found");
     } catch (error) {
-      console.error("Error reading localStorage:", error);
+      console.error("Error reading sessionStorage:", error);
     }
   }, [cart]);
 

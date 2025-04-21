@@ -4,17 +4,17 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(
-    localStorage.getItem("isAdmin") === "true"
+    sessionStorage.getItem("isAdmin") === "true"
   );
 
   const login = () => {
     setIsAdminLoggedIn(true);
-    localStorage.setItem("isAdmin", "true");
+    sessionStorage.setItem("isAdmin", "true");
   };
 
   const logout = () => {
     setIsAdminLoggedIn(false);
-    localStorage.removeItem("isAdmin");
+    sessionStorage.removeItem("isAdmin");
   };
 
   return (

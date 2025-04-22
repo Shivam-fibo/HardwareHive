@@ -32,7 +32,12 @@ const Home = () => {
             >
               Edit Product
             </button>
-            
+            <button 
+              onClick={() => navigate("/getAllQuery")} 
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center font-medium"
+            >
+              Query
+            </button>
             <button 
               onClick={() => navigate("/addShowAllProduct")} 
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center font-medium"

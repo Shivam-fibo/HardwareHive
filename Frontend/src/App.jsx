@@ -11,10 +11,19 @@ import CartPage from './components/Home/CartPage';
 import ProductList from './components/Home/ProductList';
 import UserProfile from "./components/Home/UserProfile.jsx"
 import OrderHistory from './components/Home/OrderHistory.jsx';
+import { FaWhatsapp } from "react-icons/fa";
 
 function App() {
   return (
     <Router>
+      <a
+  href="https://wa.me/919804611111"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-4 right-4 z-50 text-green-500"
+>
+  <FaWhatsapp size={48} className="hover:scale-110 transition-transform duration-200" />
+</a>
       <CartProvider> 
         <Toaster />
         <Routes>

@@ -51,47 +51,76 @@ export default function Register() {
     }
   };
 
+  const Title = step === 1 ? "Register" : "Address Detail"
+
   return (
     <>
-      <Header />
-      <div
-        className="flex items-center justify-center h-screen w-full bg-[#013E70] px-4 mt-4"
-        style={{
-          backgroundImage: "url('/images/noise.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="bg-[#013E70] bg-opacity-80 text-white p-6 rounded-lg w-full max-w-md shadow-2xl">
-          <h2 className="text-2xl font-bold mb-4 text-center underline tracking-widest">
-            REGISTER
-          </h2>
-
-          {step === 1 ? (
-            <form className="space-y-4">
-              <input type="text" name="name" placeholder="Full Name" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.name} onChange={handleInputChange} required />
-              <input type="text" name="companyName" placeholder="Company Name" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.companyName} onChange={handleInputChange} required />
-              <input type="tel" name="mobile" placeholder="Mobile Number" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.mobile} onChange={handleInputChange} required />
-              <input type="tel" name="whatsapp" placeholder="WhatsApp Number" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.whatsapp} onChange={handleInputChange} required />
-              <input type="email" name="email" placeholder="Email" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.email} onChange={handleInputChange} required />
-              <button type="button" className="w-full p-3 mt-2 bg-blue-600 hover:bg-blue-500 transition-all" onClick={() => setStep(2)}>Next</button>
-            </form>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="text" name="address" placeholder="Address" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.address} onChange={handleInputChange} />
-              <input type="text" name="city" placeholder="City" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.city} onChange={handleInputChange} />
-              <input type="text" name="district" placeholder="District" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.district} onChange={handleInputChange} />
-              <input type="text" name="state" placeholder="State" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.state} onChange={handleInputChange} />
-              <input type="text" name="pincode" placeholder="Pincode" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.pincode} onChange={handleInputChange} />
-              <input type="text" name="gstNumber" placeholder="Enter GST Number" className="w-full p-3 border bg-[#013E70] text-white outline-none" value={formData.gstNumber} onChange={handleInputChange} />
-              <div className="flex gap-2">
-                <button type="button" className="w-full p-3 bg-gray-600 hover:bg-gray-500 transition-all" onClick={() => setStep(1)}>Back</button>
-                <button type="submit" className="w-full p-3 bg-blue-600 hover:bg-blue-500 transition-all">Submit</button>
-              </div>
-            </form>
-          )}
-        </div>
+    <Header />
+    <div className="flex items-center justify-center h-screen w-full bg-[#013E70] px-4 mt-4">
+      <div className="bg-white bg-opacity-80 text-black p-6 rounded-lg w-full max-w-md shadow-2xl">
+        <h2 className="text-3xl font-bold mb-4 text-center text-[#013E70] tracking-widest">
+          {Title}
+        </h2>
+  
+        {step === 1 ? (
+          <form className="space-y-4">
+            <div>
+              <label className="block mb-1">Full Name *</label>
+              <input type="text" name="name" className="w-full p-3 border bg-white text-black outline-none" value={formData.name} onChange={handleInputChange} required />
+            </div>
+            <div>
+              <label className="block mb-1">Company Name *</label>
+              <input type="text" name="companyName" className="w-full p-3 border bg-white text-black outline-none" value={formData.companyName} onChange={handleInputChange} required />
+            </div>
+            <div>
+              <label className="block mb-1">Mobile Number *</label>
+              <input type="tel" name="mobile" className="w-full p-3 border bg-white text-black outline-none" value={formData.mobile} onChange={handleInputChange} required />
+            </div>
+            <div>
+              <label className="block mb-1">WhatsApp Number *</label>
+              <input type="tel" name="whatsapp" className="w-full p-3 border bg-white text-black outline-none" value={formData.whatsapp} onChange={handleInputChange} required />
+            </div>
+            <div>
+              <label className="block mb-1">Email *</label>
+              <input type="email" name="email" className="w-full p-3 border bg-white text-black outline-none" value={formData.email} onChange={handleInputChange} required />
+            </div>
+            <button type="button" className="w-full p-3 mt-2 bg-[#013E70] text-white" onClick={() => setStep(2)}>Next</button>
+          </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block mb-1">Address</label>
+              <input type="text" name="address" className="w-full p-3 border bg-white text-black outline-none" value={formData.address} onChange={handleInputChange} />
+            </div>
+            <div>
+              <label className="block mb-1">City</label>
+              <input type="text" name="city" className="w-full p-3 border bg-white text-black outline-none" value={formData.city} onChange={handleInputChange} />
+            </div>
+            <div>
+              <label className="block mb-1">District</label>
+              <input type="text" name="district" className="w-full p-3 border bg-white text-black outline-none" value={formData.district} onChange={handleInputChange} />
+            </div>
+            <div>
+              <label className="block mb-1">State</label>
+              <input type="text" name="state" className="w-full p-3 border bg-white text-black outline-none" value={formData.state} onChange={handleInputChange} />
+            </div>
+            <div>
+              <label className="block mb-1">Pincode</label>
+              <input type="text" name="pincode" className="w-full p-3 border bg-white text-black outline-none" value={formData.pincode} onChange={handleInputChange} />
+            </div>
+            <div>
+              <label className="block mb-1">Enter GST Number</label>
+              <input type="text" name="gstNumber" className="w-full p-3 border bg-white text-black outline-none" value={formData.gstNumber} onChange={handleInputChange} />
+            </div>
+            <div className="flex gap-2">
+              <button type="submit" className="w-full p-3 text-[#013E70] bg-white border border-[#013E70]">Skip to Next</button>
+              <button type="submit" className="w-full p-3 text-white bg-[#013E70] transition-all">Submit</button>
+            </div>
+          </form>
+        )}
       </div>
-    </>
+    </div>
+  </>
+  
   );
 }

@@ -9,6 +9,7 @@ import ShowAllProduct from "./Pages/ShowAllProduct";
 import EditProduct from "./Pages/EditProduct";
 import { Toaster } from 'react-hot-toast'
 import OrdersPage from "./Pages/OderPage";
+import QueryList from "./Pages/GetAllQuery";
 const PrivateRoute = ({ element }) => {
   const { isAdminLoggedIn } = useAuth();
   return isAdminLoggedIn ? element : <Navigate to="/login" />;
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/editProduct" element={<PrivateRoute element={<EditProduct/>} />}/>
           <Route path="/addShowAllProduct" element={<PrivateRoute element={<ShowAllProduct/>} />}/>
           <Route path="/getAllOrder" element={<PrivateRoute element={<OrdersPage/>} />}/>
+          <Route path="/getAllQuery" element={<PrivateRoute element={<QueryList/>} />}/>
           
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

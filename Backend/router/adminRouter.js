@@ -3,7 +3,7 @@ import { loginAdmin, getUnapprovedRegistrations, approveRegistration, rejectRegi
 import {sendEmail} from "../config/ResendConfig.js"
 import { uploadProduct, upload, updateProduct, getAllProducts, deleteProduct } from "../controller/uploadProductController.js";
 import { uploadImage, getAllImages, uploadMiddleware, deleteImage } from "../controller/showAllProudctController.js"
-
+import { createQuery, getAllQueries } from "../controller/QueryController.js";
 const router = express.Router();
 
 router.post("/login", loginAdmin);
@@ -22,4 +22,6 @@ router.delete("/products/:id", deleteProduct)
 router.post("/upload", uploadMiddleware, uploadImage);
 router.get("/images", getAllImages);
 router.delete('/delete/:id', deleteImage);
+router.post("/getQuery", createQuery )
+router.get("/queries", getAllQueries)
 export default router;

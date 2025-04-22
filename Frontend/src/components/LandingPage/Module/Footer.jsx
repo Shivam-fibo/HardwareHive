@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+
 import {
   FaMapMarkerAlt,
   FaPhoneAlt,
@@ -10,9 +11,47 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-
+import toast from 'react-hot-toast';
 
 const Footer = () => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch("https://hardware-hive.vercel.app/api/admin/getQuery", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        console.log("Query submitted:", data);
+        toast.success("Submitted successfully!");
+        setForm({ name: "", email: "", subject: "", message: "" }); // clear form
+      } else {
+        console.error("Server error:", data.message);
+        toast.error("Submission failed: " + data.message);
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+      toast.error("Submission failed. Please try again later.");
+    }
+  };
+  
   return (
     <div className="bg-[#013E70] text-white px-4 md:px-10 py-10 flex flex-col md:flex-row justify-between gap-8">
       {/* Address Section */}
@@ -60,26 +99,39 @@ const Footer = () => {
       <div className="flex-1 space-y-3">
         <h3 className="font-bold mb-2">For Query</h3>
         <input
-          type="text"
-          placeholder="Name"
-          className="w-full px-3 py-2 rounded-md bg-white text-black"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full px-3 py-2 rounded-md bg-white text-black"
-        />
-        <input
-          type="text"
-          placeholder="Name"
-          className="w-full px-3 py-2 rounded-md bg-white text-black"
-        />
-        <textarea
-          rows={4}
-          placeholder="Type your message.."
-          className="w-full px-3 py-2 rounded-md bg-white text-black"
-        ></textarea>
-        <button className="bg-yellow-400 text-black px-6 py-2 rounded-md w-full font-semibold">
+  type="text"
+  name="name"
+  value={form.name}
+  onChange={handleChange}
+  placeholder="Name"
+  className="w-full px-3 py-2 rounded-md bg-white text-black"
+/>
+<input
+  type="email"
+  name="email"
+  value={form.email}
+  onChange={handleChange}
+  placeholder="Email"
+  className="w-full px-3 py-2 rounded-md bg-white text-black"
+/>
+<input
+  type="text"
+  name="subject"
+  value={form.subject}
+  onChange={handleChange}
+  placeholder="Subject"
+  className="w-full px-3 py-2 rounded-md bg-white text-black"
+/>
+<textarea
+  name="message"
+  value={form.message}
+  onChange={handleChange}
+  rows={4}
+  placeholder="Type your message.."
+  className="w-full px-3 py-2 rounded-md bg-white text-black"
+/>
+
+        <button   onClick={handleSubmit}  className="bg-yellow-400 text-black px-6 py-2 rounded-md w-full font-semibold">
           Submit
         </button>
       </div>

@@ -55,8 +55,8 @@ export default function Register() {
 
   return (
     <>
-    <Header />
-    <div className="flex items-center justify-center h-screen w-full bg-[#013E70] px-4 mt-4">
+    
+    <div className="flex items-center justify-center h-screen w-full bg-[#013E70] ">
       <div className="bg-white bg-opacity-80 text-black p-6 rounded-lg w-full max-w-md shadow-2xl">
         <h2 className="text-3xl font-bold mb-4 text-center text-[#013E70] tracking-widest">
           {Title}

@@ -1,15 +1,20 @@
 @import "tailwindcss";
 
-@keyframes slide {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+@keyframes infinite-scroll {
+  0% {
+    transform: translateX(0);
   }
-  
-  .animate-slide {
-    animation: slide 20s linear infinite;
+  100% {
+    transform: translateX(-50%);
   }
-  
+}
+
+.scroll-infinite {
+  animation: infinite-scroll 25s linear infinite;
+  /* will-change: transform; */
+}
+
+
+  .no-scroll {
+    overflow: hidden;
+  }

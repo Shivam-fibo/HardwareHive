@@ -4,14 +4,15 @@ const images = Array.from({ length: 16 }, (_, i) => `/logo/img${i + 1}.jpg`);
 
 const BrandsSection = () => {
   return (
-    <div className="bg-white py-6 overflow-hidden">
+    <div className="bg-[#D8D9D8] py-6 overflow-hidden">
       <div className="text-center text-[24px] font-inter font-semibold text-[#013760] leading-[150%] mb-4">
         -----Spare Part Available Multi-Brand------
       </div>
 
+      {/* Scrolling wrapper */}
       <div className="relative w-full overflow-hidden">
-        <div className="flex animate-slide whitespace-nowrap">
-          {images.concat(images).map((src, index) => (
+        <div className="flex w-max scroll-infinite whitespace-nowrap">
+          {[...images, ...images].map((src, index) => (
             <img
               key={index}
               src={src}

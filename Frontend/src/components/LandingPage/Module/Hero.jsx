@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import toast from "react-hot-toast";
 const Hero = () => {
@@ -16,6 +16,17 @@ const Hero = () => {
   const handelRegister = () => {
     navigate("/register");
   };
+
+  useEffect(() => {
+    if (showPopup) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [showPopup]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -75,76 +86,33 @@ const Hero = () => {
 
 
   return (
-    <div className="bg-[#013E70] text-white flex flex-col items-center justify-center p-6">
+    <div className="bg-[#013E70] text-white h-98 flex flex-col items-center justify-center">
       <div
-        className="relative text-center mt-16 h-screen w-full flex items-center justify-center"
+        className="relative text-center w-full flex items-center justify-center"
         style={{
           backgroundImage: "url('/images/noise.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        <div
-          className="absolute top-36 left-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(-130deg)" }}
-        ></div>
-        <div
-          className="absolute top-36 right-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(-130deg)" }}
-        ></div>
-        <div
-          className="absolute bottom-8 left-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(-130deg)" }}
-        ></div>
-        <div
-          className="absolute bottom-8 right-8 w-44 h-44 bg-[#014F7A] rounded-full opacity-60 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(-130deg)" }}
-        ></div>
-
-        {/* Plate-Like Positioned Images (Hidden on Mobile) */}
-        <img
-          src="/images/bearing.png"
-          alt="Bearing"
-          className="absolute top-40 left-10 w-40 hidden md:block"
-        />
-        <img
-          src="/images/coupling.png"
-          alt="Coupling"
-          className="absolute top-40 right-10 w-40 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(25deg)" }}
-        />
-        <img
-          src="/images/motor.png"
-          alt="Motor"
-          className="absolute bottom-10 left-10 w-40 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(25deg)" }}
-        />
-        <img
-          src="/images/armature.png"
-          alt="Armature"
-          className="absolute bottom-10 right-10 w-40 hidden md:block"
-          style={{ transform: "perspective(500px) rotateX(25deg)" }}
-        />
-
-        {/* Text Section */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold uppercase">
+          <h2 className="text-4xl mt-[-10] font-bold uppercase">
             Multi-Brand Power Tools
           </h2>
-          <h1 className="text-3xl mt-2">SPARE PARTS B2B PORTAL</h1>
-          <p className="text-lg mt-2">
+          <h1 className="text-3xl mt-2 text-[#72B6EC]">SPARE PARTS B2B PORTAL</h1>
+          <p className="text-lg mt-2 text-[#72B6EC] ">
             Need help with register, login, and purchasing?
           </p>
-          <p className="text-lg font-bold mt-2">Contact Us +91 9804611111</p>
+          <p className="text-lg font-semibold mt-2 text-[#72B6EC] ">Contact Us +91 9804611111</p>
 
           <button
             onClick={() => setShowPopup(true)}
-            className="mt-6 bg-white rounded-xl w-32 text-blue-700 font-semibold px-6 py-2"
+            className="mt-6 bg-white rounded-xl  w-34 text-xl cursor-pointer text-[#013E70] font-bold h-14"
           >
             Login
           </button>
 
-          <p className="mt-4 text-lg italic">
+          <p className="mt-4 text-3xl cursor-pointer italic">
             <a onClick={handelRegister} className="text-blue-300 underline">
              Click here to register
             </a>
@@ -220,7 +188,7 @@ const Hero = () => {
 
               <button
                 type="submit"
-                className="bg-blue-800 text-white w-full p-3 rounded-lg font-semibold hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 transition duration-150 ease-in-out"
+                className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold  focus:outline-none focus:ring-2 focus:bg-[#013E70] focus:ring-offset-2 transition duration-150 ease-in-out"
               >
                 Login
               </button>
@@ -240,7 +208,7 @@ const Hero = () => {
               />
               <button
                 type="submit"
-                className="bg-blue-800 text-white w-full p-3 rounded-lg font-semibold hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 transition duration-150 ease-in-out"
+                className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 transition duration-150 ease-in-out"
               >
                 Send Reset Link
               </button>

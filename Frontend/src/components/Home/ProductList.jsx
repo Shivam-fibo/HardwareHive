@@ -50,6 +50,7 @@ const ProductList = () => {
       });
   
       const data = await res.json();
+      console.log(data)
       console.log("Backend response:", data);
     } catch (error) {
       console.error("Error sending to backend:", error);

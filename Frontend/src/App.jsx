@@ -11,7 +11,9 @@ import CartPage from './components/Home/CartPage';
 import ProductList from './components/Home/ProductList';
 import UserProfile from "./components/Home/UserProfile.jsx";
 import OrderHistory from './components/Home/OrderHistory.jsx';
-import { FaWhatsapp } from "react-icons/fa";
+import { PiWhatsappLogoThin } from "react-icons/pi";
+import { PiWhatsappLogoDuotone } from 'react-icons/pi';
+import { FaWhatsapp } from 'react-icons/fa';
 
 function App() {
   return (
@@ -22,9 +24,9 @@ function App() {
           href="https://wa.me/919804611111"
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-4 right-4 z-50 text-green-500"
+          className="fixed bottom-4 right-4 z-50 "
         >
-          <FaWhatsapp size={48} className="hover:scale-110 transition-transform duration-200" />
+          <FaWhatsapp size={60} className="text-green-500 " />
         </a>
         <CartProvider>
           <Toaster />

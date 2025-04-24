@@ -2,16 +2,14 @@ import React from "react";
 
 const FeatureSection = () => {
   return (
-    <div className="bg-[#003E71] text-white py-6">
-      
-<div className="mb-10 top-0 left-0 w-full border-t-2 border-white"></div>
-      {/* Section Heading */}
-      <h2 className="text-center text-xl font-semibold italic">
+    <div className="bg-[#003E71] text-white py-2">
+
+      <div className="text-center text-xl  font-semibold italic">
       MULTI-BRAND SPARE PART SUPPLY
-      </h2>
+      </div>
 
       {/* Feature Icons Section */}
-      <div className="flex justify-between max-4xl mx-auto mt-6">
+      <div className="flex justify-between max-4xl mx-auto my-2">
         {/* Quick Order */}
         <div className="flex flex-col items-center text-center w-1/3">
           <img src="/images/quick.png" alt="Quick Order" className="w-16 h-16" />
@@ -30,6 +28,7 @@ const FeatureSection = () => {
           <p className="mt-4">• Bulk order Discount</p>
         </div>
       </div>
+      <div className="mb-10 top-10 left-0 w-full border-t-4 border-[#D8D9D8]"></div>
     </div>
   );
 };

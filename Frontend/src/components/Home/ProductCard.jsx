@@ -1,8 +1,16 @@
-// ProductCard.jsx
+import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-
+import { toast } from "react-hot-toast"; 
 const ProductCard = ({ product, handleAddToCart }) => {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
+  const [quantity, setQuantity] = useState(); 
+  const handleClick = () => {
+    if (!quantity || quantity < 1) {
+      toast.error("Please enter a valid quantity before adding to list.");
+      return;
+    }
+    handleAddToCart(product, quantity);
+  };
 
   return (
     <div
@@ -28,12 +36,15 @@ const ProductCard = ({ product, handleAddToCart }) => {
       <div className="flex gap-2 mt-3">
         <input
           type="number"
+          min="1"
+          value={quantity || ""}
+          onChange={(e) => setQuantity(Number(e.target.value))}
           placeholder="Add Quantity"
           className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
         />
         <button
           className="bg-yellow-400 hover:bg-yellow-500 text-sm px-2 py-1 rounded font-semibold w-full"
-          onClick={() => handleAddToCart(product)}
+          onClick={handleClick}
         >
           Add to list
         </button>

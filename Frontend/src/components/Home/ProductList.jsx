@@ -26,10 +26,37 @@ const ProductList = () => {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
+  const handleAddToCart = async (item, quantity) => {
+    addToCart({ ...item, quantity });
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    const userId = user?._id;
+    console.log(userId)
+    const cartItem = {
+      productId: item._id,
+      title: item.title,
+      price: item.price,
+      image: item.image,
+      quantity,
+      userId,
+    };
+  
+    try {
+      const res = await fetch("https://hardware-hive.vercel.app/api/user/addCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItem),
+      });
+  
+      const data = await res.json();
+      console.log("Backend response:", data);
+    } catch (error) {
+      console.error("Error sending to backend:", error);
+    }
   };
-
+  
+  
   const toggleCategory = (category) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]

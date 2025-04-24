@@ -28,7 +28,7 @@ export default function Register() {
     e.preventDefault();
 // https://hardware-hive.vercel.app/
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/user/register", {
+      const response = await fetch("https://hardware-hive.vercel.app/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

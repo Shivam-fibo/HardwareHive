@@ -86,7 +86,7 @@ const Footer = () => {
 
       {/* Map Section */}
       <div className="flex-1">
-        <h3 className="font-bold mb-2">Map</h3>
+        <h2 className="font-bold mb-2">Map</h2>
         <iframe
     title="SS Tools Map"
     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3480.497160657592!2d76.1126022!3d28.0511907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3912b502333c1949%3A0xe88f77393bd85f0d!2z4KS44KS-4KSmIOCkquCljeCksuCkviDgpK_gpYLgpKrgpYHgpL4!5e0!3m2!1sen!2sin!4v1713975621723!5m2!1sen!2sin"
@@ -102,7 +102,7 @@ const Footer = () => {
 
       {/* Form Section */}
       <div className="flex-1 space-y-3">
-        <h3 className="font-bold mb-2">For Query</h3>
+        <h2 className="font-bold mb-2">For Query</h2>
         <input
   type="text"
   name="name"
@@ -143,19 +143,19 @@ const Footer = () => {
       
 
       {/* Social Section */}
-      <div className=" text-lg">
-      <h3 className="font-bold mb-4">Follow Us</h3>
+      <div className=" text-sm">
+      <h2 className="font-bold mb-4">Follow Us</h2>
       <div className="space-y-4 text-sm">
-        <div className="flex items-center gap-2 text-xl">
+        <div className="flex items-center gap-2 ">
           <FaFacebookF className="text-blue-400" /> Facebook
         </div>
-        <div className="flex items-center gap-2 text-xl">
+        <div className="flex items-center gap-2 ">
           <FaInstagram className="text-pink-400" /> Instagram
         </div>
-        <div className="flex items-center gap-2 text-xl">
+        <div className="flex items-center gap-2 ">
           <FaLinkedinIn className="text-blue-300" /> LinkedIn
         </div>
-        <div className="flex items-center gap-2 text-xl">
+        <div className="flex items-center gap-2">
           <FaYoutube className="text-red-500" /> Youtube
         </div>
       </div>

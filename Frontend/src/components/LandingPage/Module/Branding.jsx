@@ -4,7 +4,7 @@ const images = Array.from({ length: 16 }, (_, i) => `/logo/img${i + 1}.jpg`);
 
 const BrandsSection = () => {
   return (
-    <div className="bg-[#D8D9D8] py-6 overflow-hidden">
+    <div className="bg-[#D8D9D8] h-44 py-6 overflow-hidden">
       <div className="text-center text-[24px] font-inter font-semibold text-[#013760] leading-[150%] mb-4">
         -----Spare Part Available Multi-Brand------
       </div>

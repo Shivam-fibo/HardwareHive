@@ -86,7 +86,7 @@ const Hero = () => {
 
 
   return (
-    <div className="bg-[#013E70] text-white h-98 flex flex-col items-center justify-center">
+    <div className="bg-[#013E70] text-white h-80 flex flex-col items-center justify-center">
       <div
         className="relative text-center w-full flex items-center justify-center"
         style={{
@@ -96,10 +96,10 @@ const Hero = () => {
         }}
       >
         <div className="text-center">
-          <h2 className="text-4xl mt-[-10] font-bold uppercase">
+          <h2 className="text-4xl mt-4 font-bold uppercase">
             Multi-Brand Power Tools
           </h2>
-          <h1 className="text-3xl mt-2 text-[#72B6EC]">SPARE PARTS B2B PORTAL</h1>
+          <h1 className="text-lg mt-2 text-[#72B6EC]">SPARE PARTS B2B PORTAL</h1>
           <p className="text-lg mt-2 text-[#72B6EC] ">
             Need help with register, login, and purchasing?
           </p>
@@ -107,12 +107,12 @@ const Hero = () => {
 
           <button
             onClick={() => setShowPopup(true)}
-            className="mt-6 bg-white rounded-xl  w-34 text-xl cursor-pointer text-[#013E70] font-bold h-14"
+            className="mt-6 bg-white rounded-xl  w-34 text-lg cursor-pointer text-[#013E70] font-bold h-10"
           >
             Login
           </button>
 
-          <p className="mt-4 text-3xl cursor-pointer italic">
+          <p className="mt-4 text-lg cursor-pointer italic">
             <a onClick={handelRegister} className="text-blue-300 underline">
              Click here to register
             </a>
@@ -148,7 +148,7 @@ const Hero = () => {
               </svg>
             </button>
             {/* Modal Title: Larger, darker text, more bottom margin */}
-            <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+            <h2 className="text-lg font-semibold mb-6 text-center text-gray-800">
               Login
             </h2>
             {/* Login Form: Increased spacing */}

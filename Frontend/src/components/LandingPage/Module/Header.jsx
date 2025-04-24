@@ -11,14 +11,14 @@ const Header = () => {
   };
 
   return (
-    <div className="h-15">
+    <div className="h-12">
       <header
         className="w-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
         onClick={() => navigate("/")}
       >
-        <img src="/logo/ss_power_tool_logo.png" width={"210px"} className="ml-10" />
+        <img src="/logo/ss_power_tool_logo.png" width={"150px"} className="ml-10" />
         <button
-          className="w-[129.39px] h-[39.88px] mr-6 bg-[#013E70] rounded-xl border border-[#013E70] text-white"
+          className="w-[100px] h-[35px] mr-6 bg-[#013E70] rounded-xl border border-[#013E70] text-white"
           onClick={handleProduct} 
         >
           Products

@@ -40,7 +40,7 @@ export default function Register() {
       if (response.ok) {
         console.log("Registration Successful:", data);
         toast.success("Registration Successful! Please wait until the admin approves the request");
-        navigate("/");
+        navigate("/");  
       } else {
         console.error("Registration Failed:", data);
         toast.error(data.message || "Registration Failed!");

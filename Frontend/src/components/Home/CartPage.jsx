@@ -12,23 +12,86 @@ const CartPage = () => {
     const loadCart = async () => {
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
+        console.log(user._id)
         if (user && user._id) {
           const res = await fetch(`https://hardware-hive.vercel.app/api/user/getCartItem/${user._id}`);
           const data = await res.json();
+          console.log(data)
           if (res.ok) {
-            setCart(data.items); // assuming the API returns { items: [...] }
+            setCart(data.items);
           } else {
             toast.error("Failed to fetch cart from server");
           }
         }
       } catch (err) {
-        console.error("Error loading cart from API:", err);
+        console.error("Error loading cart:", err);
         toast.error("Could not load cart");
       }
     };
-  
+
     loadCart();
   }, [setCart]);
+
+  const handleIncrease = (id) => {
+    const item = cart.find((item) => item._id === id);
+    updateQuantity(id, item.quantity + 1);
+  };
+
+  const handleDecrease = (id) => {
+    const item = cart.find((item) => item._id === id);
+    if (item.quantity > 1) {
+      updateQuantity(id, item.quantity - 1);
+    }
+  };
+
+  const handleQuantityChange = (id, value) => {
+    const quantity = Math.max(1, parseInt(value) || 1);
+    updateQuantity(id, quantity);
+  };
+
+  const handleRemoveItem = async (item) => {
+    try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      if (!user) {
+        toast.error("User not logged in");
+        return;
+      }
+  
+      const response = await fetch("https://hardware-hive.vercel.app/api/user/deleteCartItem", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: item.productId,
+          userId: user._id,
+        }),
+      });
+      
+  
+    
+      if (!response.ok) {
+        const errorText = await response.text(); 
+        console.error("Error response:", errorText);
+        toast.error("Failed to remove item");
+        return;
+      }
+  
+      const data = await response.json();
+  
+      if (data.message === "Item deleted successfully") {
+        toast.success("Item removed from cart");
+        removeFromCart(item._id);
+      } else {
+        toast.error(data.message || "Failed to remove item");
+      }
+    } catch (error) {
+      console.error("Error removing item:", error);
+      toast.error("Error removing item");
+    }
+  };
+  
+  
   
 
   const handlePlaceOrder = async () => {
@@ -65,49 +128,75 @@ const CartPage = () => {
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6">All List Items ({cart.length})</h1>
-
-      {cart.length === 0 ? (
-        <div className="text-center p-6 border rounded-lg shadow-sm bg-white">
-          <p className="text-lg sm:text-xl text-gray-500">Your cart is empty</p>
+      <div className="border rounded-lg shadow-md p-4 bg-white">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2">Order list 1</h1>
+        <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-6">
+          <span>25th June 2025</span>
+          <span>05:43 pm</span>
+          <span className="text-blue-600">Order Number: hwh54hhh3h4</span>
+          <span className="text-green-600 font-semibold ml-auto">Confirmed</span>
         </div>
-      ) : (
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="flex-1 space-y-4">
+
+        {cart.length === 0 ? (
+          <div className="text-center text-lg text-gray-500">Your cart is empty</div>
+        ) : (
+          <div className="space-y-6">
             {cart.map((item) => (
               <div
                 key={item._id}
-                className="border rounded-lg shadow-sm p-4 flex flex-col sm:flex-row bg-white"
+                className="flex flex-col sm:flex-row items-center gap-4 border-b pb-4"
               >
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full sm:w-28 h-28 object-cover rounded-md"
+                  className="w-20 h-20 object-cover rounded-md"
                 />
-                <div className="mt-4 sm:mt-0 sm:ml-4 flex flex-col justify-between flex-1">
-                  <div>
-                    <h2 className="text-lg sm:text-xl font-semibold">{item.title}</h2>
-                    <p className="text-gray-500">{item.subheading}</p>
-                    <p className="text-base font-bold mt-1">₹{item.price}</p>
-                  </div>
-                  <div className="mt-3">
-                    <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <h2 className="font-bold text-lg">{item.title}</h2>
+                  <div className="text-sm text-gray-500">Variant</div>
+                  <div className="text-lg font-semibold">₹{item.price}</div>
+                </div>
+
+                <div className="flex flex-col gap-2 items-start">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600 font-semibold">Ordered Quantity</span>
+                    <div className="flex items-center border rounded overflow-hidden">
+                      <button
+                        onClick={() => handleDecrease(item._id)}
+                        className="px-2 py-1 bg-gray-100 hover:bg-gray-200"
+                      >
+                        -
+                      </button>
                       <input
                         type="number"
-                        
                         value={item.quantity}
-                        onChange={(e) =>
-                          updateQuantity(item._id, Number(e.target.value))
-                        }
-                        className="border p-2 w-16 text-center rounded-md"
+                        onChange={(e) => handleQuantityChange(item._id, e.target.value)}
+                        className="w-14 text-center border-x outline-none"
+                        min="1"
                       />
-                      <p className="text-sm sm:text-base">
-                        Total: ₹{item.price * item.quantity}
-                      </p>
+                      <button
+                        onClick={() => handleIncrease(item._id)}
+                        className="px-2 py-1 bg-gray-100 hover:bg-gray-200"
+                      >
+                        +
+                      </button>
                     </div>
+                  </div>
+
+                  
+                </div>
+
+                <div className="flex flex-col items-end">
+                  <div className="text-lg font-bold text-green-600">
+                    ₹{item.price * item.quantity}
+                  </div>
+                  <div className="flex gap-2 mt-2">
+                    <button className="bg-yellow-400 hover:bg-yellow-500 text-sm px-3 py-1 rounded-md">
+                      Save for Later
+                    </button>
                     <button
-                      onClick={() => removeFromCart(item._id)}
-                      className="mt-2 text-red-600 hover:underline text-sm"
+                      onClick={() => handleRemoveItem(item)}
+                      className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded-md"
                     >
                       Remove
                     </button>
@@ -115,29 +204,37 @@ const CartPage = () => {
                 </div>
               </div>
             ))}
-          </div>
 
-          {/* Price Summary */}
-          <div className="w-full lg:w-80 border rounded-lg shadow-md p-4 bg-white h-fit">
-            <h2 className="text-xl font-bold mb-4">Price Details</h2>
-            <div className="space-y-2">
-              {cart.map((item) => (
-                <p key={item._id} className="text-gray-700 text-sm">
-                  {item.title} ({item.quantity}×) — ₹{item.price * item.quantity}
-                </p>
-              ))}
+            {/* Summary */}
+            <div className="pt-6">
+              <div className="flex justify-between text-xl font-bold mb-2">
+                <span>Total Amount:</span>
+                <div>
+                  <span className="line-through text-gray-400 mr-2">₹{totalPrice}</span>
+             
+                </div>
+              </div>
+
+          
+
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={clearCart}
+                  className="border px-6 py-2 rounded-md text-gray-600 hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePlaceOrder}
+                  className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md"
+                >
+                  Confirm & Pay
+                </button>
+              </div>
             </div>
-            <hr className="my-3" />
-            <h3 className="text-lg font-bold">Total Amount: ₹{totalPrice}</h3>
-            <button
-              className="mt-4 bg-green-600 hover:bg-green-700 transition text-white px-4 py-2 rounded-md w-full"
-              onClick={handlePlaceOrder}
-            >
-              Place Order
-            </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

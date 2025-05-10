@@ -13,7 +13,7 @@ const CartPage = () => {
       try {
         const user = JSON.parse(sessionStorage.getItem("user"));
         if (user && user._id) {
-          const res = await fetch(`https://hardware-hive.vercel.app/api/user/getCartItem/${user._id}`);
+          const res = await fetch(`https://hardware-hive.vercel.app/api/user/getCartItem/${user._id}`)
           const data = await res.json();
           if (res.ok) {
             setCart(data.items);

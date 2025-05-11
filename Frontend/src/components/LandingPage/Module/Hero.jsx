@@ -105,7 +105,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-[#013E70] text-white h-80 flex flex-col items-center justify-center">
+    <div className="bg-[#013E70] text-white h-120 flex flex-col items-center justify-center border-b-4  border-[#D8D9D8]">
       <div
         className="relative text-center w-full flex items-center justify-center"
         style={{
@@ -176,19 +176,19 @@ const Hero = () => {
               </div>
 
               <div className="flex justify-between text-sm mt-2">
-  <div
-    className="text-blue-500 cursor-pointer"
-    onClick={() => setShowForgotPopup(true)}
-  >
-    Forgot Password?
-  </div>
-  <div
-    className="text-blue-500 cursor-pointer"
-    onClick={() => setShowChangePasswordPopup(true)}
-  >
-    Change Password
-  </div>
-</div>
+                <div
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => setShowForgotPopup(true)}
+                >
+                  Forgot Password?
+                </div>
+                <div
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => setShowChangePasswordPopup(true)}
+                >
+                  Change Password
+                </div>
+              </div>
 
 
               <button

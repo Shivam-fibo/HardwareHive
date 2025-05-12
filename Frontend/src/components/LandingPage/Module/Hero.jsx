@@ -153,7 +153,7 @@ const Hero = () => {
                 type="email"
                 name="email"
                 placeholder="Email Address"
-                className="w-full p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
+                className="w-full p-3 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
                 onChange={handleLoginInputChange}
                 required
               />
@@ -162,7 +162,7 @@ const Hero = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Password"
-                  className="w-full p-3 pr-12 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
+                  className="w-full p-3 pr-12 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
                   onChange={handleLoginInputChange}
                   required
                 />
@@ -177,13 +177,13 @@ const Hero = () => {
 
               <div className="flex justify-between mt-2">
                 <div
-                  className="text-blue-500 cursor-pointer"
+                  className="text-left text-blue-500 cursor-pointer"
                   onClick={() => setShowForgotPopup(true)}
                 >
                   Forgot Password?
                 </div>
                 <div
-                  className="text-blue-500 cursor-pointer"
+                  className="text-right text-blue-500 cursor-pointer"
                   onClick={() => setShowChangePasswordPopup(true)}
                 >
                   Change Password
@@ -201,10 +201,10 @@ const Hero = () => {
 
             {/* Forgot Password Popup */}
             {showForgotPopup && (
-              <div className="fixed inset-0 flex items-center justify-center bg-transparent z-100">
-                <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4">
+              <div className="fixed inset-0 flex items-center justify-center bg-transparent z-100 p-4">
+                <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md h-84 space-y-4">
                   <h3 className="text-lg font-semibold text-center">Reset Password</h3>
-                  <form onSubmit={handleForgotSubmit} className="space-y-4">
+                  <form onSubmit={handleForgotSubmit} className="space-y-4 ">
                     <input
                       type="email"
                       placeholder="Enter your email"
@@ -213,10 +213,11 @@ const Hero = () => {
                       onChange={(e) => setForgotEmail(e.target.value)}
                       required
                     />
-                    <button type="submit" className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold">
+                    <button type="submit" className="bg-[#013E70] mt-20 text-white w-full p-3 rounded-lg font-semibold">
                       Send Reset Link
                     </button>
-                    <p className="text-center text-sm text-gray-500 cursor-pointer" onClick={() => setShowForgotPopup(false)}>Cancel</p>
+                    <p className="text-center text-sm text-gray-500 cursor-pointer " onClick={() => setShowForgotPopup(false)}>Cancel</p>
+
                   </form>
                 </div>
               </div>
@@ -224,7 +225,7 @@ const Hero = () => {
 
             {/* Change Password Popup */}
             {showChangePasswordPopup && (
-              <div className="fixed inset-0 flex items-center justify-center bg-transparent z-100">
+              <div className="fixed inset-0 flex items-center justify-center bg-transparent z-100 p-4">
                 <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4">
                   <h3 className="text-lg font-semibold text-center">Change Password</h3>
                   <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
@@ -232,7 +233,7 @@ const Hero = () => {
                       type="email"
                       name="email"
                       placeholder="Enter your email"
-                      className="w-full p-3 border border-gray-300 rounded-lg text-gray-800"
+                      className="w-full p-3 border rounded-lg text-gray-800"
                       value={changePasswordData.email}
                       onChange={handleChangePasswordInput}
                       required
@@ -242,7 +243,7 @@ const Hero = () => {
                         type={showChangeOldPassword ? "text" : "password"}
                         name="oldPassword"
                         placeholder="Enter old password"
-                        className="w-full p-3 pr-12 border border-gray-300 rounded-lg text-gray-800"
+                        className="w-full p-3 pr-12 border rounded-lg text-gray-800"
                         value={changePasswordData.oldPassword}
                         onChange={handleChangePasswordInput}
                         required
@@ -257,7 +258,7 @@ const Hero = () => {
                         type={showChangeNewPassword ? "text" : "password"}
                         name="newPassword"
                         placeholder="Enter new password"
-                        className="w-full p-3 pr-12 border border-gray-300 rounded-lg text-gray-800"
+                        className="w-full p-3 pr-12 border rounded-lg text-gray-800"
                         value={changePasswordData.newPassword}
                         onChange={handleChangePasswordInput}
                         required
@@ -267,7 +268,7 @@ const Hero = () => {
                       </button>
                     </div>
 
-                    <button type="submit" className="bg-green-600 text-white w-full p-3 rounded-lg font-semibold">
+                    <button type="submit" className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold">
                       Change Password
                     </button>
                     <p className="text-center text-sm text-gray-500 cursor-pointer" onClick={() => setShowChangePasswordPopup(false)}>Cancel</p>

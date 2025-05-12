@@ -80,7 +80,7 @@ const Footer = () => {
           </div>
           <div>
             <p>Email: <span className="lowercase">sspowertool.in@gmail.com</span></p>
-            <p>CONTACT NO: +91 9804611111, 9992707172</p>
+            <p>Contact No. : +91 9804611111, 9992707172</p>
           </div>
         </div>
 

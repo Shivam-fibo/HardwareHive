@@ -13,8 +13,6 @@ const LandingPage2 = () => {
         <Branding/>
         <Container/>
         <Footer/>
-        
-
     </div>
   )
 }

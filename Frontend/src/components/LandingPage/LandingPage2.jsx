@@ -10,8 +10,8 @@ const LandingPage2 = () => {
     <div>
         <Header/>
         <Hero/>
-        <Container/>
         <Branding/>
+        <Container/>
         <Footer/>
     </div>
   )

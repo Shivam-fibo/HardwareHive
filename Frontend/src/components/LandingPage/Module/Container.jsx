@@ -2,7 +2,7 @@ import React from "react";
 
 const FeatureSection = () => {
   return (
-    <div className="bg-[#003E71] text-white py-8">
+    <div className="bg-[#003E71] text-white py-8 border-b-4  border-[#D8D9D8]">
 
       <div className="text-center text-xl font-semibold italic">
       MULTI-BRAND SPARE PART SUPPLY

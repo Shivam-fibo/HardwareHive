@@ -105,7 +105,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-[#013E70] text-white h-120 flex flex-col items-center justify-center border-b-4  border-[#D8D9D8]">
+    <div className="bg-[#013E70] text-white h-80 flex flex-col items-center justify-center">
       <div
         className="relative text-center w-full flex items-center justify-center"
         style={{
@@ -116,9 +116,9 @@ const Hero = () => {
       >
         <div className="text-center">
           <h2 className="text-4xl mt-4 font-bold uppercase">Multi-Brand Power Tools</h2>
-          <h1 className="text-lg mt-2 text-[#72B6EC]">SPARE PARTS B2B PORTAL</h1>
-          <p className="text-lg mt-2 text-[#72B6EC]">Need help with register, login, and purchasing?</p>
-          <p className="text-lg font-semibold mt-2 text-[#72B6EC]">Contact Us +91 9804611111</p>
+          <h1 className="text-lg mt-1.5 text-[#72B6EC]">SPARE PARTS B2B PORTAL</h1>
+          <p className="text-lg mt-1.5 text-[#72B6EC]">Need help with register, login, and purchasing?</p>
+          <p className="text-lg font-semibold mt-1.5 text-[#72B6EC]">Contact Us +91 9804611111</p>
           <button
             onClick={() => setShowPopup(true)}
             className="mt-6 bg-white rounded-xl w-34 text-lg cursor-pointer text-[#013E70] font-bold h-10"

@@ -4,13 +4,13 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
-  FaFacebookF,
+  FaFacebook,
   FaInstagram,
   // FaTwitter,  // Corrected
-  FaLinkedinIn,
+  FaLinkedin,
   FaYoutube,
 } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaSquareXTwitter } from "react-icons/fa6"
 import toast from 'react-hot-toast';
 
 const Footer = () => {
@@ -56,8 +56,8 @@ const Footer = () => {
     <div className="bg-[#013E70] text-white">
       <div className="px-6 md:px-10 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 sm:gap-20 gap-10">
         {/* Address Section */}
-        <div className="text-sm space-y-4">
-          <div className="flex items-center gap-2 font-bold text-base">
+        <div className="text-[12px] space-y-4">
+          <div className="flex items-center gap-2 font-bold text-base text-[16px]">
             <div className="border p-2 rounded-sm">
               <FaMapMarkerAlt />
             </div>
@@ -86,7 +86,7 @@ const Footer = () => {
 
         {/* Map Section */}
         <div>
-          <h2 className="font-bold mb-2">Map</h2>
+          <h2 className="font-bold mb-2 text-[16px]">Map</h2>
           <iframe
             title="SS Tools Map"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3480.497160657592!2d76.1126022!3d28.0511907!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3912b502333c1949%3A0xe88f77393bd85f0d!2z4KS44KS-4KSmIOCkquCljeCksuCkviDgpK_gpYLgpKrgpYHgpL4!5e0!3m2!1sen!2sin!4v1713975621723!5m2!1sen!2sin"
@@ -104,8 +104,8 @@ const Footer = () => {
         <div className="lg:col-span-2 w-full">
           <div className="flex flex-col lg:flex-row sm:gap-20 gap-10">
             {/* Form Section */}
-            <div className="w-full space-y-3">
-              <h2 className="font-bold mb-2">For Query</h2>
+            <div className="w-full space-y-3 text-[14px]">
+              <h2 className="font-bold mb-2 text-[16px]">For Query</h2>
               <input
                 type="text"
                 name="name"
@@ -148,22 +148,22 @@ const Footer = () => {
 
             {/* Social Section */}
             <div>
-              <h2 className="font-bold mb-4">Follow Us</h2>
-              <div className="space-y-4">
+              <h2 className="font-bold mb-4 text-[16px]">Follow Us</h2>
+              <div className="space-y-4 text-[14px]">
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaFacebookF className="text-blue-400" /> Facebook
+                  <FaFacebook size={16} className="text-white" /> Facebook
                 </a>
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaInstagram className="text-pink-400" /> Instagram
+                  <FaInstagram size={16} className="text-pink-400" /> Instagram
                 </a>
                 <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaXTwitter className="text-white" /> X
+                  <FaSquareXTwitter size={16} className="text-white" /> X
                 </a>
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaLinkedinIn className="text-blue-300" /> LinkedIn
+                  <FaLinkedin size={16} className="text-white" /> LinkedIn
                 </a>
                 <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaYoutube className="text-red-500" /> YouTube
+                  <FaYoutube size={18} className="text-red-500" /> YouTube
                 </a>
               </div>
             </div>

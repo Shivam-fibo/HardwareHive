@@ -44,18 +44,19 @@ const ProductGallery = () => {
 
   return (
     <div onClick={handleClick}>
-      {/* Header */}
-      <div className="top-0 left-0 w-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
-        onClick={() => navigate("/")}>
-        <img
-          src="/logo/ss_power_tool_logo.png"
-          className="w-40 sm:w-48 mb-2 sm:mb-0 ml-0 sm:ml-10"
-          alt="SS Power Tools Logo"
-        />
-        <div className="sm:flex text-nowrap font-semibold text-[14px] text-right sm:mr-6">
-          Contact No. <p> +91 9804611111</p>
-        </div>
+      
+      <div className="h-12">
+        <header
+          className="w-full h-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          <img src="/logo/ss_power_tool_logo.png" width={"150px"} className="sm:ml-10" />
+          <div className="sm:flex text-nowrap font-semibold text-[14px] text-right sm:mr-6">
+            Contact No. <p> +91 9804611111</p>
+          </div>
+        </header>
       </div>
+
 
       {/* Page Title */}
       <h1 className="text-center bg-[#013E70] text-white py-1.5 text-2xl font-bold mb-8">
@@ -69,7 +70,7 @@ const ProductGallery = () => {
             {/* Category Title */}
             <div className="flex items-center mb-4">
               <div
-                className="bg-[#013E70] w-38 sm:w-60 text-white text-base sm:text-lg font-bold px-6 sm:px-10 py-1"
+                className="bg-[#013E70] w-38 sm:w-52 text-white text-base sm:text-[16px] font-bold px-6 sm:px-10 py-1"
                 style={{
                   clipPath: "polygon(0 0, 85% 0, 100% 100%, 0% 100%)",
                 }}
@@ -79,7 +80,7 @@ const ProductGallery = () => {
             </div>
 
             {/* Responsive Image Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4">
               {Array.isArray(products[category]) &&
                 products[category].map((item, idx) => (
                   <div
@@ -89,7 +90,7 @@ const ProductGallery = () => {
                     <img
                       src={item.url}
                       alt={`${category} product`}
-                      className="object-contain w-full h-full"
+                      className="object-con`tain w-full h-full"
                     />
                   </div>
                 ))}
@@ -97,7 +98,7 @@ const ProductGallery = () => {
           </div>
         ))}
       </div>
-      <Footer/>
+      <Footer />
     </div>
 
   );

@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <div className="h-12">
       <header
-        className="w-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
+        className="w-full h-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
         onClick={() => navigate("/")}
       >
         <img src="/logo/ss_power_tool_logo.png" width={"150px"} className="sm:ml-10" />

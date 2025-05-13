@@ -44,15 +44,20 @@ const ProductGallery = () => {
 
   return (
     <div onClick={handleClick}>
-      
+
       <div className="h-12">
         <header
-          className="w-full h-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
+          className="w-full h-full flex justify-between items-center p-2 bg-white cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <img src="/logo/ss_power_tool_logo.png" width={"150px"} className="sm:ml-10" />
-          <div className="sm:flex text-nowrap font-semibold text-[14px] text-right sm:mr-6">
-            Contact No. <p> +91 9804611111</p>
+          <img
+            src="/logo/ss_power_tool_logo.png"
+            width={"150px"}
+            className="sm:ml-6"
+            alt="SS Power Tools Logo"
+          />
+          <div className="flex gap-1 text-nowrap font-semibold text-[14px] text-right sm:mr-6">
+            <img src="icons/customer-service.svg" alt="" /><p> +91 9804611111</p>
           </div>
         </header>
       </div>

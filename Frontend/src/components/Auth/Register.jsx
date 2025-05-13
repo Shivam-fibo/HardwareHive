@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../LandingPage/Module/Header";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
+import Footer from "../LandingPage/Module/Footer";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -58,17 +59,17 @@ export default function Register() {
   {/* Top Header */}
   <div className="h-12">
     <header
-      className="w-full h-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
+      className="w-full h-full flex justify-between items-center p-2 bg-white cursor-pointer"
       onClick={() => navigate("/")}
     >
       <img
         src="/logo/ss_power_tool_logo.png"
         width={"150px"}
-        className="sm:ml-10"
+        className="sm:ml-6"
         alt="SS Power Tools Logo"
       />
-      <div className="sm:flex text-nowrap font-semibold text-[14px] text-right sm:mr-6">
-        Contact No. <p> +91 9804611111</p>
+      <div className="flex gap-1 text-nowrap font-semibold text-[14px] text-right sm:mr-6">
+        <img src="icons/customer-service.svg" alt="" /><p> +91 9804611111</p>
       </div>
     </header>
   </div>
@@ -104,7 +105,7 @@ export default function Register() {
           <button
             type="button"
             onClick={() => setStep(2)}
-            className="w-full p-3 mt-2 bg-[#013E70] text-white rounded-lg transition hover:bg-[#012a4d]"
+            className="w-full p-3 mt-2 bg-[#013E70] text-white rounded-lg transition hover:bg-[#012a4d] cursor-pointer"
           >
             Next
           </button>
@@ -131,16 +132,16 @@ export default function Register() {
             </div>
           ))}
 
-          <div className="flex flex-col sm:flex-row gap-2 pt-2">
+          <div className="flex flex-row gap-2 pt-2">
             <button
               type="submit"
-              className="w-full p-3 border border-[#013E70] text-[#013E70] bg-white rounded-lg transition hover:bg-gray-100 text-[14px]"
+              className="w-full p-3 border border-[#013E70] text-[#013E70] bg-white rounded-lg transition hover:bg-gray-100 text-[14px] cursor-pointer"
             >
               Skip to Next
             </button>
             <button
               type="submit"
-              className="w-full p-3 bg-[#013E70] text-white rounded-lg transition hover:bg-[#012a4d] text-[14px]"
+              className="w-full p-3 bg-[#013E70] text-white rounded-lg transition hover:bg-[#012a4d] text-[14px] cursor-pointer"
             >
               Submit
             </button>
@@ -150,7 +151,7 @@ export default function Register() {
     </div>
   </div>
 
-  <hr className="my-2 w-[90%] sm:w-[80%] mx-auto border-t border-[#D8D9D8]" />
+  <Footer/>
 </div>
 
 

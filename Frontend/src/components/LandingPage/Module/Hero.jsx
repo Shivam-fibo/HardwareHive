@@ -115,7 +115,7 @@ const Hero = () => {
         }}
       >
         <div className="text-center">
-          <h2 className="text-3xl mt-4 font-bold uppercase">Multi-Brand Power Tools</h2>
+          <h2 className="sm:text-3xl text-2xl mt-2 font-bold uppercase">Multi-Brand Power Tools</h2>
           <h1 className="text-[16px] mt-1.5 text-[#72B6EC]">SPARE PARTS B2B PORTAL</h1>
           <p className="text-[16px] mt-1.5 text-[#72B6EC]">Need help with register, login, and purchasing?</p>
           <p className="text-[16px] font-semibold mt-1.5 text-[#72B6EC]">Contact Us +91 9804611111</p>
@@ -193,7 +193,7 @@ const Hero = () => {
 
               <button
                 type="submit"
-                className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:bg-[#013E70]"
+                className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:bg-[#013E70] cursor-pointer"
               >
                 Login
               </button>
@@ -208,12 +208,12 @@ const Hero = () => {
                     <input
                       type="email"
                       placeholder="Enter your email"
-                      className="w-full p-3 border border-gray-300 rounded-lg text-gray-800"
+                      className="w-full p-3 border rounded-lg text-gray-800"
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
                       required
                     />
-                    <button type="submit" className="bg-[#013E70] mt-20 text-white w-full p-3 rounded-lg font-semibold">
+                    <button type="submit" className="bg-[#013E70] mt-20 text-white w-full p-3 rounded-lg font-semibold cursor-pointer">
                       Send Reset Link
                     </button>
                     <p className="text-center text-sm text-gray-500 cursor-pointer " onClick={() => setShowForgotPopup(false)}>Cancel</p>
@@ -268,7 +268,7 @@ const Hero = () => {
                       </button>
                     </div>
 
-                    <button type="submit" className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold">
+                    <button type="submit" className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold cursor-pointer">
                       Change Password
                     </button>
                     <p className="text-center text-sm text-gray-500 cursor-pointer" onClick={() => setShowChangePasswordPopup(false)}>Cancel</p>

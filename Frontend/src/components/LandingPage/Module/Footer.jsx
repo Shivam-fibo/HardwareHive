@@ -53,7 +53,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="bg-[#013E70] text-white">
+    <div className="bg-[#013E70] text-white border-t-4  border-white">
       <div className="px-6 md:px-10 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 sm:gap-20 gap-10">
         {/* Address Section */}
         <div className="text-[12px] space-y-4">
@@ -82,6 +82,11 @@ const Footer = () => {
             <p>Email: <span className="lowercase">sspowertool.in@gmail.com</span></p>
             <p>Contact No. : +91 9804611111, 9992707172</p>
           </div>
+
+          <div className="flex gap-4">
+            <img src="icons/Google_Play.svg" alt="Google_Play" className="cursor-pointer" />
+            <img src="icons/App_Store.png" alt="App_Store" className="cursor-pointer" />
+           </div>
         </div>
 
         {/* Map Section */}
@@ -148,22 +153,22 @@ const Footer = () => {
 
             {/* Social Section */}
             <div>
-              <h2 className="font-bold mb-4 text-[16px]">Follow Us</h2>
-              <div className="space-y-4 text-[14px]">
+              <h2 className="font-bold mb-4 text-[16px] text-nowrap">Follow Us</h2>
+              <div className="text-[14px] flex justify-between sm:flex-col sm:gap-6">
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaFacebook size={16} className="text-white" /> Facebook
+                  <img src="icons/facebook.svg" alt="facebook" width={30} height={30}/>
                 </a>
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaInstagram size={16} className="text-pink-400" /> Instagram
+                  <img src="icons/instagram.svg" alt="instagram" width={30} height={30}/>
                 </a>
                 <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaSquareXTwitter size={16} className="text-white" /> X
+                 <img src="icons/x.svg" alt="x" width={30} height={30}/>
                 </a>
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaLinkedin size={16} className="text-white" /> LinkedIn
+                  <img src="icons/linkedin.svg" alt="linkedin" width={30} height={30}/>
                 </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <FaYoutube size={18} className="text-red-500" /> YouTube
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="">
+                  <img src="icons/youtube.svg" alt="youtube" width={30} height={30} />
                 </a>
               </div>
             </div>
@@ -172,7 +177,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom Border */}
-      <hr className="pb-6 w-[90%] m-auto border-t border-[#D8D9D8]" />
+      <hr className="pb-6 w-[90%] m-auto border-t border-white" />
     </div>
 
   );

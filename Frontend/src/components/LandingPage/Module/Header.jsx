@@ -11,8 +11,7 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-[#D8D9D8] p-2">
-      <hr className="mb-2 mt-4 m-auto border-t bg-black sm:hidden"/>
+    <div className=" p-2">
       <header
         className="w-full h-full flex justify-between items-center cursor-pointer"
         onClick={() => navigate("/")}

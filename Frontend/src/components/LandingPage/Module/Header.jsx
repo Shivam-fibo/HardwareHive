@@ -11,9 +11,10 @@ const Header = () => {
   };
 
   return (
-    <div className="h-12">
+    <div className="bg-[#D8D9D8] p-2">
+      <hr className="mb-2 mt-4 m-auto border-t bg-black" />
       <header
-        className="w-full h-full flex justify-between items-center p-2 bg-[#D8D9D8] cursor-pointer"
+        className="w-full h-full flex justify-between items-center cursor-pointer"
         onClick={() => navigate("/")}
       >
         <img src="/logo/ss_power_tool_logo.png" width={"150px"} className="sm:ml-10" />

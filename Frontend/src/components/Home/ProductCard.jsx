@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { toast } from "react-hot-toast"; 
+import { toast } from "react-hot-toast";
 const ProductCard = ({ product, handleAddToCart }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
-  const [quantity, setQuantity] = useState(); 
+  const [quantity, setQuantity] = useState();
   const handleClick = () => {
     if (!quantity || quantity < 1) {
       toast.error("Please enter a valid quantity before adding to list.");
@@ -15,21 +15,22 @@ const ProductCard = ({ product, handleAddToCart }) => {
   return (
     <div
       ref={ref}
-      className={`border rounded-2xl p-3 shadow-sm flex flex-col justify-between h-64 transition-opacity duration-700 ${
-        inView ? "opacity-100" : "opacity-0"
-      }`}
+      className={`border rounded-lg p-3 h-62 shadow-sm  flex flex-col justify-between transition-opacity duration-700 ${inView ? "opacity-100" : "opacity-0"
+        }`}
     >
       <div>
         <div className="relative">
           <img
             src={product.image}
             alt={product.title}
-            className="w-full h-24 object-contain rounded-xl"
+            className="w-full h-34 object-contain border rounded-lg p-3 shadow-sm"
           />
         </div>
-        <div className="mt-2">
-          <h2 className="text-sm font-medium">{product.title}</h2>
-          <p className="text-xs text-gray-500">{product.subheading}</p>
+        <div className="mt-2 flex justify-between items-start">
+          <div>
+            <h2 className="text-sm font-medium line-clamp-1">{product.title}</h2>
+            <p className="text-xs text-gray-500 line-clamp-2">{product.subheading}</p>
+          </div>
           <p className="text-sm font-semibold mt-1">₹{product.price}</p>
         </div>
       </div>
@@ -40,10 +41,10 @@ const ProductCard = ({ product, handleAddToCart }) => {
           value={quantity || ""}
           onChange={(e) => setQuantity(Number(e.target.value))}
           placeholder="Add Quantity"
-          className="border border-gray-300 rounded px-2 py-1 text-sm w-full"
+          className="border border-gray-300 rounded px-2 py-1 text-[10px]  w-full"
         />
         <button
-          className="bg-yellow-400 hover:bg-yellow-500 text-sm px-2 py-1 rounded font-semibold w-full"
+          className="bg-yellow-400 hover:bg-yellow-500 text-[10px] px-2 py-1 rounded font-semibold w-full"
           onClick={handleClick}
         >
           Add to list

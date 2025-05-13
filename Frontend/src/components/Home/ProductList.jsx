@@ -39,7 +39,7 @@ const ProductList = () => {
       quantity,
       userId,
     };
-  
+
     try {
       const res = await fetch("https://hardware-hive.vercel.app/api/user/addCart", {
         method: "POST",
@@ -48,7 +48,7 @@ const ProductList = () => {
         },
         body: JSON.stringify(cartItem),
       });
-  
+
       const data = await res.json();
       console.log(data)
       console.log("Backend response:", data);
@@ -56,8 +56,8 @@ const ProductList = () => {
       console.error("Error sending to backend:", error);
     }
   };
-  
-  
+
+
   const toggleCategory = (category) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
@@ -101,51 +101,57 @@ const ProductList = () => {
   };
 
   return (
-    <div className="p-4">
+    <div>
       {/* --- Navigation Buttons Row --- */}
-      <div className="flex flex-wrap justify-between items-center mt-4 mb-6 border-b pb-3">
-        <nav className="flex flex-wrap gap-3">
-          {categories.map((name) => (
+      <div className="bg-[#013E70] text-white py-2 px-4">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+
+          {/* Categories Nav */}
+          <nav className="flex flex-wrap justify-center sm:justify-start gap-2">
+            {categories.map((name) => (
+              <button
+                key={name}
+                onClick={() => toggleCategory(name)}
+                className={`px-4 py-1.5 rounded text-[12px] font-medium transition-all duration-200
+            ${selectedCategories.includes(name)
+                    ? "bg-white text-[#013E70]"
+                    : "bg-[#0D2F4B] hover:bg-white hover:text-[#013E70]"}
+          `}
+              >
+                {name}
+              </button>
+            ))}
+
             <button
-              key={name}
-              onClick={() => toggleCategory(name)}
-              className={`px-4 py-1.5 rounded text-sm font-medium ${
-                selectedCategories.includes(name)
-                  ? "bg-[#013E70] text-white"
-                  : "bg-[#0D2F4B] text-white hover:bg-[#013E70]"
-              }`}
-            >
-              {name}
+              onClick={() => {
+                setSelectedCategories([]);
+                setSelectedSubcategories([]);
+              }}
+              className={`px-4 py-1.5 rounded text-sm font-medium transition-all duration-200
+          ${selectedCategories.length === 0
+                  ? "bg-white text-[#013E70]"
+                  : "bg-[#0D2F4B] hover:bg-white hover:text-[#013E70]"}`}>
+              All
             </button>
-          ))}
-          <button
-            onClick={() => {
-              setSelectedCategories([]);
-              setSelectedSubcategories([]);
-            }}
-            className={`px-4 py-1.5 rounded text-sm font-medium ${
-              selectedCategories.length === 0
-                ? "bg-[#013E70] text-white"
-                : "bg-[#0D2F4B] text-white hover:bg-[#013E70]"
-            }`}
-          >
-            All
-          </button>
-        </nav>
-        <div className="text-[#0D2F4B] font-bold text-xl whitespace-nowrap">
-          Contact No. +91 9804611111
+          </nav>
+
+          {/* Contact Info */}
+          <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap hidden sm:block">
+            Contact No. <span className="font-bold">+91 9804611111</span>
+          </div>
         </div>
       </div>
 
-      <div className="md:flex gap-6">
+
+      <div className="md:flex gap-6 p-6">
         {/* Sidebar */}
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
-          <h2 className="text-xl font-bold text-[#0D2F4B]">Category</h2>
+          <h2 className="text-lg font-bold text-[#0D2F4B]">Category</h2>
           <div className="bg-[#003865] text-white p-4 rounded-xl border border-blue-400">
             {categories.map((item, i) => (
               <label
                 key={i}
-                className="flex items-center justify-between mb-3 text-base font-semibold cursor-pointer"
+                className="flex items-center justify-between mb-3 text-[14px] font-semibold cursor-pointer"
               >
                 {item}
                 <input
@@ -164,7 +170,7 @@ const ProductList = () => {
               {subcategories.map((sub, i) => (
                 <label
                   key={i}
-                  className="flex items-center justify-between mb-3 text-base font-semibold cursor-pointer"
+                  className="flex items-center justify-between mb-3 text-[14px] font-semibold cursor-pointer"
                 >
                   {sub}
                   <input
@@ -180,7 +186,7 @@ const ProductList = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full">
           {currentProducts.map((product) => (
             <ProductCard
               key={product._id}
@@ -192,7 +198,7 @@ const ProductList = () => {
       </div>
 
       {/* Pagination */}
-      <ul className="flex justify-center gap-1 text-gray-900 mt-6">
+      <ul className="flex justify-center gap-1 text-gray-900 my-6">
         <li>
           <a
             href="#"
@@ -207,9 +213,8 @@ const ProductList = () => {
             <a
               href="#"
               onClick={() => handlePageChange(index + 1)}
-              className={`block size-8 rounded border border-gray-200 text-center  text-sm font-medium transition-colors hover:bg-gray-50 ${
-                currentPage === index + 1 ? "bg-[#013E70] text-white" : "text-gray-900"
-              }`}
+              className={`flex justify-center items-center size-8 rounded border border-gray-200  text-sm font-medium transition-colors hover:bg-gray-50 ${currentPage === index + 1 ? "bg-[#013E70] text-white" : "text-gray-900"
+                }`}
             >
               {index + 1}
             </a>

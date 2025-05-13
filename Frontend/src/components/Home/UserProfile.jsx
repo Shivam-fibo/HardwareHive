@@ -170,7 +170,7 @@ export default function Profile() {
                   className="border rounded-md p-2 w-full text-sm"
                 />
               </div>
-              
+     
               <div>
                 <label className="block text-gray-700 text-sm font-medium mb-1">Address</label>
                 <input

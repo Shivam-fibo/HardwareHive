@@ -14,6 +14,7 @@ import OrderHistory from './components/Home/OrderHistory.jsx';
 import { PiWhatsappLogoThin } from "react-icons/pi";
 import { PiWhatsappLogoDuotone } from 'react-icons/pi';
 import { FaWhatsapp } from 'react-icons/fa';
+import './App.css';
 
 function App() {
   return (

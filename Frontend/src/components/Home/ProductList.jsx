@@ -111,15 +111,15 @@ const ProductList = () => {
 
   return (
     <div>
-      <div className="bg-[#013E70] text-[#000000] py-2 px-4">
+      <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-          <nav className="w-full flex flex-wrap justify-center gap-2 relative">
+          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
             {categories.map((name) => (
-              <div key={name} className="relative">
+              <div key={name} className="relative flex-shrink-0 min-w-[40px] sm:min-w-fit">
                 <button
                   onClick={() => toggleCategory(name)}
-                  className={`px-3 py-1 rounded text-[10px] sm:text-[12px] text-nowrap font-medium transition-all duration-200
-                    ${selectedCategories.includes(name)
+                  className={`w-full px-3 py-1 rounded text-[12px] font-medium transition-all duration-200
+          ${selectedCategories.includes(name)
                       ? "bg-yellow-400 text-[#013E70]"
                       : "bg-white hover:bg-yellow-400 hover:text-[#000000]"}`}
                 >
@@ -132,7 +132,7 @@ const ProductList = () => {
                       <button
                         key={subcat}
                         onClick={() => toggleSubcategory(subcat)}
-                        className="block w-full text-left px-3 py-1 text-[10px] sm:text-[12px] focus:bg-yellow-400"
+                        className="block w-full text-left px-3 py-1 text-[12px] focus:bg-yellow-400"
                       >
                         {subcat}
                       </button>
@@ -142,20 +142,23 @@ const ProductList = () => {
               </div>
             ))}
 
-            <button
-              onClick={() => {
-                setSelectedCategories([]);
-                setSelectedSubcategories([]);
-                selectedCategoryRef.current = null; 
-              }}
-              className={`px-4 py-1 rounded text-[10px] sm:text-[12px] transition-all duration-200
-                ${selectedCategories.length === 0
-                  ? "bg-yellow-400 text-black"
-                  : "bg-white hover:bg-yellow-400 hover:text-black"}`}
-            >
-              All
-            </button>
+            <div className="relative flex-shrink-0 min-w-[40px] sm:min-w-fit">
+              <button
+                onClick={() => {
+                  setSelectedCategories([]);
+                  setSelectedSubcategories([]);
+                  selectedCategoryRef.current = null;
+                }}
+                className={`w-full px-3 py-1 rounded text-[12px] transition-all duration-200
+        ${selectedCategories.length === 0
+                    ? "bg-yellow-400 text-black"
+                    : "bg-white hover:bg-yellow-400 hover:text-black"}`}
+              >
+                All
+              </button>
+            </div>
           </nav>
+
 
           <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap hidden sm:flex sm:gap-1 absolute right-5">
             <RiCustomerService2Fill size={22} />
@@ -167,7 +170,7 @@ const ProductList = () => {
       <div className="flex justify-between py-4 px-6 sm:hidden">
         <h1 className="font-medium text-xl">All List Items</h1>
         <span className="flex gap-2">
-          Filter <img src="icons/filter.svg" alt="" /> 
+          Filter <img src="icons/filter.svg" alt="" />
         </span>
       </div>
 
@@ -182,7 +185,7 @@ const ProductList = () => {
               >
                 {item}
                 <input
-                  type="checkbox" 
+                  type="checkbox"
                   className="form-checkbox h-5 w-5 text-[#003865] rounded"
                   checked={selectedCategories.includes(item)}
                   onChange={() => toggleCategory(item)}

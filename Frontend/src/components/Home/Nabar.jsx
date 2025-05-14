@@ -58,14 +58,14 @@ function Header() {
 
 
             {/* Icons for mobile view */}
-            <div className="flex sm:hidden items-center space-x-3 text-black">
+            <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
               <button aria-label="Notifications"><CiBellOn size={22} strokeWidth={0.5} /></button>
               <button aria-label="User" onClick={() => navigate("/user")}><CiUser size={20} strokeWidth={0.5} /></button>
             </div>
           </div>
 
-          <hr className="w-full border-t border-[#0D2F4B]  sm:hidden" />
+          {/* <hr className="w-full border-t-2 border-[#0D2F4B]  sm:hidden" /> */}
 
           {/* Search Bar (on its own row on mobile) */}
           <div className="relative w-full sm:max-w-3xl">

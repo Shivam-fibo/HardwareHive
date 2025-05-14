@@ -41,7 +41,7 @@ const ProductCard = ({ product, handleAddToCart }) => {
           value={quantity || ""}
           onChange={(e) => setQuantity(Number(e.target.value))}
           placeholder="Add Quantity"
-          className="border border-gray-300 rounded px-2 py-1 text-[10px]  w-full"
+          className="border border-black rounded px-2 py-1 text-[10px]  w-full "
         />
         <button
           className="bg-yellow-400 hover:bg-yellow-500 text-[10px] px-2 py-1 rounded font-semibold w-full"

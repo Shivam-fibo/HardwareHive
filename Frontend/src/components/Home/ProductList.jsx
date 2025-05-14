@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import ProductCard from "./ProductCard";
+import { RiCustomerService2Fill } from "react-icons/ri";
 
 const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
 
@@ -100,54 +101,79 @@ const ProductList = () => {
     }
   };
 
+  const categorySubcategories = {
+    Machinery: ["Lathe", "Milling", "Drill"],
+    "Spare Parts": ["Belts", "Bearings", "Screws"],
+    Brands: ["Brand A", "Brand B"],
+    Accessories: ["Category 1", "Category 2"]
+  };
+
   return (
     <div>
       {/* --- Navigation Buttons Row --- */}
-      <div className="bg-[#013E70] text-white py-2 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
 
+      <div className="bg-[#013E70] text-[#000000] py-2 px-4">
+        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           {/* Categories Nav */}
-          <nav className="flex flex-wrap justify-center sm:justify-start gap-2">
+          <nav className="w-full flex flex-wrap justify-center gap-2 relative">
             {categories.map((name) => (
-              <button
-                key={name}
-                onClick={() => toggleCategory(name)}
-                className={`px-4 py-1.5 rounded text-[12px] font-medium transition-all duration-200
-            ${selectedCategories.includes(name)
-                    ? "bg-white text-[#013E70]"
-                    : "bg-[#0D2F4B] hover:bg-white hover:text-[#013E70]"}
-          `}
-              >
-                {name}
-              </button>
+              <div key={name} className="relative">
+                <button
+                  onClick={() => toggleCategory(name)}
+                  className={`px-4 py-1.5 rounded text-[8px] sm:text-[12px] text-nowrap font-medium transition-all duration-200
+              ${selectedCategories.includes(name)
+                      ? "bg-yellow-400 text-[#013E70]"
+                      : "bg-white hover:bg-yellow-400 hover:text-[#000000]"}`}
+                >
+                  {name}
+                </button>
+
+                {/* Subcategory Dropdown */}
+                {selectedCategories.includes(name) &&
+                  categorySubcategories[name] &&
+                  categorySubcategories[name].length > 0 && (
+                    <div className="absolute left-0 top-full mt-1 w-40 bg-white shadow-md rounded z-50">
+                      {categorySubcategories[name].map((subcat) => (
+                        <button
+                          key={subcat}
+                          onClick={() => toggleSubcategory(subcat)}
+                          className="block w-full text-left px-4 py-2 text-sm hover:bg-yellow-100"
+                        >
+                          {subcat}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+              </div>
             ))}
 
+            {/* All Button */}
             <button
               onClick={() => {
                 setSelectedCategories([]);
                 setSelectedSubcategories([]);
               }}
-              className={`px-4 py-1.5 rounded text-sm font-medium transition-all duration-200
+              className={`px-4 py-1.5 rounded text-[8px] sm:text-[12px] font-medium transition-all duration-200
           ${selectedCategories.length === 0
-                  ? "bg-white text-[#013E70]"
-                  : "bg-[#0D2F4B] hover:bg-white hover:text-[#013E70]"}`}>
+                  ? "bg-yellow-400 text-black"
+                  : "bg-white hover:bg-yellow-400 hover:text-black"}`}
+            >
               All
             </button>
           </nav>
 
           {/* Contact Info */}
-          <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap hidden sm:block">
-            Contact No. <span className="font-bold">+91 9804611111</span>
+          <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap hidden sm:flex sm:gap-1 absolute right-5">
+            <RiCustomerService2Fill size={22} />
+            <span className="font-bold">+91 9804611111</span>
           </div>
         </div>
       </div>
-
-
       <div className="md:flex gap-6 p-6">
         {/* Sidebar */}
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
-          <h2 className="text-lg font-bold text-[#0D2F4B]">Category</h2>
-          <div className="bg-[#003865] text-white p-4 rounded-xl border border-blue-400">
+          <h2 className="text-lg font-bold text-[#0D2F4B] mb-6">Category</h2>
+          <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
             {categories.map((item, i) => (
               <label
                 key={i}
@@ -156,7 +182,7 @@ const ProductList = () => {
                 {item}
                 <input
                   type="checkbox"
-                  className="form-checkbox h-5 w-5 text-blue-600 rounded"
+                  className="form-checkbox h-5 w-5 text-[#003865] rounded"
                   checked={selectedCategories.includes(item)}
                   onChange={() => toggleCategory(item)}
                 />
@@ -165,7 +191,7 @@ const ProductList = () => {
           </div>
 
           {subcategories.length > 0 && (
-            <div className="bg-[#003865] text-white p-4 rounded-xl border border-blue-400">
+            <div className="bg-[#003865] text-white p-4 rounded-xl border border-[#003865]">
               <h3 className="text-lg font-semibold mb-2">Subcategories</h3>
               {subcategories.map((sub, i) => (
                 <label
@@ -175,7 +201,7 @@ const ProductList = () => {
                   {sub}
                   <input
                     type="checkbox"
-                    className="form-checkbox h-5 w-5 text-blue-600 rounded"
+                    className="form-checkbox h-5 w-5 text-[#003865] rounded"
                     checked={selectedSubcategories.includes(sub)}
                     onChange={() => toggleSubcategory(sub)}
                   />
@@ -186,7 +212,7 @@ const ProductList = () => {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full mt-13">
           {currentProducts.map((product) => (
             <ProductCard
               key={product._id}

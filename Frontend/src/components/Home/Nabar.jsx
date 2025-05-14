@@ -39,22 +39,23 @@ function Header() {
   };
 
   return (
-    <header className="bg-white border-t-8 border-t-[#013E70] top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+    <header className="bg-white top-0 z-50 shadow-sm">
+      <div className="sm:h-12 p-2">
         {/* Top Row: Logo + Icons */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
           {/* Logo & Actions in Row */}
-          <div className="flex items-center justify-between w-full sm:w-auto">
+          <div className="flex items-center justify-between w-full sm:w-auto h-full">
             {/* Logo */}
             <div className="flex items-center space-x-2">
               <img
                 src="/logo/ss_power_tool_logo.png"
-                width="130"
+                width={"150px"}
+                className="ml-6"
                 alt="SS Power Tools Logo"
-                className="h-auto"
               />
             </div>
+
 
             {/* Icons for mobile view */}
             <div className="flex sm:hidden items-center space-x-3 text-[#013E70]">
@@ -64,8 +65,10 @@ function Header() {
             </div>
           </div>
 
+          <hr className="w-full border-t border-black sm:hidden" />
+
           {/* Search Bar (on its own row on mobile) */}
-          <div className="relative w-full sm:max-w-xl">
+          <div className="relative w-full sm:max-w-3xl">
             <input
               type="text"
               placeholder="Search"
@@ -80,10 +83,10 @@ function Header() {
           </div>
 
           {/* Icons for desktop view */}
-          <div className="hidden sm:flex items-center space-x-4 text-[#013E70]">
+          <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
             <button aria-label="Cart"><CartIcon size={22} strokeWidth={0.5} /></button>
             <button aria-label="Notifications" onClick={() => setShowDropdown(!showDropdown)}>
-              <CiBellOn size={22} strokeWidth={0.5} />
+              <CiBellOn size={24} strokeWidth={0.5} />
             </button>
             <button aria-label="User" onClick={() => navigate("/user")}><CiUser size={22} strokeWidth={0.5} /></button>
           </div>

@@ -44,7 +44,7 @@ const ProductCard = ({ product, handleAddToCart }) => {
           className="border border-black rounded px-2 py-1 text-[10px]  w-full "
         />
         <button
-          className="bg-yellow-400 hover:bg-yellow-500 text-[10px] px-2 py-1 rounded font-semibold w-full"
+          className="bg-yellow-400 hover:bg-yellow-500 text-[10px] px-2 py-1 rounded font-semibold w-full text-nowrap"
           onClick={handleClick}
         >
           Add to list

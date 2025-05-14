@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import ProductCard from "./ProductCard";
 import { RiCustomerService2Fill } from "react-icons/ri";
@@ -13,6 +13,9 @@ const ProductList = () => {
   const itemsPerPage = 8;
 
   const { addToCart } = useCart();
+
+  // ✅ useRef to track the selected category
+  const selectedCategoryRef = useRef(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,7 +34,6 @@ const ProductList = () => {
     addToCart({ ...item, quantity });
     const user = JSON.parse(sessionStorage.getItem("user"));
     const userId = user?._id;
-    console.log(userId)
     const cartItem = {
       productId: item._id,
       title: item.title,
@@ -51,18 +53,24 @@ const ProductList = () => {
       });
 
       const data = await res.json();
-      console.log(data)
-      console.log("Backend response:", data);
+      console.log(data);
     } catch (error) {
       console.error("Error sending to backend:", error);
     }
   };
 
-
+  // ✅ Updated to allow only one category selection
   const toggleCategory = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
-    );
+    if (selectedCategoryRef.current === category) {
+      // Deselect if already selected
+      selectedCategoryRef.current = null;
+      setSelectedCategories([]);
+      setSelectedSubcategories([]);
+    } else {
+      selectedCategoryRef.current = category;
+      setSelectedCategories([category]);
+      setSelectedSubcategories([]); // Reset subcategories when category changes
+    }
   };
 
   const toggleSubcategory = (sub) => {
@@ -101,60 +109,47 @@ const ProductList = () => {
     }
   };
 
-  const categorySubcategories = {
-    Machinery: ["Lathe", "Milling", "Drill"],
-    "Spare Parts": ["Belts", "Bearings", "Screws"],
-    Brands: ["Brand A", "Brand B"],
-    Accessories: ["Category 1", "Category 2"]
-  };
-
   return (
     <div>
-      {/* --- Navigation Buttons Row --- */}
-
       <div className="bg-[#013E70] text-[#000000] py-2 px-4">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-          {/* Categories Nav */}
           <nav className="w-full flex flex-wrap justify-center gap-2 relative">
             {categories.map((name) => (
               <div key={name} className="relative">
                 <button
                   onClick={() => toggleCategory(name)}
-                  className={`px-4 py-1.5 rounded text-[8px] sm:text-[12px] text-nowrap font-medium transition-all duration-200
-              ${selectedCategories.includes(name)
+                  className={`px-3 py-1 rounded text-[10px] sm:text-[12px] text-nowrap font-medium transition-all duration-200
+                    ${selectedCategories.includes(name)
                       ? "bg-yellow-400 text-[#013E70]"
                       : "bg-white hover:bg-yellow-400 hover:text-[#000000]"}`}
                 >
                   {name}
                 </button>
 
-                {/* Subcategory Dropdown */}
-                {selectedCategories.includes(name) &&
-                  categorySubcategories[name] &&
-                  categorySubcategories[name].length > 0 && (
-                    <div className="absolute left-0 top-full mt-1 w-40 bg-white shadow-md rounded z-50">
-                      {categorySubcategories[name].map((subcat) => (
-                        <button
-                          key={subcat}
-                          onClick={() => toggleSubcategory(subcat)}
-                          className="block w-full text-left px-4 py-2 text-sm hover:bg-yellow-100"
-                        >
-                          {subcat}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                {selectedCategories.includes(name) && (
+                  <div className="absolute left-0 top-full mt-1 w-40 bg-white shadow-md rounded overflow-hidden z-50">
+                    {subcategories.map((subcat) => (
+                      <button
+                        key={subcat}
+                        onClick={() => toggleSubcategory(subcat)}
+                        className="block w-full text-left px-3 py-1 text-[10px] sm:text-[12px] focus:bg-yellow-400"
+                      >
+                        {subcat}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
-            {/* All Button */}
             <button
               onClick={() => {
                 setSelectedCategories([]);
                 setSelectedSubcategories([]);
+                selectedCategoryRef.current = null; 
               }}
-              className={`px-4 py-1.5 rounded text-[8px] sm:text-[12px] font-medium transition-all duration-200
-          ${selectedCategories.length === 0
+              className={`px-4 py-1 rounded text-[10px] sm:text-[12px] transition-all duration-200
+                ${selectedCategories.length === 0
                   ? "bg-yellow-400 text-black"
                   : "bg-white hover:bg-yellow-400 hover:text-black"}`}
             >
@@ -162,15 +157,21 @@ const ProductList = () => {
             </button>
           </nav>
 
-          {/* Contact Info */}
           <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap hidden sm:flex sm:gap-1 absolute right-5">
             <RiCustomerService2Fill size={22} />
             <span className="font-bold">+91 9804611111</span>
           </div>
         </div>
       </div>
-      <div className="md:flex gap-6 p-6">
-        {/* Sidebar */}
+
+      <div className="flex justify-between py-4 px-6 sm:hidden">
+        <h1 className="font-medium text-xl">All List Items</h1>
+        <span className="flex gap-2">
+          Filter <img src="icons/filter.svg" alt="" /> 
+        </span>
+      </div>
+
+      <div className="md:flex gap-6 px-6">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
           <h2 className="text-lg font-bold text-[#0D2F4B] mb-6">Category</h2>
           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
@@ -181,7 +182,7 @@ const ProductList = () => {
               >
                 {item}
                 <input
-                  type="checkbox"
+                  type="checkbox" 
                   className="form-checkbox h-5 w-5 text-[#003865] rounded"
                   checked={selectedCategories.includes(item)}
                   onChange={() => toggleCategory(item)}
@@ -211,8 +212,7 @@ const ProductList = () => {
           )}
         </div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full mt-13">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-13">
           {currentProducts.map((product) => (
             <ProductCard
               key={product._id}
@@ -223,13 +223,13 @@ const ProductList = () => {
         </div>
       </div>
 
-      {/* Pagination */}
       <ul className="flex justify-center gap-1 text-gray-900 my-6">
         <li>
           <a
             href="#"
-            className="grid size-8 place-content-center rounded border border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180"
+            className={`grid size-8 place-content-center rounded border border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === 1 && "cursor-not-allowed"}`}
             onClick={() => handlePageChange(currentPage - 1)}
+            aria-disabled={currentPage === 1}
           >
             ‹
           </a>
@@ -239,8 +239,7 @@ const ProductList = () => {
             <a
               href="#"
               onClick={() => handlePageChange(index + 1)}
-              className={`flex justify-center items-center size-8 rounded border border-gray-200  text-sm font-medium transition-colors hover:bg-gray-50 ${currentPage === index + 1 ? "bg-[#013E70] text-white" : "text-gray-900"
-                }`}
+              className={`flex justify-center items-center size-8 rounded border border-gray-200 text-sm font-medium transition-colors hover:bg-gray-50 ${currentPage === index + 1 ? "bg-[#013E70] text-white" : "text-gray-900"}`}
             >
               {index + 1}
             </a>
@@ -249,8 +248,9 @@ const ProductList = () => {
         <li>
           <a
             href="#"
-            className="grid size-8 place-content-center rounded border border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180"
+            className={`grid size-8 place-content-center rounded border border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === totalPages && "cursor-not-allowed"}`}
             onClick={() => handlePageChange(currentPage + 1)}
+            aria-disabled={currentPage === totalPages}
           >
             ›
           </a>

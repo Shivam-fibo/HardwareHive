@@ -51,21 +51,21 @@ function Header() {
               <img
                 src="/logo/ss_power_tool_logo.png"
                 width={"150px"}
-                className="ml-6"
+                className="sm:ml-6"
                 alt="SS Power Tools Logo"
               />
             </div>
 
 
             {/* Icons for mobile view */}
-            <div className="flex sm:hidden items-center space-x-3 text-[#013E70]">
+            <div className="flex sm:hidden items-center space-x-3 text-black">
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
-              <button aria-label="Notifications"><CiBellOn size={20} strokeWidth={0.5} /></button>
+              <button aria-label="Notifications"><CiBellOn size={22} strokeWidth={0.5} /></button>
               <button aria-label="User" onClick={() => navigate("/user")}><CiUser size={20} strokeWidth={0.5} /></button>
             </div>
           </div>
 
-          <hr className="w-full border-t border-black sm:hidden" />
+          <hr className="w-full border-t border-[#0D2F4B]  sm:hidden" />
 
           {/* Search Bar (on its own row on mobile) */}
           <div className="relative w-full sm:max-w-3xl">
@@ -74,10 +74,10 @@ function Header() {
               placeholder="Search"
               className="w-full border border-[#0D2F4B] rounded-full py-2 pl-5 pr-20 text-sm"
             />
-            <button className="absolute right-12 top-1/2 -translate-y-1/2 text-[#013E70]">
+            <button className="absolute right-12 top-1/2 -translate-y-1/2 text-[#0D2F4B]">
               <FaMicrophone size={18} />
             </button>
-            <button className="absolute right-4 top-1/2 -translate-y-1/2 text-[#013E70]">
+            <button className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0D2F4B]">
               <CiSearch size={22} />
             </button>
           </div>

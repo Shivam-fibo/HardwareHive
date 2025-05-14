@@ -104,11 +104,20 @@ export default function Register() {
               ))}
               <button
                 type="button"
-                onClick={() => setStep(2)}
-                className="w-full p-3 mt-2 bg-[#013E70] text-white rounded-lg transition hover:bg-[#012a4d] cursor-pointer"
+                onClick={() => {
+                  const requiredFields = ["name", "companyName", "mobile", "whatsapp", "email"];
+                  const isValid = requiredFields.every(field => formData[field].trim() !== "");
+                  if (!isValid) {
+                    toast.error("Please fill in all the required fields.");
+                    return;
+                  }
+                  setStep(2);
+                }}
+                className="w-full p-3 mt-2 bg-[#013E70] text-white rounded-lg transition hover:bg-[#012a4d]"
               >
                 Next
               </button>
+
             </form>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-2">

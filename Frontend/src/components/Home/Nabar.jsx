@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   CiSearch,
   CiShoppingCart,
-  CiBellOn,
-  CiUser,
   CiMenuBurger,
 } from "react-icons/ci";
 import { FaMicrophone } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa6";
+import { PiBellBold } from "react-icons/pi";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
@@ -60,8 +60,8 @@ function Header() {
             {/* Icons for mobile view */}
             <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
-              <button aria-label="Notifications"><CiBellOn size={22} strokeWidth={0.5} /></button>
-              <button aria-label="User" onClick={() => navigate("/user")}><CiUser size={20} strokeWidth={0.5} /></button>
+              <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} /></button>
+              <button aria-label="User" onClick={() => navigate("/user")}><FaRegUser size={20} strokeWidth={0.5} /></button>
             </div>
           </div>
 
@@ -86,9 +86,9 @@ function Header() {
           <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
             <button aria-label="Cart"><CartIcon size={22} strokeWidth={0.5} /></button>
             <button aria-label="Notifications" onClick={() => setShowDropdown(!showDropdown)}>
-              <CiBellOn size={24} strokeWidth={0.5} />
+              <PiBellBold size={24} strokeWidth={0.5} />
             </button>
-            <button aria-label="User" onClick={() => navigate("/user")}><CiUser size={22} strokeWidth={0.5} /></button>
+            <button aria-label="User" onClick={() => navigate("/user")}><FaRegUser size={22} strokeWidth={0.5} /></button>
           </div>
         </div>
 

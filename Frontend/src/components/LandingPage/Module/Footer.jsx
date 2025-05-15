@@ -177,7 +177,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom Border */}
-      <hr className="pb-6 w-[90%] m-auto border-t border-white" />
+      <hr className="pb-6 w-[90%] m-auto border-t border-white sm:mt-0 mt-10" />
     </div>
 
   );

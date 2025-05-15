@@ -25,7 +25,7 @@ function App() {
           href="https://wa.me/919804611111"
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-4 right-4 z-50 "
+          className="fixed bottom-8 right-4 z-50 "
         >
           <FaWhatsapp size={60} className="text-green-500 " />
         </a>

@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import ProductCard from "./ProductCard";
 import { RiCustomerService2Fill } from "react-icons/ri";
+import FilterDrawer from "./FilterDrawer";
 
 const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
 
 const ProductList = () => {
+  const [showFilter, setShowFilter] = useState(false);
   const [products, setProducts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
@@ -170,11 +172,21 @@ const ProductList = () => {
       <div className="flex justify-between py-4 px-6 sm:hidden">
         <h1 className="font-medium text-xl">All List Items</h1>
         <span className="flex gap-2">
-          Filter <img src="icons/filter.svg" alt="" />
+          Filter <img src="icons/filter.svg" alt="" onClick={() => setShowFilter(true)} />
         </span>
+        
+        <FilterDrawer isOpen={showFilter}
+          onClose={() => setShowFilter(false)}
+          categories={categories}
+          selectedCategories={selectedCategories}
+          toggleCategory={toggleCategory}
+          subcategories={subcategories}
+          selectedSubcategories={selectedSubcategories}
+          toggleSubcategory={toggleSubcategory} />
       </div>
 
-      <div className="md:flex gap-6 px-6">
+
+      <div className="md:flex gap-6 px-6 sm:mt-4">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
           <h2 className="text-lg font-bold text-[#0D2F4B] mb-6">Category</h2>
           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">

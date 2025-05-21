@@ -10,8 +10,11 @@ import { PiBellBold } from "react-icons/pi";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
+import { IoLogOutOutline } from "react-icons/io5";
+
 
 function Header() {
+  const [showProfile, setShowProfile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -61,11 +64,24 @@ function Header() {
             <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
               <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} /></button>
-              <button aria-label="User" onClick={() => navigate("/user")}><FaRegUser size={20} strokeWidth={0.5} /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}><FaRegUser size={20} strokeWidth={0.5} className=" cursor-pointer" /></button>
             </div>
+
+            {showProfile && (
+              <div className="absolute w-28 top-10 sm:top-11 right-4 sm:right-8 bg-yellow-400 shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
+                <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-yellow-300 flex items-center gap-2 px-4 p-1.5">
+                  <FaRegUser size={12} strokeWidth={0.5} className=" cursor-pointer" />
+                  Profile</p>
+
+                <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-red-500 flex items-center gap-2 px-4 p-1.5">
+                  <IoLogOutOutline size={14} strokeWidth={0.5} className=" cursor-pointer" />
+                  Logout</p>
+              </div>
+            )}
+
           </div>
 
-          {/* <hr className="w-full border-t-2 border-[#0D2F4B]  sm:hidden" /> */}
+
 
           {/* Search Bar (on its own row on mobile) */}
           <div className="relative w-full sm:max-w-3xl">
@@ -88,7 +104,7 @@ function Header() {
             <button aria-label="Notifications" onClick={() => setShowDropdown(!showDropdown)}>
               <PiBellBold size={24} strokeWidth={0.5} />
             </button>
-            <button aria-label="User" onClick={() => navigate("/user")}><FaRegUser size={22} strokeWidth={0.5} /></button>
+            <button aria-label="User" onClick={() => setShowProfile(!showProfile)} ><FaRegUser size={22} strokeWidth={0.5} className=" cursor-pointer" /></button>
           </div>
         </div>
 

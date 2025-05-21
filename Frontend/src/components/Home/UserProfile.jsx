@@ -10,10 +10,12 @@ import {
   MessageSquare,
   MapPin,
   CreditCard,
+  Pencil
 } from "lucide-react";
+import { CiMenuKebab } from "react-icons/ci"; 
+import { RiCustomerService2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-
-
+import Header from "./Nabar";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -50,8 +52,9 @@ export default function Profile() {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        sessionStorage.setItem("user", JSON.stringify(updatedUser)); 
+        sessionStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
+        
         setIsEditing(false); // Exit edit mode
         alert("Profile updated successfully!");
       } else {
@@ -61,278 +64,99 @@ export default function Profile() {
       console.error("Error updating profile:", error);
     }
   };
-  const handleCancel = () =>{
+  const handleCancel = () => {
     setIsEditing(false);
   }
 
   return (
-    <> 
+    <div className="min-h-screen bg-gray-100">
+      <Header />
+      <div className="bg-[#013E70] text-[#000000] py-2 flex">
+        <div className="w-full flex flex-nowrap justify-start sm:justify-center">
+          <p className="text-yellow-400 font-semibold ml-6">Welcome, User</p>
+        </div>
+        <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap flex sm:gap-1 absolute right-5">
+          <RiCustomerService2Fill size={22} />
+          <span className="font-bold">+91 9804611111</span>
+        </div>
+      </div >
 
-<div className="bg-white rounded-lg shadow-lg p-4 mx-auto">
-      <div className="flex justify-between items-center mb-4 border-b pb-3">
-        <h2 className="text-xl font-bold flex items-center text-gray-800">
-          <User className="mr-2 text-blue-600" size={20} />
-          User Profile
-        </h2>
-        <div className="flex gap-2">
-        <button
-      onClick={() => navigate("/order")}
-      className="flex items-center bg-indigo-600 text-white px-3 py-1 rounded-md text-sm"
-    >
-      View Orders
-    </button>
-
-        {!isEditing ? (
-          
-          <button 
-            onClick={() => setIsEditing(true)} 
-            className="flex items-center bg-blue-600 text-white px-3 py-1 rounded-md text-sm"
-          >
-            <Edit size={14} className="mr-1" />
-            Edit
-          </button>
-
-        ) : (
-          <div className="flex space-x-2">
-            <button 
-              onClick={handleSave} 
-              className="flex items-center bg-green-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              <Save size={14} className="mr-1" />
-              Save
+      <div className="flex sm:px-20 sm:p-12">
+        {/* Sidebar */}
+        <div className="hidden sm:flex flex-col items-start w-1/3 max-w-sm text-white px-6 space-y-6">
+          <div className="relative w-full bg-[#013E70] p-6 rounded-xl">
+            <div className="text-2xl font-bold">{user?.name}</div>
+            <div className="text-sm">{user?.companyName}</div>
+            <div className="text-xs">Customer ID: {user?._id}</div>
+            <button className="absolute top-4 right-4 cursor-pointer">
+              <Pencil size={16} />
             </button>
-            <button 
-              onClick={handleCancel} 
-              className="flex items-center bg-gray-600 text-white px-3 py-1 rounded-md text-sm"
-            >
-              <X size={14} className="mr-1" />
-              Cancel
+            <div className="mt-4 text-xs space-y-1">
+              <div>Email ID: {user?.email}</div>
+              <div>Contact No: {user?.mobile}</div>
+              <div>WhatsApp No: {user?.whatsapp}</div>
+              <div>Address: {user?.address}</div>
+              <div>District:  {user?.district}</div>
+              <div>Pincode: {user?.pincode}</div>
+              <div>GST Number: {user?.gstNumber}</div>
+            </div>
+          </div>
+
+          <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
+            <h2 className="text-lg font-semibold">Account Setting</h2>
+            <ul className="space-y-1 text-sm">
+              <li className="text-white hover:underline cursor-pointer">Profile Information</li>
+              <li className="text-yellow-300 font-semibold">To Shipping Address</li>
+            </ul>
+          </div>
+
+          <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
+            <h2 className="text-lg font-semibold">My Account</h2>
+            <ul className="space-y-1 text-sm">
+              <li className="hover:underline cursor-pointer">All Notification</li>
+              <li className="hover:underline cursor-pointer">My Orders</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Right Panel */}
+        <div className="flex-1 p-6 bg-white rounded-xl">
+          {/* Shipping Form */}
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold">To Shipping Address</h2>
+            <button onClick={() => setIsEditing(!isEditing)} className="text-[#013E70] cursor-pointer flex items-center gap-1 text-sm">
+              Edit <Pencil size={14} />
             </button>
           </div>
-        )}
+
+          <form className="mt-4 grid grid-cols-2 gap-4 text-sm">
+            <input type="text" placeholder="Enter Company Name" className="col-span-2 border p-2 rounded" />
+            <input type="text" placeholder="GST Number" className="col-span-2 border p-2 rounded" />
+            <input type="text" placeholder="Enter Your Address" className="col-span-2 border p-2 rounded" />
+            <input type="text" placeholder="District Name" className="border p-2 rounded" />
+            <input type="text" placeholder="City Name" className="border p-2 rounded" />
+            <input type="text" placeholder="Pin Code" className="border p-2 rounded" />
+            <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 cursor-pointer text-black font-semibold px-4 py-2 rounded col-span-2 w-32">Submit</button>
+          </form>
+
+          {/* Saved Addresses */}
+          <h3 className="text-md font-semibold mt-10 mb-4">Saved Address</h3>
+          <div className="space-y-4">
+            {[1, 2].map((_, i) => (
+              <div key={i} className="border border-gray-300 rounded-md p-4 shadow-sm relative">
+                <h4 className="font-semibold text-sm">S... SHOP</h4>
+                <p className="text-xs text-gray-600">
+                  Suresh Das 7xxxxxxxxx <br />
+                  Baradfmasi lane, Nafvgdfg Sdfg District, Odifgfa - 75fg69
+                </p>
+                <button className="absolute cursor-pointer top-2 right-2 text-gray-400 hover:text-black">
+                  <CiMenuKebab size={18}/>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-</div>
-      {user ? (
-        <div className="mt-3">
-          {isEditing ? (
-            <div className="space-y-3">
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">Company Name</label>
-                <input
-                  type="text"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">Mobile</label>
-                <input
-                  type="text"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">WhatsApp</label>
-                <input
-                  type="text"
-                  name="whatsapp"
-                  value={formData.whatsapp}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-     
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">City</label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="border rounded-md p-2 w-full text-sm"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">District</label>
-                  <input
-                    type="text"
-                    name="district"
-                    value={formData.district}
-                    onChange={handleChange}
-                    className="border rounded-md p-2 w-full text-sm"
-                  />
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">State</label>
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleChange}
-                    className="border rounded-md p-2 w-full text-sm"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Pincode</label>
-                  <input
-                    type="text"
-                    name="pincode"
-                    value={formData.pincode}
-                    onChange={handleChange}
-                    className="border rounded-md p-2 w-full text-sm"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">GST Number</label>
-                <input
-                  type="text"
-                  name="gstNumber"
-                  value={formData.gstNumber}
-                  onChange={handleChange}
-                  className="border rounded-md p-2 w-full text-sm"
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="bg-blue-50 p-3 rounded-lg">
-                <h3 className="font-semibold text-md text-blue-800 mb-2 border-b border-blue-200 pb-1">Personal Information</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <User className="text-blue-600 mr-2 flex-shrink-0" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">Name</p>
-                      <p className="font-medium text-sm">{user.name}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <Mail className="text-blue-600 mr-2 flex-shrink-0" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">Email</p>
-                      <p className="font-medium text-sm">{user.email}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <Building className="text-blue-600 mr-2 flex-shrink-0" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">Company</p>
-                      <p className="font-medium text-sm">{user.companyName}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-green-50 p-3 rounded-lg">
-                <h3 className="font-semibold text-md text-green-800 mb-2 border-b border-green-200 pb-1">Contact Details</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <Phone className="text-green-600 mr-2 flex-shrink-0" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">Mobile</p>
-                      <p className="font-medium text-sm">{user.mobile}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <MessageSquare className="text-green-600 mr-2 flex-shrink-0" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">WhatsApp</p>
-                      <p className="font-medium text-sm">{user.whatsapp}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-purple-50 p-3 rounded-lg">
-                <h3 className="font-semibold text-md text-purple-800 mb-2 border-b border-purple-200 pb-1">Address</h3>
-                <div className="space-y-2">
-                  <div className="flex items-start">
-                    <MapPin className="text-purple-600 mr-2 flex-shrink-0 mt-1" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">Full Address</p>
-                      <p className="font-medium text-sm">
-                        {user.address}, {user.city}, {user.district}, {user.state} - {user.pincode}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-yellow-50 p-3 rounded-lg">
-                <h3 className="font-semibold text-md text-yellow-800 mb-2 border-b border-yellow-200 pb-1">Business Details</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <CreditCard className="text-yellow-600 mr-2 flex-shrink-0" size={16} />
-                    <div>
-                      <p className="text-xs text-gray-600">GST Number</p>
-                      <p className="font-medium text-sm">{user.gstNumber}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="text-center py-6">
-          <User className="mx-auto text-gray-300" size={48} />
-          <p className="mt-3 text-gray-500 text-sm">No user logged in</p>
-          <button className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-md text-sm">
-            Sign In
-          </button>
-        </div>
-      )}
-    </div>
-    </>
+    </div >
   );
 }

@@ -50,14 +50,14 @@ function Header() {
           {/* Logo & Actions in Row */}
           <div className="flex items-center justify-between w-full sm:w-auto h-full">
             {/* Logo */}
-            <div className="flex items-center space-x-2">
+            <button  onClick={() => navigate("/")} className=" cursor-pointer flex items-center space-x-2">
               <img
                 src="/logo/ss_power_tool_logo.svg"
                 width={"150px"}
                 className="sm:ml-6"
                 alt="SS Power Tools Logo"
               />
-            </div>
+            </button>
 
 
             {/* Icons for mobile view */}

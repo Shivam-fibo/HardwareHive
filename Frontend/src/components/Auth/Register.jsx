@@ -75,7 +75,7 @@ export default function Register() {
       </div>
 
       {/* Main Form Section */}
-      <div className="flex justify-center items-center px-4 py-4">
+      <div className="flex justify-center items-center px-4 py-10">
         <div className="bg-white bg-opacity-90 p-6 rounded-lg w-full max-w-sm shadow-xl">
           <h2 className="text-2xl font-bold mb-4 text-center text-[#013E70] tracking-widest">
             {Title}

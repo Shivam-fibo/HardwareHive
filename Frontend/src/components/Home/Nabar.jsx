@@ -49,7 +49,7 @@ function Header() {
             {/* Logo */}
             <div className="flex items-center space-x-2">
               <img
-                src="/logo/ss_power_tool_logo.png"
+                src="/logo/ss_power_tool_logo.svg"
                 width={"150px"}
                 className="sm:ml-6"
                 alt="SS Power Tools Logo"

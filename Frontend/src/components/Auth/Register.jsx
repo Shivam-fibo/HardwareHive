@@ -63,7 +63,7 @@ export default function Register() {
           onClick={() => navigate("/")}
         >
           <img
-            src="/logo/ss_power_tool_logo.png"
+            src="/logo/ss_power_tool_logo.svg"
             width={"150px"}
             className="sm:ml-6"
             alt="SS Power Tools Logo"

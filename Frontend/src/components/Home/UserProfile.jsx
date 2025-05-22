@@ -12,12 +12,17 @@ import {
   CreditCard,
   Pencil
 } from "lucide-react";
-import { CiMenuKebab } from "react-icons/ci"; 
+import { IoSettingsSharp } from "react-icons/io5";
+import { CiMenuKebab } from "react-icons/ci";
+import { FaRegUser } from "react-icons/fa6";
 import { RiCustomerService2Fill } from "react-icons/ri";
+import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Header from "./Nabar";
+import Footer from "../LandingPage/Module/Footer";
 
 export default function Profile() {
+  const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
@@ -54,7 +59,7 @@ export default function Profile() {
         const updatedUser = await response.json();
         sessionStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
-        
+
         setIsEditing(false); // Exit edit mode
         alert("Profile updated successfully!");
       } else {
@@ -70,7 +75,40 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Header />
+      {/* Header */}
+      <div className="h-12">
+        <header
+          className="w-full h-full flex justify-between items-center p-2 bg-white "
+        >
+          <button onClick={() => navigate("/home")} className="cursor-pointer">
+            <img
+              src="/logo/ss_power_tool_logo.svg"
+              width={"150px"}
+              className="sm:ml-6"
+              alt="SS Power Tools Logo"
+            />
+          </button>
+
+
+          <div className="flex gap-1 text-nowrap font-semibold text-[14px] text-right sm:mr-6">
+            <button aria-label="User" onClick={() => setShowProfile(!showProfile)}><FaRegUser size={20} strokeWidth={0.5} className=" cursor-pointer" /></button>
+          </div>
+
+          {showProfile && (
+            <div className="absolute w-32 top-10 sm:top-11 right-4 sm:right-8 bg-yellow-400 shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
+              <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-yellow-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                <FaRegUser size={12} strokeWidth={0.5} className=" cursor-pointer" />
+                My Account</p>
+
+              <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-red-500 flex items-center gap-2 px-4 p-1.5">
+                <IoLogOutOutline size={14} strokeWidth={0.5} className=" cursor-pointer" />
+                Logout</p>
+            </div>
+          )}
+
+        </header>
+      </div>
+
       <div className="bg-[#013E70] text-[#000000] py-2 flex">
         <div className="w-full flex flex-nowrap justify-start sm:justify-center">
           <p className="text-yellow-400 font-semibold ml-6">Welcome, User</p>
@@ -81,16 +119,14 @@ export default function Profile() {
         </div>
       </div >
 
-      <div className="flex sm:px-20 sm:p-12">
+      <div className="flex flex-col sm:flex-row sm:px-20 sm:p-12">
         {/* Sidebar */}
-        <div className="hidden sm:flex flex-col items-start w-1/3 max-w-sm text-white px-6 space-y-6">
+        <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
           <div className="relative w-full bg-[#013E70] p-6 rounded-xl">
             <div className="text-2xl font-bold">{user?.name}</div>
             <div className="text-sm">{user?.companyName}</div>
             <div className="text-xs">Customer ID: {user?._id}</div>
-            <button className="absolute top-4 right-4 cursor-pointer">
-              <Pencil size={16} />
-            </button>
+
             <div className="mt-4 text-xs space-y-1">
               <div>Email ID: {user?.email}</div>
               <div>Contact No: {user?.mobile}</div>
@@ -103,18 +139,19 @@ export default function Profile() {
           </div>
 
           <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
-            <h2 className="text-lg font-semibold">Account Setting</h2>
-            <ul className="space-y-1 text-sm">
+            <h2 className="text-lg font-semibold flex gap-2 items-center"><IoSettingsSharp size={18} strokeWidth={0.5} />Account Setting</h2>
+            <ul className="space-y-1 text-sm ml-7">
               <li className="text-white hover:underline cursor-pointer">Profile Information</li>
               <li className="text-yellow-300 font-semibold">To Shipping Address</li>
             </ul>
           </div>
 
           <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
-            <h2 className="text-lg font-semibold">My Account</h2>
-            <ul className="space-y-1 text-sm">
+            <h2 className="text-lg font-semibold flex gap-2 items-center"> <FaRegUser size={18} strokeWidth={0.5} />My Account</h2>
+            <ul className="space-y-1 text-sm ml-7">
               <li className="hover:underline cursor-pointer">All Notification</li>
               <li className="hover:underline cursor-pointer">My Orders</li>
+              <li className="hover:underline cursor-pointer">My Wishlist</li>
             </ul>
           </div>
         </div>
@@ -150,13 +187,16 @@ export default function Profile() {
                   Baradfmasi lane, Nafvgdfg Sdfg District, Odifgfa - 75fg69
                 </p>
                 <button className="absolute cursor-pointer top-2 right-2 text-gray-400 hover:text-black">
-                  <CiMenuKebab size={18}/>
+                  <CiMenuKebab size={18} />
                 </button>
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div >
   );
 }

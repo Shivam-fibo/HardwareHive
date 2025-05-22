@@ -70,7 +70,7 @@ const FilterDrawer = ({
       )}
 
        <div className="mt-6">
-          <button onClick={onClose} className="w-full sm:w-auto p-2 px-4 bg-yellow-400 text-black font-semibold rounded-xl hover:bg-yellow-500 transition">
+          <button onClick={onClose} className="w-26 px-4 py-2 bg-yellow-400 text-[14px] text-black font-semibold rounded-lg hover:bg-yellow-500 transition">
             Apply
           </button>
         </div>

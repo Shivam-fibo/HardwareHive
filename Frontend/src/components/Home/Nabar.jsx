@@ -50,7 +50,7 @@ function Header() {
           {/* Logo & Actions in Row */}
           <div className="flex items-center justify-between w-full sm:w-auto h-full">
             {/* Logo */}
-            <button  onClick={() => navigate("/")} className=" cursor-pointer flex items-center space-x-2"> 
+            <button  onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2"> 
               <img
                 src="/logo/ss_power_tool_logo.svg"
                 width={"150px"}
@@ -68,12 +68,12 @@ function Header() {
             </div>
 
             {showProfile && (
-              <div className="absolute w-32 top-10 sm:top-11 right-4 sm:right-8 bg-yellow-400 shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
-                <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-yellow-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+              <div className="absolute border-gray-500 w-32 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
+                <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                   <FaRegUser size={12} strokeWidth={0.5} className=" cursor-pointer" />
                   My Account</p>
 
-                <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-red-500 flex items-center gap-2 px-4 p-1.5">
+                <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                   <IoLogOutOutline size={14} strokeWidth={0.5} className=" cursor-pointer" />
                   Logout</p>
               </div>
@@ -110,7 +110,7 @@ function Header() {
 
         {/* Notifications Badge */}
         {notifications.length > 0 && (
-          <span className="absolute top-3 right-6 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+          <span className="absolute top-3 right-6 bg-white text-black text-xs px-1.5 py-0.5 rounded-full">
             {notifications.length}
           </span>
         )}

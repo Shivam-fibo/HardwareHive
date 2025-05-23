@@ -20,8 +20,11 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Header from "./Nabar";
 import Footer from "../LandingPage/Module/Footer";
+import UserProfileUpdate from "./UserProfileUpdate";
+import UserProfileAddressUpadte from "./UserProfileAddressUpdate";
 
 export default function Profile() {
+  const [otherAddress, setOtherAddress] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -95,12 +98,12 @@ export default function Profile() {
           </div>
 
           {showProfile && (
-            <div className="absolute w-32 top-10 sm:top-11 right-4 sm:right-8 bg-yellow-400 shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
-              <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-yellow-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+            <div className="absolute border-gray-500 w-32 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
+              <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                 <FaRegUser size={12} strokeWidth={0.5} className=" cursor-pointer" />
                 My Account</p>
 
-              <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-red-500 flex items-center gap-2 px-4 p-1.5">
+              <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                 <IoLogOutOutline size={14} strokeWidth={0.5} className=" cursor-pointer" />
                 Logout</p>
             </div>
@@ -137,7 +140,7 @@ export default function Profile() {
               <div>GST Number: {user?.gstNumber}</div>
             </div>
           </div>
-          
+
 
           <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
             <h2 className="text-lg font-semibold flex gap-2 items-center"><IoSettingsSharp size={18} strokeWidth={0.5} />Account Setting</h2>
@@ -158,42 +161,9 @@ export default function Profile() {
         </div>
 
         {/* Right Panel */}
-        <div className="flex-1 p-6 bg-white rounded-xl">
-          {/* Shipping Form */}
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">To Shipping Address</h2>
-            <button onClick={() => setIsEditing(!isEditing)} className="text-[#013E70] cursor-pointer flex items-center gap-1 text-sm">
-              Edit <Pencil size={14} />
-            </button>
-          </div>
-
-          <form className="mt-4 grid grid-cols-2 gap-4 text-sm">
-            <input type="text" placeholder="Enter Company Name" className="col-span-2 border p-2 rounded" />
-            <input type="text" placeholder="GST Number" className="col-span-2 border p-2 rounded" />
-            <input type="text" placeholder="Enter Your Address" className="col-span-2 border p-2 rounded" />
-            <input type="text" placeholder="District Name" className="border p-2 rounded" />
-            <input type="text" placeholder="City Name" className="border p-2 rounded" />
-            <input type="text" placeholder="Pin Code" className="border p-2 rounded" />
-            <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 cursor-pointer text-black font-semibold px-4 py-2 rounded col-span-2 w-32">Submit</button>
-          </form>
-
-          {/* Saved Addresses */}
-          <h3 className="text-md font-semibold mt-10 mb-4">Saved Address</h3>
-          <div className="space-y-4">
-            {[1, 2].map((_, i) => (
-              <div key={i} className="border border-gray-300 rounded-md p-4 shadow-sm relative">
-                <h4 className="font-semibold text-sm">S... SHOP</h4>
-                <p className="text-xs text-gray-600">
-                  Suresh Das 7xxxxxxxxx <br />
-                  Baradfmasi lane, Nafvgdfg Sdfg District, Odifgfa - 75fg69
-                </p>
-                <button className="absolute cursor-pointer top-2 right-2 text-gray-400 hover:text-black">
-                  <CiMenuKebab size={18} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+        {!otherAddress ? <UserProfileUpdate data={{otherAddress, setOtherAddress}}/> : <UserProfileAddressUpadte />}
+       
+        
       </div>
 
       {/* Footer */}

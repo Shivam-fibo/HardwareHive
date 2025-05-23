@@ -137,6 +137,7 @@ export default function Profile() {
               <div>GST Number: {user?.gstNumber}</div>
             </div>
           </div>
+          
 
           <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
             <h2 className="text-lg font-semibold flex gap-2 items-center"><IoSettingsSharp size={18} strokeWidth={0.5} />Account Setting</h2>

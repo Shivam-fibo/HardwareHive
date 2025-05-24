@@ -76,7 +76,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen sm:bg-gray-100 bg-white">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       
       <div className="h-12">
@@ -89,8 +89,9 @@ export default function Profile() {
             alt="SS Power Tools Logo"
             onClick={() => navigate("/home")}
           />
-          <div className="flex gap-1 text-nowrap font-semibold text-[14px] text-right sm:mr-6">
-            <img src="icons/customer-service.svg" alt="" /><p> +91 9804611111</p>
+          <div className="text-black font-semibold text-[14px] whitespace-nowrap flex items-center justify-center gap-1 sm:mr-6">
+            <RiCustomerService2Fill size={20} />
+            <span className="font-bold">+91 9804611111</span>
           </div>
         </header>
       </div>
@@ -101,7 +102,7 @@ export default function Profile() {
         Welcome, {user?.name || "User"}
       </h1>
 
-      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12 ">
+      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12 sm:bg-gray-100 ">
         {/* Sidebar */}
         <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
           <div className="relative w-full bg-[#013E70] p-6 py-10 rounded-xl">

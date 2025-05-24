@@ -57,12 +57,12 @@ const UserProfileUpdate = ({data}) => {
 
                     <div className="col-span-2 grid grid-cols-2 gap-4">
                         {/* Address Fields */}
-                        <input type="text" placeholder="Enter Your Address" className="border p-2 rounded" />
+                        <input type="text" placeholder="Enter Your Address" className="border p-2 rounded grid-cols-2 col-span-2" />
                         <input type="text" placeholder="City Name" className="border p-2 rounded" />
                         <input type="text" placeholder="District Name" className="border p-2 rounded" />
                         <input type="text" placeholder="State" className="border p-2 rounded" />
                         <input type="text" placeholder="Pin Code" className="border p-2 rounded" />
-                        <div className="col-span-1">
+                        <div className="col-span-2">
                             <input type="text" placeholder="GST Number*" className="w-full border p-2 rounded" />
                         </div>
                     </div>

@@ -56,7 +56,7 @@ const ProductGallery = () => {
             className="sm:ml-6"
             alt="SS Power Tools Logo"
           />
-          <div className="flex gap-1 text-nowrap font-semibold text-[14px] text-right sm:mr-6">
+          <div className="flex gap-1 text-nowrap font-semibold text-[16px] text-right sm:mr-6">
             <img src="icons/customer-service.svg" alt="" /><p> +91 9804611111</p>
           </div>
         </header>
@@ -64,7 +64,7 @@ const ProductGallery = () => {
 
 
       {/* Page Title */}
-      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-2xl font-bold mb-8">
+      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-2xl font-semibold mb-8">
         Products
       </h1>
 

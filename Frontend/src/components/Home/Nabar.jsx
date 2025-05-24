@@ -59,7 +59,10 @@ function Header() {
 
           {/* Logo & Icons */}
           <div className="flex items-center justify-between w-full sm:w-auto h-full">
-            <button onClick={() => navigate("/home")} className="cursor-pointer flex items-center space-x-2">
+
+            {/* Logo */}
+            <button  onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2">
+
               <img
                 src="/logo/ss_power_tool_logo.svg"
                 width="150px"

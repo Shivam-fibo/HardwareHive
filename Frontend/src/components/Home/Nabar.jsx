@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   CiSearch,
   CiShoppingCart,
@@ -7,23 +7,34 @@ import {
 import { FaMicrophone } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { PiBellBold } from "react-icons/pi";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
-import { IoLogOutOutline } from "react-icons/io5";
-
 
 function Header() {
   const [showProfile, setShowProfile] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+  const profileRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const fetchNotifications = async () => {
@@ -44,46 +55,44 @@ function Header() {
   return (
     <header className="bg-white top-0 z-50 shadow-sm">
       <div className="sm:h-12 p-2">
-        {/* Top Row: Logo + Icons */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
-          {/* Logo & Actions in Row */}
+          {/* Logo & Icons */}
           <div className="flex items-center justify-between w-full sm:w-auto h-full">
-            {/* Logo */}
-            <button  onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2"> 
+            <button onClick={() => navigate("/home")} className="cursor-pointer flex items-center space-x-2">
               <img
                 src="/logo/ss_power_tool_logo.svg"
-                width={"150px"}
+                width="150px"
                 className="sm:ml-6"
                 alt="SS Power Tools Logo"
               />
             </button>
 
-
-            {/* Icons for mobile view */}
+            {/* Mobile Icons */}
             <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
               <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} /></button>
-              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}><FaRegUser size={20} strokeWidth={0.5} className=" cursor-pointer" /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
+              </button>
             </div>
 
             {showProfile && (
-              <div className="absolute border-gray-500 w-32 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
-                <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
-                  <FaRegUser size={12} strokeWidth={0.5} className=" cursor-pointer" />
-                  My Account</p>
-
+              <div
+                ref={profileRef}
+                className="absolute border-gray-500 w-32 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
+              >
+                <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+                  <FaRegUser size={12} /> My Account
+                </p>
                 <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
-                  <IoLogOutOutline size={14} strokeWidth={0.5} className=" cursor-pointer" />
-                  Logout</p>
+                  <IoLogOutOutline size={14} /> Logout
+                </p>
               </div>
             )}
-
           </div>
 
-
-
-          {/* Search Bar (on its own row on mobile) */}
+          {/* Search Bar */}
           <div className="relative w-full sm:max-w-3xl">
             <input
               type="text"
@@ -98,13 +107,15 @@ function Header() {
             </button>
           </div>
 
-          {/* Icons for desktop view */}
+          {/* Desktop Icons */}
           <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
             <button aria-label="Cart"><CartIcon size={22} strokeWidth={0.5} /></button>
             <button aria-label="Notifications" onClick={() => setShowDropdown(!showDropdown)}>
               <PiBellBold size={24} strokeWidth={0.5} />
             </button>
-            <button aria-label="User" onClick={() => setShowProfile(!showProfile)} ><FaRegUser size={22} strokeWidth={0.5} className=" cursor-pointer" /></button>
+            <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+              <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
+            </button>
           </div>
         </div>
 
@@ -115,7 +126,7 @@ function Header() {
           </span>
         )}
 
-        {/* Dropdown */}
+        {/* Notifications Dropdown */}
         {showDropdown && (
           <div className="absolute right-4 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 z-50">
             <h3 className="text-lg font-semibold mb-2">Recent Orders</h3>
@@ -128,7 +139,6 @@ function Header() {
         )}
       </div>
     </header>
-
   );
 }
 

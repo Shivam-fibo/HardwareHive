@@ -112,7 +112,7 @@ const ProductList = () => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">

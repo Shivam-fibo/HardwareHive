@@ -130,7 +130,7 @@ export default function Profile() {
         {/* Sidebar */}
         <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
           <div className="relative w-full bg-[#013E70] p-6 py-10 rounded-xl">
-            <button onClick={() => setEditProfile(!editProfile)} className="text-white cursor-pointer flex items-center gap-1 text-sm absolute top-4 right-4 ">
+            <button onClick={() => setEditProfile(true)} className="text-white cursor-pointer flex items-center gap-1 text-sm absolute top-4 right-4 ">
               Edit <Pencil size={14} />
             </button>
 

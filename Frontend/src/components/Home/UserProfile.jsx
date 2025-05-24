@@ -21,10 +21,9 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Nabar";
 import Footer from "../LandingPage/Module/Footer";
 import UserProfileUpdate from "./UserProfileUpdate";
-import UserProfileAddressUpadte from "./UserProfileAddressUpdate";
 
 export default function Profile() {
-  const [otherAddress, setOtherAddress] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -113,41 +112,43 @@ export default function Profile() {
       </div>
 
       <div className="bg-[#013E70] text-[#000000] py-2 flex">
-        <div className="w-full flex flex-nowrap justify-start sm:justify-center">
+        <div className="w-full hidden sm:flex flex-nowrap justify-start sm:justify-center">
           <p className="text-yellow-400 font-semibold ml-6">Welcome, User</p>
         </div>
-        <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap flex sm:gap-1 absolute right-5">
+
+        <div className="text-white  sm:hidden w-full flex flex-nowrap justify-end sm:justify-center mr-4">
+          <RiCustomerService2Fill size={22} />
+          <span className="font-bold">+91 9804611111</span>
+        </div>
+        <div className="hidden text-white font-semibold text-[12px] sm:text-base whitespace-nowrap sm:flex sm:gap-1 absolute right-5 ">
           <RiCustomerService2Fill size={22} />
           <span className="font-bold">+91 9804611111</span>
         </div>
       </div >
 
-      <div className="flex flex-col sm:flex-row sm:px-20 sm:p-12">
+      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12">
         {/* Sidebar */}
         <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
-          <div className="relative w-full bg-[#013E70] p-6 rounded-xl">
+          <div className="relative w-full bg-[#013E70] p-6 py-10 rounded-xl">
+            <button onClick={() => setEditProfile(!editProfile)} className="text-white cursor-pointer flex items-center gap-1 text-sm absolute top-4 right-4 ">
+              Edit <Pencil size={14} />
+            </button>
+
+            <div className="text-sm font-semibold ">Customer ID: {user?._id}</div>
             <div className="text-2xl font-bold">{user?.name}</div>
             <div className="text-sm">{user?.companyName}</div>
-            <div className="text-xs">Customer ID: {user?._id}</div>
 
-            <div className="mt-4 text-xs space-y-1">
-              <div>Email ID: {user?.email}</div>
+            <div className=" text-sm space-y-1">
               <div>Contact No: {user?.mobile}</div>
               <div>WhatsApp No: {user?.whatsapp}</div>
+              <div>Email ID: {user?.email}</div>
               <div>Address: {user?.address}</div>
+              <div>City:  {user?.city}</div>
               <div>District:  {user?.district}</div>
+              <div>State: {user?.state}</div>
               <div>Pincode: {user?.pincode}</div>
               <div>GST Number: {user?.gstNumber}</div>
             </div>
-          </div>
-
-
-          <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
-            <h2 className="text-lg font-semibold flex gap-2 items-center"><IoSettingsSharp size={18} strokeWidth={0.5} />Account Setting</h2>
-            <ul className="space-y-1 text-sm ml-7">
-              <li className="text-white hover:underline cursor-pointer">Profile Information</li>
-              <li className="text-yellow-300 font-semibold">To Shipping Address</li>
-            </ul>
           </div>
 
           <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
@@ -161,9 +162,10 @@ export default function Profile() {
         </div>
 
         {/* Right Panel */}
-        {!otherAddress ? <UserProfileUpdate data={{otherAddress, setOtherAddress}}/> : <UserProfileAddressUpadte />}
-       
-        
+        {
+          editProfile && <UserProfileUpdate data={{ setEditProfile, editProfile }} />
+        }
+
       </div>
 
       {/* Footer */}

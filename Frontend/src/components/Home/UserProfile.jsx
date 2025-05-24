@@ -89,7 +89,7 @@ export default function Profile() {
             alt="SS Power Tools Logo"
             onClick={() => navigate("/home")}
           />
-          <div className="text-black font-semibold text-[14px] whitespace-nowrap flex items-center justify-center gap-1 sm:mr-6">
+          <div className="text-black font-semibold text-[16px] whitespace-nowrap flex items-center justify-center gap-1 sm:mr-6">
             <RiCustomerService2Fill size={20} />
             <span className="font-bold">+91 9804611111</span>
           </div>
@@ -98,21 +98,21 @@ export default function Profile() {
 
 
       {/* Page Title */}
-      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-2xl font-bold">
+      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-[18px] font-semibold">
         Welcome, {user?.name || "User"}
       </h1>
 
       <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12 sm:bg-gray-100 ">
         {/* Sidebar */}
         <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
+
           <div className="relative w-full bg-[#013E70] p-6 py-10 rounded-xl">
             <button onClick={() => setEditProfile(true)} className="text-white cursor-pointer flex items-center gap-1 text-sm absolute top-4 right-4 ">
               Edit <Pencil size={14} />
             </button>
 
-            <div className="text-sm font-semibold ">Customer ID: {user?._id}</div>
-            <div className="text-2xl font-bold">{user?.name}</div>
-            <div className="text-sm">{user?.companyName}</div>
+            <div className="text-[14px] font-semibold ">Customer ID: {user?._id}</div>
+            <div className="text-2xl font-bold text-yellow-400">{user?.companyName}</div>
 
             <div className=" text-sm space-y-1">
               <div>Contact No: {user?.mobile}</div>
@@ -139,7 +139,7 @@ export default function Profile() {
 
         {/* Right Panel */}
         {
-          editProfile && <UserProfileUpdate data={{ setEditProfile, editProfile }} />
+          editProfile && <UserProfileUpdate data={{ setEditProfile, editProfile, user }} />
         }
 
       </div>

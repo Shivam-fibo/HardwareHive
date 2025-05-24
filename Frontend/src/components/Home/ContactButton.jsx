@@ -12,21 +12,21 @@ const ContactButton = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Expanding icons */}
+        
         <div
           className={`flex flex-col items-center gap-2 transition-all duration-500 ease-in-out ${
             isHovered ? "opacity-100 translate-y-[-40px]" : "opacity-0 translate-y-0 pointer-events-none"
           }`}
         >
-          {/* Call Icon */}
+
           <a
             href="tel:+919804611111"
-            className="bg-green-500 p-3 rounded-full text-white shadow-lg hover:scale-110 transition"
+            className="bg-blue-500 p-3 rounded-full text-white shadow-lg hover:scale-110 transition"
             title="Call"
           >
             <FaPhone size={20} />
           </a>
-          {/* WhatsApp Icon */}
+
           <a
             href="https://wa.me/919804611111"
             target="_blank"
@@ -38,11 +38,9 @@ const ContactButton = () => {
           </a>
         </div>
 
-        {/* Main Button */}
-        <div className="bg-pink-200 p-4 rounded-md cursor-pointer shadow-md">
+        <div className="bg-white p-3.5 rounded-full shadow-xl">
           <div className="text-[#013E70] text-xl flex flex-col items-center">
             <MdOutlineSupportAgent size={24} />
-            <span className="text-black text-sm font-medium mt-1">Contact</span>
           </div>
         </div>
       </div>

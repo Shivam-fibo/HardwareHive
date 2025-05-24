@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 
 const UserProfileUpdate = ({data}) => {
 
-    const {setEditProfile, editProfile} = data;
+    const {setEditProfile, editProfile, user} = data;
 
     return (
         <div className="flex-1 p-6 bg-white rounded-xl">
@@ -21,32 +21,32 @@ const UserProfileUpdate = ({data}) => {
                 {/* Full Name */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium">Full Name</label>
-                    <input type="text" placeholder="Full Name" className="w-full border p-2 rounded" />
+                    <input type="text" value={user?.name} placeholder="Full Name" className="w-full border p-2 rounded" />
                 </div>
 
                 {/* Company Name */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium">Company Name</label>
-                    <input type="text" placeholder="Enter Company Name" className="w-full border p-2 rounded" />
+                    <input type="text" value={user?.companyName} placeholder="Enter Company Name" className="w-full border p-2 rounded" />
                 </div>
 
                 {/* Mobile Number */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium">Mobile Number</label>
-                    <input type="tel" placeholder="Enter Your Mobile Number" className="w-full border p-2 rounded" />
+                    <input type="tel" value={user?.mobile} placeholder="Enter Your Mobile Number" className="w-full border p-2 rounded" />
                 </div>
 
 
                 {/* WhatsApp Number */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium">WhatsApp Number</label>
-                    <input type="tel" placeholder="Enter Your WhatsApp Number" className="w-full border p-2 rounded" />
+                    <input type="tel" value={user?.whatsapp} placeholder="Enter Your WhatsApp Number" className="w-full border p-2 rounded" />
                 </div>
 
                 {/* Email Address */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium">Email Address</label>
-                    <input type="email" placeholder="Enter Your Email Address" className="w-full border p-2 rounded" />
+                    <input type="email" value={user?.email} placeholder="Enter Your Email Address" className="w-full border p-2 rounded" />
                 </div>
 
                 <div className="col-span-2 grid grid-cols-2">
@@ -57,13 +57,13 @@ const UserProfileUpdate = ({data}) => {
 
                     <div className="col-span-2 grid grid-cols-2 gap-4">
                         {/* Address Fields */}
-                        <input type="text" placeholder="Enter Your Address" className="border p-2 rounded grid-cols-2 col-span-2" />
-                        <input type="text" placeholder="City Name" className="border p-2 rounded" />
-                        <input type="text" placeholder="District Name" className="border p-2 rounded" />
-                        <input type="text" placeholder="State" className="border p-2 rounded" />
-                        <input type="text" placeholder="Pin Code" className="border p-2 rounded" />
+                        <input type="text" value={user?.address} placeholder="Enter Your Address" className="border p-2 rounded grid-cols-2 col-span-2" />
+                        <input type="text" value={user?.city} placeholder="City Name" className="border p-2 rounded" />
+                        <input type="text" value={user?.district} placeholder="District Name" className="border p-2 rounded" />
+                        <input type="text" value={user?.state} placeholder="State" className="border p-2 rounded" />
+                        <input type="text" value={user?.pincode} placeholder="Pin Code" className="border p-2 rounded" />
                         <div className="col-span-2">
-                            <input type="text" placeholder="GST Number*" className="w-full border p-2 rounded" />
+                            <input type="text" value={user?.gstNumber} placeholder="GST Number*" className="w-full border p-2 rounded" />
                         </div>
                     </div>
                 </div>

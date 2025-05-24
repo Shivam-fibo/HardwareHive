@@ -13,22 +13,17 @@ import UserProfile from "./components/Home/UserProfile.jsx";
 import OrderHistory from './components/Home/OrderHistory.jsx';
 import { PiWhatsappLogoThin } from "react-icons/pi";
 import { PiWhatsappLogoDuotone } from 'react-icons/pi';
-import { FaWhatsapp } from 'react-icons/fa';
 import './App.css';
+import ContactButton from './components/Home/ContactButton.jsx';
 
 function App() {
   return (
     <>
-      <Analytics /> 
+      <Analytics />
       <Router>
-        <a
-          href="https://wa.me/919804611111"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-8 right-4 z-50 "
-        >
-          <FaWhatsapp size={60} className="text-green-500 " />
-        </a>
+       
+        <ContactButton/>
+
         <CartProvider>
           <Toaster />
           <Routes>

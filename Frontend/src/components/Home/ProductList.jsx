@@ -162,8 +162,8 @@ const ProductList = () => {
           </nav>
 
 
-          <div className="text-white font-semibold text-[12px] sm:text-base whitespace-nowrap hidden sm:flex sm:gap-1 absolute right-5">
-            <RiCustomerService2Fill size={22} />
+          <div className="text-white font-semibold text-[14px] whitespace-nowrap hidden sm:flex sm:gap-1 absolute right-5">
+            <RiCustomerService2Fill size={20} />
             <span className="font-bold">+91 9804611111</span>
           </div>
         </div>

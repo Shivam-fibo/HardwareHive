@@ -29,28 +29,26 @@ const UserProfileUpdate = ({ data }) => {
     e.preventDefault();
     const storedUser = JSON.parse(sessionStorage.getItem("user"));
     const userId = storedUser._id;
-  
-    // Create object with only changed fields
+
     const updatedFields = {};
     for (const key in formData) {
       if (formData[key] !== user[key]) {
         updatedFields[key] = formData[key];
       }
     }
-  
-    // Prevent empty update
+
     if (Object.keys(updatedFields).length === 0) {
       alert("No changes detected.");
       return;
     }
-  
+
     try {
       const res = await fetch(`http://localhost:5000/api/user/update/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedFields),
       });
-  
+
       if (res.ok) {
         alert("Profile updated successfully.");
         setEditProfile(false);
@@ -62,7 +60,6 @@ const UserProfileUpdate = ({ data }) => {
       alert("An error occurred while updating.");
     }
   };
-  
 
   return (
     <div className="flex-1 p-6 bg-white rounded-xl">
@@ -103,7 +100,7 @@ const UserProfileUpdate = ({ data }) => {
           />
         </div>
 
-        {/* Mobile Number */}
+        {/* Mobile */}
         <div className="col-span-2">
           <label className="block mb-1 font-medium">Mobile Number</label>
           <input
@@ -116,7 +113,7 @@ const UserProfileUpdate = ({ data }) => {
           />
         </div>
 
-        {/* WhatsApp Number */}
+        {/* WhatsApp */}
         <div className="col-span-2">
           <label className="block mb-1 font-medium">WhatsApp Number</label>
           <input
@@ -129,7 +126,7 @@ const UserProfileUpdate = ({ data }) => {
           />
         </div>
 
-        {/* Email Address */}
+        {/* Email */}
         <div className="col-span-2">
           <label className="block mb-1 font-medium">Email Address</label>
           <input
@@ -143,78 +140,63 @@ const UserProfileUpdate = ({ data }) => {
         </div>
 
         {/* Address Section */}
-        <div className="col-span-2 grid grid-cols-2">
-          <div className="col-span-2">
-            <label className="block mb-1 font-medium">Address</label>
-          </div>
+        <div className="col-span-2">
+          <label className="block mb-1 font-medium">Address</label>
+        </div>
 
-                    <div className="col-span-2 grid grid-cols-2 gap-4">
-                        {/* Address Fields */}
-                        <input type="text" value={user?.address} placeholder="Enter Your Address" className="border p-2 rounded grid-cols-2 col-span-2" />
-                        <input type="text" value={user?.city} placeholder="City Name" className="border p-2 rounded" />
-                        <input type="text" value={user?.district} placeholder="District Name" className="border p-2 rounded" />
-                        <input type="text" value={user?.state} placeholder="State" className="border p-2 rounded" />
-                        <input type="text" value={user?.pincode} placeholder="Pin Code" className="border p-2 rounded" />
-                        <div className="col-span-2">
-                            <input type="text" placeholder="GST Number*" className="w-full border p-2 rounded" />
-                        </div>
-                    </div>
-                </div>
-          <div className="col-span-2 grid grid-cols-2 gap-4">
+        <div className="col-span-2 grid grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="address"
+            placeholder="Enter Your Address"
+            value={formData.address}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            type="text"
+            name="city"
+            placeholder="City Name"
+            value={formData.city}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            type="text"
+            name="district"
+            placeholder="District Name"
+            value={formData.district}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            type="text"
+            name="state"
+            placeholder="State"
+            value={formData.state}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <input
+            type="text"
+            name="pincode"
+            placeholder="Pin Code"
+            value={formData.pincode}
+            onChange={handleChange}
+            className="border p-2 rounded"
+          />
+          <div className="col-span-2">
             <input
               type="text"
-              name="address"
-              placeholder="Enter Your Address"
-              value={formData.address}
+              name="gstNumber"
+              placeholder="GST Number*"
+              value={formData.gstNumber}
               onChange={handleChange}
-              className="border p-2 rounded"
+              className="w-full border p-2 rounded"
             />
-            <input
-              type="text"
-              name="city"
-              placeholder="City Name"
-              value={formData.city}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              name="district"
-              placeholder="District Name"
-              value={formData.district}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              value={formData.state}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
-            <input
-              type="text"
-              name="pincode"
-              placeholder="Pin Code"
-              value={formData.pincode}
-              onChange={handleChange}
-              className="border p-2 rounded"
-            />
-            <div className="col-span-1">
-              <input
-                type="text"
-                name="gstNumber"
-                placeholder="GST Number*"
-                value={formData.gstNumber}
-                onChange={handleChange}
-                className="w-full border p-2 rounded"
-              />
-            </div>
           </div>
         </div>
 
-        {/* Submit Button */}
         <div className="col-span-2 flex justify-end">
           <button
             type="submit"

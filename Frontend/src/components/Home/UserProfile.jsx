@@ -76,57 +76,33 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white">
       {/* Header */}
+      
       <div className="h-12">
         <header
-          className="w-full h-full flex justify-between items-center p-2 bg-white "
-        >
-          <button onClick={() => navigate("/home")} className="cursor-pointer">
-            <img
-              src="/logo/ss_power_tool_logo.svg"
-              width={"150px"}
-              className="sm:ml-6"
-              alt="SS Power Tools Logo"
-            />
-          </button>
-
-
-          <div className="flex gap-1 text-nowrap font-semibold text-[14px] text-right sm:mr-6">
-            <button aria-label="User" onClick={() => setShowProfile(!showProfile)}><FaRegUser size={20} strokeWidth={0.5} className=" cursor-pointer" /></button>
+          className="w-full h-full flex justify-between items-center p-2 ">
+          <img
+            src="/logo/ss_power_tool_logo.svg"
+            width={"150px"}
+            className="sm:ml-6 cursor-pointer"
+            alt="SS Power Tools Logo"
+            onClick={() => navigate("/home")}
+          />
+          <div className="text-black font-semibold text-[14px] whitespace-nowrap flex items-center justify-center gap-1 sm:mr-6">
+            <RiCustomerService2Fill size={20} />
+            <span className="font-bold">+91 9804611111</span>
           </div>
-
-          {showProfile && (
-            <div className="absolute border-gray-500 w-32 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium">
-              <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
-                <FaRegUser size={12} strokeWidth={0.5} className=" cursor-pointer" />
-                My Account</p>
-
-              <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
-                <IoLogOutOutline size={14} strokeWidth={0.5} className=" cursor-pointer" />
-                Logout</p>
-            </div>
-          )}
-
         </header>
       </div>
 
-      <div className="bg-[#013E70] text-[#000000] py-2 flex">
-        <div className="w-full hidden sm:flex flex-nowrap justify-start sm:justify-center">
-          <p className="text-yellow-400 font-semibold ml-6">Welcome, User</p>
-        </div>
 
-        <div className="text-white  sm:hidden w-full flex flex-nowrap justify-end sm:justify-center mr-4">
-          <RiCustomerService2Fill size={22} />
-          <span className="font-bold">+91 9804611111</span>
-        </div>
-        <div className="hidden text-white font-semibold text-[12px] sm:text-base whitespace-nowrap sm:flex sm:gap-1 absolute right-5 ">
-          <RiCustomerService2Fill size={22} />
-          <span className="font-bold">+91 9804611111</span>
-        </div>
-      </div >
+      {/* Page Title */}
+      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-2xl font-bold">
+        Welcome, {user?.name || "User"}
+      </h1>
 
-      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12">
+      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12 sm:bg-gray-100 ">
         {/* Sidebar */}
         <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
           <div className="relative w-full bg-[#013E70] p-6 py-10 rounded-xl">

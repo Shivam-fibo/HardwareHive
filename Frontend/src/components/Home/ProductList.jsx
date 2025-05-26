@@ -4,7 +4,7 @@ import ProductCard from "./ProductCard";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import FilterDrawer from "./FilterDrawer";
 
-const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
+const categories = ["Machinery", "Spare Parts", "Brands", "Accessories", "All"];
 
 const ProductList = () => {
   const [showFilter, setShowFilter] = useState(false);

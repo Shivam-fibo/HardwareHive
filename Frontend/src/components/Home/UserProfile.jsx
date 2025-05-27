@@ -114,7 +114,7 @@ export default function Profile() {
             <div className="text-[14px] font-semibold ">Customer ID: {user?._id}</div>
             <div className="text-2xl font-bold text-yellow-400">{user?.companyName}</div>
 
-            <div className=" text-sm space-y-1">
+            <div className=" text-sm space-y-1 bg-[#ffffff25] rounded-xl p-4 mt-4">
               <div>Contact No: {user?.mobile}</div>
               <div>WhatsApp No: {user?.whatsapp}</div>
               <div>Email ID: {user?.email}</div>

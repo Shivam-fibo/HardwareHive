@@ -7,13 +7,13 @@ const ContactButton = () => {
 
   return (
     <div className="fixed right-4 bottom-4 z-50">
-      <div className="hidden sm:block rounded-full shadow-xl">
+      <div className="hidden sm:block rounded-full ">
         <div className="text-[#013E70] text-xl flex flex-col items-center">
          <a
             href="https://wa.me/919804611111"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-green-500 p-4 rounded-full text-white shadow-lg hover:scale-110 transition"
+            className="bg-green-500 p-4 rounded-full text-white hover:scale-110 transition"
             title="WhatsApp"
           >
             <FaWhatsapp size={22} />
@@ -34,7 +34,7 @@ const ContactButton = () => {
 
           <a
             href="tel:+919804611111"
-            className="sm:hidden bg-blue-500 p-3.5 sm:p-3 rounded-full text-white shadow-lg hover:scale-110 transition"
+            className="sm:hidden bg-blue-500 p-4 sm:p-3 rounded-full text-white  hover:scale-110 transition"
             title="Call"
           >
             <FaPhone size={20} />
@@ -44,14 +44,14 @@ const ContactButton = () => {
             href="https://wa.me/919804611111"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-green-500 p-3.5 sm:p-3 rounded-full text-white shadow-lg hover:scale-110 transition"
+            className="bg-green-500 p-4 sm:p-3 rounded-full text-white  hover:scale-110 transition"
             title="WhatsApp"
           >
             <FaWhatsapp size={20} />
           </a>
         </div>
 
-        <div className="bg-yellow-400 p-4 sm:p-3.5 rounded-full shadow-xl">
+        <div className="bg-yellow-400 p-4.5 sm:p-3.5 rounded-full">
           <div className="text-[#013E70] text-xl flex flex-col items-center">
             <MdOutlineSupportAgent size={24} />
           </div>

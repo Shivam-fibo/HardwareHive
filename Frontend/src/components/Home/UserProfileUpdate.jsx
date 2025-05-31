@@ -43,7 +43,7 @@ const UserProfileUpdate = ({ data }) => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/user/update/${userId}`, {
+      const res = await fetch(`https://hardware-hive.vercel.app/api/user/update/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedFields),

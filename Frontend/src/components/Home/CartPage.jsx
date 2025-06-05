@@ -12,20 +12,49 @@ const CartPage = () => {
     const userData = sessionStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
+      console.log(user);
       setUserId(user._id);
     } 
   }, []);
+  
   useEffect(() => {
+   if(userId){
     loadSavedItems();
-  }, []);
+   }
+  }, [userId]);
 
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        const userId = user?._id;
+  
+        if (!userId) {
+          console.error("No user ID found in session.");
+          return;
+        }
+  
+        const res = await fetch(`https://hardware-hive.vercel.app/api/user/getCartItems/${userId}`);
+        const data = await res.json();
+  
+        if (data?.items) {
+          setCart(data.items.reverse()); // ✅ use context setter
+        }
+      } catch (error) {
+        console.error("Error fetching cart items:", error);
+      }
+    };
+  
+    fetchCartItems();
+  }, [setCart]);
+  
   const loadSavedItems = async () => {
     try {
       const response = await fetch(`https://hardware-hive.vercel.app/api/user/savedItems/${userId}`);
       if (!response.ok) throw new Error("Failed to fetch saved items");
 
       const data = await response.json();
-      setSavedItems(data);
+      setSavedItems(data.savedItems || []);
     } catch (error) {
       console.error(error);
       toast.error("Could not load saved items");
@@ -49,10 +78,10 @@ const CartPage = () => {
 
   const handleRemoveItem = async (item) => {
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/user/removeFromCart", {
-        method: "POST",
+      const response = await fetch("https://hardware-hive.vercel.app/api/user/deleteCartItem", {
+        method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId: item._id }),
+         body: JSON.stringify({ userId, productId: item.productId }),
       });
 
       if (!response.ok) {
@@ -68,54 +97,60 @@ const CartPage = () => {
       toast.error("Something went wrong");
     }
   };
-
   const handleSaveForLater = async (item) => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      toast.error("User not logged in");
+    if(!userId){
+      toast.error("User not loaded please wait for it");
       return;
     }
-
+    console.log("Calling saveItemForLater with:", {
+      userId,
+      productId: item._id
+    });
+  
     try {
       const response = await fetch("https://hardware-hive.vercel.app/api/user/saveItemForLater", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, item }),
+        body: JSON.stringify({ userId, productId: item.productId }),
       });
-
-      if (!response.ok) throw new Error("Failed to save item");
-
+  
+      const data = await response.json();
+      console.log("Backend response:", data);
+  
+      if (!response.ok) throw new Error(data.message || "Failed to save item");
+  
       removeFromCart(item._id);
       setSavedItems((prev) => [...prev, item]);
       toast.success("Item saved for later");
     } catch (error) {
-      console.error(error);
+      console.error("Save for later error:", error);
       toast.error("Could not save item");
     }
   };
-
+  
   const handleMoveToCart = (item) => {
     addToCart(item);
     setSavedItems(savedItems.filter((i) => i._id !== item._id));
   };
 
-  const handleRemoveSavedItem = async (itemId) => {
-    try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/user/removeSavedItem", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId }),
-      });
+const handleRemoveSavedItem = async (item) => {
+  try {
+    const response = await fetch("https://hardware-hive.vercel.app/api/user/deleteSavedItem", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId: item.productId, userId }),
+    });
 
-      if (!response.ok) throw new Error("Failed to remove saved item");
+    if (!response.ok) throw new Error("Failed to remove saved item");
 
-      setSavedItems((prev) => prev.filter((item) => item._id !== itemId));
-      toast.success("Removed from saved items");
-    } catch (error) {
-      console.error(error);
-      toast.error("Could not remove saved item");
-    }
-  };
+    setSavedItems((prev) => prev.filter((i) => i.productId !== item.productId));
+    toast.success("Removed from saved items");
+  } catch (error) {
+    console.error(error);
+    toast.error("Could not remove saved item");
+  }
+};
+
 
   const handlePlaceOrder = () => {
     toast.success("Order placed!");
@@ -207,7 +242,7 @@ const CartPage = () => {
                   <div className="text-lg font-bold text-green-600">₹{item.price}</div>
                   <div className="flex gap-2 mt-2">
                     <button onClick={() => handleMoveToCart(item)} className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-md">Add to Cart</button>
-                    <button onClick={() => handleRemoveSavedItem(item._id)} className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded-md">Remove</button>
+                    <button onClick={() => handleRemoveSavedItem(item)} className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded-md">Remove</button>
                   </div>
                 </div>
               </div>

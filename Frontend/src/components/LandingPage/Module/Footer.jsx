@@ -28,7 +28,7 @@ const Footer = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch("https://hardware-hive.vercel.app/api/admin/getQuery", {
+      const res = await fetch("https://hardware-hive-backend.vercel.app/api/admin/getQuery", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

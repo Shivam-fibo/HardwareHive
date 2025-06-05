@@ -43,7 +43,7 @@ function Header() {
 
     try {
       const res = await fetch(
-        `https://hardware-hive.vercel.app/api/user/notifications/${user._id}`
+        `https://hardware-hive-backend.vercel.app/api/user/notifications/${user._id}`
       );
       const data = await res.json();
       if (Array.isArray(data)) setNotifications(data);

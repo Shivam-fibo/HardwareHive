@@ -22,7 +22,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://hardware-hive.vercel.app/api/user/getallProduct");
+        const res = await fetch("https://hardware-hive-backend.vercel.app/api/user/getallProduct");
         const data = await res.json();
         setProducts(data.reverse());
       } catch (error) {
@@ -46,7 +46,7 @@ const ProductList = () => {
     };
 
     try {
-      const res = await fetch("https://hardware-hive.vercel.app/api/user/addCart", {
+      const res = await fetch("https://hardware-hive-backend.vercel.app/api/user/addCart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

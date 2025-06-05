@@ -37,7 +37,7 @@ const Hero = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/login/user/login", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/login/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginFormData),
@@ -63,7 +63,7 @@ const Hero = () => {
   const handleForgotSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/login/user/password", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/login/user/password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: forgotEmail }),
@@ -82,7 +82,7 @@ const Hero = () => {
   const handleChangePasswordSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/login/user/change-password", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/login/user/change-password", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(changePasswordData),

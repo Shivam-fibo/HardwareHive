@@ -35,7 +35,7 @@ const CartPage = () => {
           return;
         }
   
-        const res = await fetch(`https://hardware-hive.vercel.app/api/user/getCartItems/${userId}`);
+        const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
         const data = await res.json();
   
         if (data?.items) {
@@ -51,7 +51,7 @@ const CartPage = () => {
   
   const loadSavedItems = async () => {
     try {
-      const response = await fetch(`https://hardware-hive.vercel.app/api/user/savedItems/${userId}`);
+      const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/savedItems/${userId}`);
       if (!response.ok) throw new Error("Failed to fetch saved items");
 
       const data = await response.json();
@@ -79,7 +79,7 @@ const CartPage = () => {
 
   const handleRemoveItem = async (item) => {
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/user/deleteCartItem", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/user/deleteCartItem", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
          body: JSON.stringify({ userId, productId: item.productId }),
@@ -109,7 +109,7 @@ const CartPage = () => {
     });
   
     try {
-      const response = await fetch("https://hardware-hive.vercel.app/api/user/saveItemForLater", {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/user/saveItemForLater", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, productId: item.productId }),
@@ -136,7 +136,7 @@ const CartPage = () => {
 
 const handleRemoveSavedItem = async (item) => {
   try {
-    const response = await fetch("https://hardware-hive.vercel.app/api/user/deleteSavedItem", {
+    const response = await fetch("https://hardware-hive-backend.vercel.app/api/user/deleteSavedItem", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ productId: item.productId, userId }),

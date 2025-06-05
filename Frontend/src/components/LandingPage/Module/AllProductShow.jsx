@@ -9,7 +9,7 @@ const ProductGallery = () => {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          "https://hardware-hive.vercel.app/api/user/getallShowProduct"
+          "https://hardware-hive-backend.vercel.app/api/user/getallShowProduct"
         );
         const data = await res.json();
 

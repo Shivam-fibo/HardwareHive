@@ -10,9 +10,10 @@ const CartPage = () => {
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
   useEffect(() => {
     const userData = sessionStorage.getItem("user");
+    console.log("userData", userData)
     if (userData) {
       const user = JSON.parse(userData);
-      console.log(user);
+      console.log(user, "user is");
       setUserId(user._id);
     } 
   }, []);

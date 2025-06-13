@@ -111,6 +111,36 @@ const ProductList = () => {
     }
   };
 
+  // ✅ Breadcrumb click handlers
+  const handleBreadcrumbClick = (level) => {
+    if (level === 'shop') {
+      // Reset to show all products
+      selectedCategoryRef.current = null;
+      setSelectedCategories([]);
+      setSelectedSubcategories([]);
+    } else if (level === 'category') {
+      // Keep category but reset subcategories
+      setSelectedSubcategories([]);
+    }
+  };
+
+  // ✅ Generate breadcrumb items
+  const getBreadcrumbItems = () => {
+    const items = [{ label: 'Shop All', level: 'shop' }];
+    
+    if (selectedCategories.length > 0) {
+      items.push({ label: selectedCategories[0], level: 'category' });
+    }
+    
+    if (selectedSubcategories.length > 0) {
+      selectedSubcategories.forEach(sub => {
+        items.push({ label: sub, level: 'subcategory' });
+      });
+    }
+    
+    return items;
+  };
+
   return (
     <div className="min-h-screen">
       <div className="bg-[#013E70] text-[#000000] py-2 ">
@@ -161,12 +191,35 @@ const ProductList = () => {
             </div>
           </nav>
 
-
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
             <RiCustomerService2Fill size={20} />
             <span className="font-bold">+91 9804611111</span>
           </div>
         </div>
+      </div>
+
+      {/* ✅ Breadcrumb Section */}
+      <div className="bg-gray-50 border-b border-gray-200 px-6 py-3">
+        <nav className="flex items-center space-x-2 text-sm">
+          {getBreadcrumbItems().map((item, index) => (
+            <div key={index} className="flex items-center">
+              {index > 0 && (
+                <span className="mx-2 text-gray-400">/</span>
+              )}
+              <button
+                onClick={() => handleBreadcrumbClick(item.level)}
+                className={`transition-colors duration-200 ${
+                  index === getBreadcrumbItems().length - 1
+                    ? 'text-[#013E70] font-semibold cursor-default'
+                    : 'text-gray-600 hover:text-[#013E70] hover:underline'
+                }`}
+                disabled={index === getBreadcrumbItems().length - 1}
+              >
+                {item.label}
+              </button>
+            </div>
+          ))}
+        </nav>
       </div>
 
       <div className="flex justify-between py-4 px-6 sm:hidden">
@@ -184,7 +237,6 @@ const ProductList = () => {
           selectedSubcategories={selectedSubcategories}
           toggleSubcategory={toggleSubcategory} />
       </div>
-
 
       <div className="md:flex gap-6 px-6 sm:mt-4">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">

@@ -143,7 +143,7 @@ const ProductList = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-[#013E70] text-[#000000] py-2 ">
+      {/* <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
             {categories.map((name) => (
@@ -196,31 +196,9 @@ const ProductList = () => {
             <span className="font-bold">+91 9804611111</span>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* ✅ Breadcrumb Section */}
-      <div className="bg-gray-50 border-b border-gray-200 px-6 py-3">
-        <nav className="flex items-center space-x-2 text-sm">
-          {getBreadcrumbItems().map((item, index) => (
-            <div key={index} className="flex items-center">
-              {index > 0 && (
-                <span className="mx-2 text-gray-400">/</span>
-              )}
-              <button
-                onClick={() => handleBreadcrumbClick(item.level)}
-                className={`transition-colors duration-200 ${
-                  index === getBreadcrumbItems().length - 1
-                    ? 'text-[#013E70] font-semibold cursor-default'
-                    : 'text-gray-600 hover:text-[#013E70] hover:underline'
-                }`}
-                disabled={index === getBreadcrumbItems().length - 1}
-              >
-                {item.label}
-              </button>
-            </div>
-          ))}
-        </nav>
-      </div>
+     
 
       <div className="flex justify-between py-4 px-6 sm:hidden">
         <h1 className="font-medium text-xl">All List Items</h1>
@@ -238,9 +216,50 @@ const ProductList = () => {
           toggleSubcategory={toggleSubcategory} />
       </div>
 
+<div className="w-full px-6 py-3 md:ml-[25%] md:mt-2">
+  <nav className="flex items-center flex-wrap text-sm text-black">
+    {getBreadcrumbItems().map((item, index) => (
+      <div key={index} className="flex items-center">
+        {index > 0 && (
+          <span className="mx-2">{'>'}</span>
+        )}
+        <button
+          onClick={() => handleBreadcrumbClick(item.level)}
+          className={`transition-colors duration-200 ${
+            index === getBreadcrumbItems().length - 1
+              ? 'font-semibold cursor-default'
+              : 'hover:text-[#013E70] hover:underline'
+          }`}
+          disabled={index === getBreadcrumbItems().length - 1}
+        >
+          {item.label}
+        </button>
+      </div>
+    ))}
+  </nav>
+</div>
+
       <div className="md:flex gap-6 px-6 sm:mt-4">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
           <h2 className="text-lg font-bold text-[#0D2F4B] mb-6">Category</h2>
+           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
+    <label
+      className="flex items-center justify-between mb-3 text-[14px] font-semibold cursor-pointer"
+    >
+      All
+      <input
+        type="checkbox"
+        className="form-checkbox h-5 w-5 text-[#003865] rounded"
+        checked={selectedCategories.length === 0}
+        onChange={() => {
+          setSelectedCategories([]);
+          setSelectedSubcategories([]);
+          selectedCategoryRef.current = null;
+        }}
+      />
+    </label>
+  </div>
+
           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
             {categories.map((item, i) => (
               <label

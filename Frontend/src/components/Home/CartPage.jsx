@@ -52,7 +52,6 @@ const CartPage = () => {
     fetchSavedItems();
   }, [userId]);
 
-  // Add this new function to save an item for later
   const handleSaveForLater = async (item) => {
     if (!userId) {
       toast.error("Please wait while we load your user information");
@@ -70,7 +69,6 @@ const CartPage = () => {
 
       if (!response.ok) throw new Error(data.message || "Failed to save item");
 
-      // Remove from cart and add to saved items
       setCartItems(prev => prev.filter(i => i.productId !== item.productId));
       setSavedItems(prev => [...prev, item]);
       toast.success("Item saved for later");
@@ -191,134 +189,193 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <Header />
-      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-[18px] font-semibold">
-        Cart Products
-      </h1>
 
-      <div className="px-4 sm:px-20 mb-10">
-        {/* User Info */}
-        <div className="w-full bg-white mx-auto mt-10">
-          <table className="table-auto w-full border">
-            <tbody>
-              <tr className="border">
-                <td className="border p-2 font-semibold w-1/6">Company Name:</td>
-                <td className="border p-2 w-1/3">{userData?.companyName || "Not available"}</td>
-                <td className="border p-2 font-semibold w-1/6">Contact No.:</td>
-                <td className="border p-2 w-1/3">{userData?.mobile || "Not available"}</td>
-              </tr>
-              <tr>
-                <td className="border p-2 font-semibold" colSpan={1}>Address:</td>
-                <td className="border p-2" colSpan={3}>{userData?.address || "Not available"}</td>
-              </tr>
-            </tbody>
-          </table>
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* My Orders Section */}
+        <div className="bg-white rounded-lg shadow-sm border mb-6">
+          {/* Header */}
+          <div className="border-b px-6 py-4">
+            <h2 className="text-lg font-semibold text-gray-800">My Orders</h2>
+          </div>
 
-        <div className="bg-yellow-400 border border-t-transparent p-2 flex justify-between items-center">
-  <h2 className="text-lg font-semibold">Order Id*</h2>
-  <h2 className="text-2xl font-semibold underline">Estimate</h2>
-  <h2 className="text-lg font-semibold">
-    Date: {
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()
-    }
-  </h2>
+          {cartItems.length === 0 ? (
+            <div className="px-6 py-8 text-center text-gray-500">
+              Your cart is empty
+            </div>
+          ) : (
+            <div className="flex ">
+              {/* Left Side - Cart Items */}
+              <div className="flex-1 px-6 py-4">
+                {cartItems.map((item, index) => (
+                  <div key={item._id} className="flex items-start gap-4 border-b py-4 w-full">
+  {/* Serial Number */}
+  <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
+    {index + 1}
+  </div>
+
+  {/* Product Image */}
+  <img
+    src={item.image}
+    alt={item.title}
+    className="w-16 h-16 object-contain rounded border mt-2"
+  />
+
+  {/* Product Info + Quantity + Actions */}
+  <div className="flex flex-1 justify-between items-start gap-4">
+    {/* Product Info */}
+    <div className="flex-1">
+      <h3 className="font-medium text-gray-800 text-sm mb-1">{item.title}</h3>
+      <p className="text-sm text-gray-600 mb-2">₹ {item.price}</p>
+    </div>
+
+    {/* Quantity Selector */}
+    <div className="flex-1 flex flex-col items-center">
+      <div className="text-sm mb-1">Please select quantity</div>
+      <div className="flex items-center border rounded-md w-fit mb-3">
+        <button
+          onClick={() => handleDecrease(item._id)}
+          className="px-3 py-1 border-r"
+          disabled={item.quantity <= 1}
+        >
+          −
+        </button>
+        <span className="px-4 py-1">{item.quantity}</span>
+        <button
+          onClick={() => handleIncrease(item._id)}
+          className="px-3 py-1 border-l"
+        >
+          +
+        </button>
+      </div>
+    </div>
+
+    {/* Total & Actions */}
+    <div className="flex-1 flex flex-col items-end">
+      <p className="text-lg font-semibold text-green-600 mb-2">
+        ₹ {item.price * item.quantity}
+      </p>
+      <div className="flex gap-2">
+        <button
+          onClick={() => handleSaveForLater(item)}
+          className="text-orange-500 hover:text-orange-600 p-2 border rounded-md"
+          title="Save for later"
+        >
+          <IoHeartSharp size={18} />
+        </button>
+        <button
+          onClick={() => handleRemoveItem(item)}
+          className="text-red-500 hover:text-red-600 p-2 border rounded-md"
+          title="Remove item"
+        >
+          <MdDelete size={18} />
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
-        </div>
+                  
+                ))}
+              </div>
 
-        {/* Cart Items */}
-        <div className="bg-white rounded-md shadow-md p-4 mt-6 border">
-          {cartItems.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">Your cart is empty</p>
-          ) : (
-            <>
-              {cartItems.map((item, index) => (
-                <div key={item._id} className="flex flex-wrap md:flex-nowrap items-start md:items-center border-b py-4 gap-4">
-                  <span className="w-10 h-10 bg-[#013E70] text-white flex items-center justify-center rounded-xl border">{index + 1}</span>
-                  <img src={item.image} alt={item.title} className="w-20 h-20 object-contain" />
-                  <div className="flex-1">
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-sm text-gray-500">Price: ₹ {item.price}</p>
-                  </div>
-                  <div className="flex items-center border rounded-md w-fit">
-                    <button 
-                      onClick={() => handleDecrease(item._id)} 
-                      className="px-3 py-1 border-r" 
-                      disabled={item.quantity <= 1}
-                    >
-                      −
-                    </button>
-                    <span className="px-4 py-1">{item.quantity}</span>
-                    <button 
-                      onClick={() => handleIncrease(item._id)} 
-                      className="px-3 py-1 border-l"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <div className="text-right w-full md:w-auto">
-                    <p className="font-semibold text-lg">Total: ₹ {item.price * item.quantity}</p>
-                    <div className="flex gap-2 mt-2 justify-end">
-                      <button 
-                        onClick={() => handleSaveForLater(item)} 
-                        className="text-yellow-500 border p-2 rounded-md"
-                      >
-                        <IoHeartSharp size={20} />
-                      </button>
-                      <button 
-                        onClick={() => handleRemoveItem(item)} 
-                        className="text-red-500 border p-2 rounded-md"
-                      >
-                        <MdDelete size={20} />
-                      </button>
+              {/* Right Side - Price Details */}
+              <div className="w-80 bg-gray-50 p-6 border-l">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Price Details</h3>
+
+                <div className="space-y-3 mb-6">
+                  {cartItems.map((item, index) => (
+                    <div key={item._id} className="flex justify-between text-sm">
+                      <span className="text-gray-600">{item.title}</span>
+                      <span className="font-medium">₹ {item.price * item.quantity}</span>
+                    </div>
+                  ))}
+
+                  <div className="border-t pt-3">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Subtotal</span>
+                      <span className="font-medium">₹ {totalPrice}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Discount ({discount}%)</span>
+                      <span className="font-medium text-green-600">-₹ {(totalPrice * (discount / 100)).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-lg font-bold border-t pt-3">
+                      <span>Total Amount</span>
+                      <span>₹ {discountedPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
-              ))}
 
-              <div className="text-right mt-6">
-                <p className="text-xl font-semibold">Total: ₹ {discountedPrice}</p>
-                <p className="text-sm text-gray-500">Discount Applied: {discount}%</p>
-                <button 
-                  onClick={handlePlaceOrder} 
-                  className="mt-4 px-6 py-2 bg-green-600 text-white rounded-md"
+                <button
+                  onClick={handlePlaceOrder}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md font-medium transition-colors"
                 >
                   Place Order
                 </button>
               </div>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Saved Items */}
+        {/* Saved for Later Section */}
         {savedItems.length > 0 && (
-          <div className="mt-8 bg-white p-6 border rounded-md shadow-md">
-            <h2 className="text-xl font-bold mb-4">Saved for Later</h2>
-            {savedItems.map((item, index) => (
-              <div key={item._id} className="flex flex-wrap md:flex-nowrap items-start md:items-center border-b py-4 gap-4">
-                <span className="w-10 h-10 bg-[#013E70] text-white flex items-center justify-center rounded-xl border">{index + 1}</span>
-                <img src={item.image} alt={item.title} className="w-20 h-20 object-contain" />
-                <div className="flex-1">
-                  <h3 className="font-semibold">{item.title}</h3>
-                  <p className="text-sm text-gray-500">Price: ₹ {item.price}</p>
-                </div>
-                <div className="flex gap-2 justify-end w-full md:w-auto">
-                  <button 
-                    onClick={() => handleMoveToCart(item)} 
-                    className="text-blue-500 border p-2 rounded-md"
-                  >
-                    Add to Cart
-                  </button>
-                  <button 
-                    onClick={() => handleRemoveSavedItem(item)} 
-                    className="text-red-500 border p-2 rounded-md"
-                  >
-                    <MdDelete size={20} />
-                  </button>
-                </div>
+          <div className="bg-white rounded-lg shadow-sm border">
+            {/* Header */}
+            <div className="border-b px-6 py-4">
+              <h2 className="text-lg font-semibold text-gray-800">Saved for Later</h2>
+            </div>
+
+            {/* Saved Items Grid */}
+            <div className="p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {savedItems.map((item) => (
+                  <div key={item._id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                    {/* Product Image */}
+                    <div className="relative mb-3">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-32 object-contain rounded"
+                      />
+                      <button
+                        onClick={() => handleRemoveSavedItem(item)}
+                        className="absolute top-2 right-2 text-red-500 hover:text-red-600"
+                      >
+                        <IoHeartSharp size={20} />
+                      </button>
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="mb-3">
+                      <h3 className="font-medium text-sm text-gray-800 mb-1">{item.title}</h3>
+                      <div className="flex items-center gap-1 mb-2">
+                        <span className="text-yellow-400">★</span>
+                        <span className="text-xs text-gray-600">4.5</span>
+                      </div>
+                      <p className="text-lg font-semibold text-gray-800">₹ {item.price}</p>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleRemoveSavedItem(item)}
+                        className="p-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded text-sm transition-colors"
+                      >
+                        <MdDelete size={16} />
+                      </button>
+                      <button
+                        onClick={() => handleMoveToCart(item)}
+                        className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black py-2 px-4 rounded text-sm font-medium transition-colors"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         )}
       </div>

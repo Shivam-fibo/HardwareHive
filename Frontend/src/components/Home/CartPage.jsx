@@ -218,7 +218,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F2F5F6]">
+    <div className="min-h-screen  bg-[#F2F5F6]">
       <header className="bg-white top-0 z-50 shadow-sm">
         <div className="sm:h-12 p-2">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
@@ -295,24 +295,24 @@ const CartPage = () => {
               <h2 className="text-lg font-semibold text-gray-800">My Orders</h2>
             </div>
 
-            <div className="flex ">
+            <div className="flex flex-col lg:flex-row w-full ">
               {/* Left Side - Cart Items */}
-              <div className="flex-1 px-6 py-2">
+              <div className="flex-1 px-6 py-2 hidden sm:block">
                 {cartItems.map((item, index) => (
                   <div key={item._id} className="flex items-start gap-4 border-b py-1 w-full">
                     {/* Serial Number */}
-                    <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
+                    <div className="w-8 h-8 sm:bg-blue-100 sm:text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
                       {index + 1}
                     </div>
 
                     {/* Product Image */}
-                 
+
                     <img
                       src={item.image}
                       alt={item.title}
                       className="w-16 h-16  object-contain rounded border mt-1"
                     />
-                
+
 
                     {/* Product Info + Quantity + Actions */}
                     <div className="flex flex-1 justify-between items-start gap-4">
@@ -323,6 +323,7 @@ const CartPage = () => {
                       </div>
 
                       {/* Quantity Selector */}
+
                       <div className="flex-1 flex flex-col items-center">
                         <div className="text-sm mb-1">Please select quantity</div>
                         <div className="flex items-center border rounded-md w-fit mb-3">
@@ -365,7 +366,7 @@ const CartPage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                   </div>
                 ))}
                 <h1 className="text-center my-4">Place order </h1>
@@ -373,8 +374,90 @@ const CartPage = () => {
 
 
 
+
+
+              {/* mobile -------------------------- */}
+              <div className="flex-1 px-4 py-2 block sm:hidden w-full">
+  {cartItems.map((item, index) => (
+    <div key={item._id} className="flex items-start gap-3 border-b py-2 w-full flex-wrap">
+      {/* Serial Number */}
+      <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
+        {index + 1}
+      </div>
+
+      {/* Product Image */}
+      <img
+        src={item.image}
+        alt={item.title}
+        className="w-16 h-16 object-contain rounded border mt-1"
+      />
+
+      {/* Product Info + Price + Actions (stacked in small screen) */}
+      <div className="flex flex-col flex-1 gap-2 mt-1 w-full">
+
+        {/* Product Title + Price */}
+        <div className="flex justify-between w-full">
+          <div className="flex-1 min-w-0">
+            <h3 className="font-medium text-gray-800 text-sm truncate">{item.title}</h3>
+            <p className="text-sm text-gray-600 mt-1">₹{item.price}</p>
+          </div>
+          <div className="text-right text-green-600 font-semibold whitespace-nowrap">
+            ₹ {item.price * item.quantity}
+          </div>
+        </div>
+
+        {/* Quantity and Action buttons */}
+        <div className="flex justify-between items-center gap-2 flex-wrap">
+          
+          {/* Quantity Selector */}
+          <div className="flex items-center border rounded text-sm w-[100px] justify-between">
+            <button
+              onClick={() => handleDecrease(item._id)}
+              className="px-2 py-0.5 border-r"
+              disabled={item.quantity <= 1}
+            >
+              −
+            </button>
+            <span className="px-2 py-0.5 text-center w-6">{item.quantity}</span>
+            <button
+              onClick={() => handleIncrease(item._id)}
+              className="px-2 py-0.5 border-l"
+            >
+              +
+            </button>
+          </div>
+
+          {/* Save + Delete Buttons */}
+          <div className="flex gap-1">
+            <button
+              onClick={() => handleSaveForLater(item)}
+              className="text-red-500 hover:text-red-600 p-1 border rounded"
+              title="Save for later"
+            >
+              <IoHeartSharp size={14} />
+            </button>
+            <button
+              onClick={() => handleRemoveItem(item)}
+              className="text-black-500 hover:text-black-600 p-1 border rounded"
+              title="Remove item"
+            >
+              <MdDelete size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))}
+
+  <h1 className="text-center my-4">Place order</h1>
+</div>
+
+
+
+
               {/* Right Side - Price Details */}
-              <div className="w-80 bg-gray-50 p-6 border-l">
+              <div className="w-full lg:w-80  p-6 border-t lg:border-t-0 lg:border-l">
+
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Price Details</h3>
 
                 <div className="space-y-3 mb-6">
@@ -385,15 +468,15 @@ const CartPage = () => {
                     </div>
                   ))}
 
-                   
-                    
-                    <div className="flex justify-between text-lg font-bold border-t pt-3">
-                      <span>Total Amount</span>
-                      <span>₹ {totalPrice.toFixed(2)}</span>
-                    </div>
-              
+
+
+                  <div className="flex justify-between text-lg font-bold border-t pt-3">
+                    <span>Total Amount</span>
+                    <span>₹ {totalPrice.toFixed(2)}</span>
+                  </div>
+
                 </div>
-                  <div className="border-t my-4"></div>
+                <div className="border-t my-4"></div>
                 <button
                   onClick={handlePlaceOrder}
                   className="w-full bg-green-600  hover:bg-green-700 text-white py-3 px-6 rounded-md font-medium transition-colors"
@@ -424,7 +507,7 @@ const CartPage = () => {
         )}
 
 
-       {savedItems.length > 0 && 
+        {savedItems.length > 0 &&
           <div className="bg-white rounded-lg shadow-sm border">
             {/* Header */}
             <div className="border-b px-6 py-4">
@@ -443,13 +526,13 @@ const CartPage = () => {
                         alt={item.title}
                         className="w-full h-32 object-contain rounded"
                       />
-                     
+
                     </div>
 
                     {/* Product Info */}
                     <div className="mb-3">
                       <h3 className="font-medium text-sm text-gray-800 mb-1">{item.title}</h3>
-                    
+
                       <p className="text-lg font-semibold text-gray-800">₹ {item.price}</p>
                     </div>
 
@@ -457,7 +540,7 @@ const CartPage = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleRemoveSavedItem(item)}
-                        className="p-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded text-sm transition-colors"
+                        className="p-2 border border-gray-300 hover: text-gray-700 rounded text-sm transition-colors"
                       >
                         <MdDelete size={16} />
                       </button>

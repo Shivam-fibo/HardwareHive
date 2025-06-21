@@ -12,6 +12,9 @@ import ProductList from './components/Home/ProductList';
 import UserProfile from "./components/Home/UserProfile.jsx";
 import OrderHistory from './components/Home/OrderHistory.jsx';
 import { PiWhatsappLogoThin } from "react-icons/pi";
+import NotificationPage  from './components/Home/Notification.jsx';
+import NotificationDetail from './components/Home/NotificationDetail';
+
 import { PiWhatsappLogoDuotone } from 'react-icons/pi';
 import './App.css';
 import ContactButton from './components/Home/ContactButton.jsx';
@@ -36,7 +39,9 @@ function App() {
             <Route path="/products" element={<ProductList />} />
             <Route path="/user" element={<UserProfile />} />
             <Route path="/order" element={<OrderHistory />} />
-            <Route path ="/notification" element={<Notification/>}/>
+<Route path="/notification" element={<NotificationPage />} />
+    <Route path="/notification/:id" element={<NotificationDetail />} />
+
           </Routes>
         </CartProvider>
       </Router>

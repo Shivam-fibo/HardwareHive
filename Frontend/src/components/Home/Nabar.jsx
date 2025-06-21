@@ -13,8 +13,6 @@ import CartIcon from "./CartIcon";
 
 function Header() {
   const [showProfile, setShowProfile] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [notifications, setNotifications] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const profileRef = useRef(null);
@@ -37,6 +35,11 @@ function Header() {
     };
   }, []);
 
+
+  const handleNotification = () =>{
+    console.log("notiification clicked!!!")
+    navigate("/notification")
+  }
 
 
   return (
@@ -61,7 +64,7 @@ function Header() {
             {/* Mobile Icons */}
             <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
-              <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} /></button>
+              <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => handleNotification()} /></button>
               <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
                 <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
               </button>
@@ -109,14 +112,14 @@ function Header() {
           </div>
         </div>
 
-        {/* Notifications Badge */}
+
+{/* 
         {notifications.length > 0 && (
           <span className="absolute top-3 right-6 bg-white text-black text-xs px-1.5 py-0.5 rounded-full">
             {notifications.length}
           </span>
         )}
 
-        {/* Notifications Dropdown */}
         {showDropdown && (
           <div className="absolute right-4 mt-2 w-64 bg-white rounded-lg shadow-lg p-4 z-50">
             <h3 className="text-lg font-semibold mb-2">Recent Orders</h3>
@@ -126,7 +129,7 @@ function Header() {
               </p>
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </header>
   );

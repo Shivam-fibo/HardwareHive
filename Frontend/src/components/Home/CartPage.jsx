@@ -251,7 +251,6 @@ const CartPage = () => {
       </div>
     </div>
 
-    {/* Total & Actions */}
     <div className="flex-1 flex flex-col items-end">
       <p className="text-lg font-semibold text-green-600 mb-2">
         ₹ {item.price * item.quantity}
@@ -274,9 +273,7 @@ const CartPage = () => {
       </div>
     </div>
   </div>
-</div>
-
-                  
+</div>            
                 ))}
               </div>
 

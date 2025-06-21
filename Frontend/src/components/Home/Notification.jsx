@@ -38,6 +38,29 @@ const NotificationPage = () => {
 
   return (
     <div>
+      <Header/>
+       <div className="bg-[#013E70] text-[#000000] py-2 ">
+              <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+
+
+              <img
+                src="/logo/ss_power_tool_logo.svg"
+                width="150px"
+                className="sm:ml-6"
+                alt="SS Power Tools Logo"
+              />
+
+
+                <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+                  <h1 className="text-white text-lg">Notification</h1>
+                </nav>
+      
+                <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+                  <RiCustomerService2Fill size={20} />
+                  <span className="font-bold">+91 9804611111</span>
+                </div>
+              </div>
+            </div>
       
       <div className="p-6 max-w-4xl mx-auto">
      

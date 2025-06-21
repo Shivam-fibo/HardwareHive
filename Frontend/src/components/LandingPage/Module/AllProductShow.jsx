@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast"; // Importing toast
 import Footer from '../Module/Footer';
-
+import { useNavigate } from "react-router-dom";
 const ProductGallery = () => {
   const [products, setProducts] = useState({});
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -43,18 +43,18 @@ const ProductGallery = () => {
   };
 
   return (
-    <div onClick={handleClick}>
+    <div>
 
       <div className="h-12">
         <header
           className="w-full h-full flex justify-between items-center p-2 bg-white cursor-pointer"
-          onClick={() => navigate("/")}
         >
           <img
             src="/logo/ss_power_tool_logo.svg"
             width={"150px"}
             className="sm:ml-6"
             alt="SS Power Tools Logo"
+              onClick={ () => {navigate("/"); console.log("cliekd")}}
           />
           <div className="flex gap-1 text-nowrap font-semibold text-[16px] text-right sm:mr-6">
             <img src="icons/customer-service.svg" alt="" /><p> +91 9804611111</p>
@@ -69,7 +69,7 @@ const ProductGallery = () => {
       </h1>
 
       {/* Products Grid */}
-      <div className="px-4 sm:px-10">
+      <div className="px-4 sm:px-10" onClick={handleClick}>
         {Object.keys(products).map((category) => (
           <div key={category} className="mb-8">
             {/* Category Title */}

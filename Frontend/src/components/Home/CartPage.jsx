@@ -1,15 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
-import Header from "../LandingPage/Module/Header";
+import Header from "./Nabar";
 import Footer from "../LandingPage/Module/Footer";
 import { IoHeartSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import { PiBellBold } from "react-icons/pi";
+import { FaRegUser } from "react-icons/fa6";
+import { IoClose, IoLogOutOutline } from "react-icons/io5";
+import { RiCustomerService2Fill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
   const [userId, setUserId] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [showProfile, setShowProfile] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const profileRef = useRef(null);
+
+  const navigate = useNavigate()
+
+  const handleNotification = () => {
+    console.log("notiification clicked!!!")
+    navigate("/notification")
+  }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfile(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
@@ -189,93 +218,160 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <div className="min-h-screen bg-[#F2F5F6]">
+      <header className="bg-white top-0 z-50 shadow-sm">
+        <div className="sm:h-12 p-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* My Orders Section */}
-        <div className="bg-white rounded-lg shadow-sm border mb-6">
-          {/* Header */}
-          <div className="border-b px-6 py-4">
-            <h2 className="text-lg font-semibold text-gray-800">My Orders</h2>
-          </div>
+            {/* Logo & Icons */}
+            <div className="flex items-center justify-between w-full sm:w-auto h-full">
 
-          {cartItems.length === 0 ? (
-            <div className="px-6 py-8 text-center text-gray-500">
-              Your cart is empty
+              {/* Logo */}
+              <button onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2">
+
+                <img
+                  src="/logo/ss_power_tool_logo.svg"
+                  width="150px"
+                  className="sm:ml-6"
+                  alt="SS Power Tools Logo"
+                />
+              </button>
+
+              {/* Mobile Icons */}
+              <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
+                <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => handleNotification()} /></button>
+                <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                  <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
+                </button>
+              </div>
+
+              {showProfile && (
+                <div
+                  ref={profileRef}
+                  className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
+                >
+                  <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <FaRegUser size={12} /> My Account
+                  </p>
+                  <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+                    <IoLogOutOutline size={14} /> Logout
+                  </p>
+                </div>
+              )}
             </div>
-          ) : (
+
+
+            {/* Desktop Icons */}
+            <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
+              <button aria-label="Notifications" className="cursor-pointer" onClick={() => handleNotification()}><PiBellBold size={22} strokeWidth={0.5} /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="bg-[#013E70] text-[#000000] py-2 ">
+        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+            <h1 className="text-white text-lg">Get to cart</h1>
+          </nav>
+
+          <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+            <RiCustomerService2Fill size={20} />
+            <span className="font-bold">+91 9804611111</span>
+          </div>
+        </div>
+      </div>
+
+      {/* My Orders Section */}
+
+      <div className="max-w-6xl mx-auto px-4 py-2">
+        {cartItems.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm  mb-6">
+            {/* Header */}
+            <div className="border-b px-6 py-4">
+              <h2 className="text-lg font-semibold text-gray-800">My Orders</h2>
+            </div>
+
             <div className="flex ">
               {/* Left Side - Cart Items */}
-              <div className="flex-1 px-6 py-4">
+              <div className="flex-1 px-6 py-2">
                 {cartItems.map((item, index) => (
-                  <div key={item._id} className="flex items-start gap-4 border-b py-4 w-full">
-  {/* Serial Number */}
-  <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
-    {index + 1}
-  </div>
+                  <div key={item._id} className="flex items-start gap-4 border-b py-1 w-full">
+                    {/* Serial Number */}
+                    <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
+                      {index + 1}
+                    </div>
 
-  {/* Product Image */}
-  <img
-    src={item.image}
-    alt={item.title}
-    className="w-16 h-16 object-contain rounded border mt-2"
-  />
+                    {/* Product Image */}
+                 
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-16 h-16  object-contain rounded border mt-1"
+                    />
+                
 
-  {/* Product Info + Quantity + Actions */}
-  <div className="flex flex-1 justify-between items-start gap-4">
-    {/* Product Info */}
-    <div className="flex-1">
-      <h3 className="font-medium text-gray-800 text-sm mb-1">{item.title}</h3>
-      <p className="text-sm text-gray-600 mb-2">₹ {item.price}</p>
-    </div>
+                    {/* Product Info + Quantity + Actions */}
+                    <div className="flex flex-1 justify-between items-start gap-4">
+                      {/* Product Info */}
+                      <div className="flex-1">
+                        <h3 className="font-medium text-gray-800 text-sm mb-1">{item.title}</h3>
+                        <p className="text-sm text-gray-600 mb-2">₹ {item.price}</p>
+                      </div>
 
-    {/* Quantity Selector */}
-    <div className="flex-1 flex flex-col items-center">
-      <div className="text-sm mb-1">Please select quantity</div>
-      <div className="flex items-center border rounded-md w-fit mb-3">
-        <button
-          onClick={() => handleDecrease(item._id)}
-          className="px-3 py-1 border-r"
-          disabled={item.quantity <= 1}
-        >
-          −
-        </button>
-        <span className="px-4 py-1">{item.quantity}</span>
-        <button
-          onClick={() => handleIncrease(item._id)}
-          className="px-3 py-1 border-l"
-        >
-          +
-        </button>
-      </div>
-    </div>
+                      {/* Quantity Selector */}
+                      <div className="flex-1 flex flex-col items-center">
+                        <div className="text-sm mb-1">Please select quantity</div>
+                        <div className="flex items-center border rounded-md w-fit mb-3">
+                          <button
+                            onClick={() => handleDecrease(item._id)}
+                            className="px-3 py-1 border-r"
+                            disabled={item.quantity <= 1}
+                          >
+                            −
+                          </button>
+                          <span className="px-4 py-1">{item.quantity}</span>
+                          <button
+                            onClick={() => handleIncrease(item._id)}
+                            className="px-3 py-1 border-l"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
 
-    <div className="flex-1 flex flex-col items-end">
-      <p className="text-lg font-semibold text-green-600 mb-2">
-        ₹ {item.price * item.quantity}
-      </p>
-      <div className="flex gap-2">
-        <button
-          onClick={() => handleSaveForLater(item)}
-          className="text-orange-500 hover:text-orange-600 p-2 border rounded-md"
-          title="Save for later"
-        >
-          <IoHeartSharp size={18} />
-        </button>
-        <button
-          onClick={() => handleRemoveItem(item)}
-          className="text-red-500 hover:text-red-600 p-2 border rounded-md"
-          title="Remove item"
-        >
-          <MdDelete size={18} />
-        </button>
-      </div>
-    </div>
-  </div>
-</div>            
+                      <div className="flex-1 flex flex-col items-end">
+                        <p className="text-lg font-semibold text-green-600 mb-2">
+                          ₹ {item.price * item.quantity}
+                        </p>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleSaveForLater(item)}
+                            className="text-red-500 hover:text-red-600 p-2 border rounded-md"
+                            title="Save for later"
+                          >
+                            <IoHeartSharp size={18} />
+                          </button>
+                          <button
+                            onClick={() => handleRemoveItem(item)}
+                            className="text-black-500 hover:text-black-600 p-2 border rounded-md"
+                            title="Remove item"
+                          >
+                            <MdDelete size={18} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
                 ))}
+                <h1 className="text-center my-4">Place order </h1>
               </div>
+
+
 
               {/* Right Side - Price Details */}
               <div className="w-80 bg-gray-50 p-6 border-l">
@@ -289,35 +385,46 @@ const CartPage = () => {
                     </div>
                   ))}
 
-                  <div className="border-t pt-3">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">Subtotal</span>
-                      <span className="font-medium">₹ {totalPrice}</span>
-                    </div>
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-600">Discount ({discount}%)</span>
-                      <span className="font-medium text-green-600">-₹ {(totalPrice * (discount / 100)).toFixed(2)}</span>
-                    </div>
+                   
+                    
                     <div className="flex justify-between text-lg font-bold border-t pt-3">
                       <span>Total Amount</span>
-                      <span>₹ {discountedPrice.toFixed(2)}</span>
+                      <span>₹ {totalPrice.toFixed(2)}</span>
                     </div>
-                  </div>
+              
                 </div>
-
+                  <div className="border-t my-4"></div>
                 <button
                   onClick={handlePlaceOrder}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md font-medium transition-colors"
+                  className="w-full bg-green-600  hover:bg-green-700 text-white py-3 px-6 rounded-md font-medium transition-colors"
                 >
                   Place Order
                 </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Saved for Later Section */}
-        {savedItems.length > 0 && (
+        {cartItems.length === 0 && (
+          <div className="bg-white rounded-lg shadow-sm border mb-6 px-6 py-8 text-center text-gray-500 flex flex-col items-center justify-center">
+            <img
+              src="/images/empty-cart.webp" // Make sure to place your image in the `public/images` folder
+              alt="Empty cart"
+              className="w-48 h-auto mb-6"
+            />
+            <h2 className="text-xl font-semibold text-gray-700">Your cart is empty!</h2>
+            <p className="text-sm text-gray-500 mb-4">Add items to it now.</p>
+            <button
+              onClick={() => navigate("/home")}
+              className="bg-[#003E71] cursor-pointer text-white font-medium py-2 px-4 rounded-xl"
+            >
+              Shop now
+            </button>
+          </div>
+        )}
+
+
+       {savedItems.length > 0 && 
           <div className="bg-white rounded-lg shadow-sm border">
             {/* Header */}
             <div className="border-b px-6 py-4">
@@ -336,21 +443,13 @@ const CartPage = () => {
                         alt={item.title}
                         className="w-full h-32 object-contain rounded"
                       />
-                      <button
-                        onClick={() => handleRemoveSavedItem(item)}
-                        className="absolute top-2 right-2 text-red-500 hover:text-red-600"
-                      >
-                        <IoHeartSharp size={20} />
-                      </button>
+                     
                     </div>
 
                     {/* Product Info */}
                     <div className="mb-3">
                       <h3 className="font-medium text-sm text-gray-800 mb-1">{item.title}</h3>
-                      <div className="flex items-center gap-1 mb-2">
-                        <span className="text-yellow-400">★</span>
-                        <span className="text-xs text-gray-600">4.5</span>
-                      </div>
+                    
                       <p className="text-lg font-semibold text-gray-800">₹ {item.price}</p>
                     </div>
 
@@ -374,7 +473,7 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-        )}
+        }
       </div>
 
       <Footer />

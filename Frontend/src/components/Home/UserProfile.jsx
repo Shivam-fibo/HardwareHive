@@ -22,6 +22,7 @@ import Header from "./Nabar";
 import Footer from "../LandingPage/Module/Footer";
 import UserProfileUpdate from "./UserProfileUpdate";
 
+
 export default function Profile() {
   const [editProfile, setEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);

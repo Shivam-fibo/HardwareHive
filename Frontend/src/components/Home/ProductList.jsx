@@ -3,7 +3,8 @@ import { useCart } from "../context/CartContext";
 import ProductCard from "./ProductCard";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import FilterDrawer from "./FilterDrawer";
-
+import ProductModal from "./ProductModel";
+import Header from "./Nabar";
 const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
 
 const ProductList = () => {
@@ -12,6 +13,9 @@ const ProductList = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+const [isModalOpen, setIsModalOpen] = useState(false);
+
   const itemsPerPage = 8;
 
   const { addToCart } = useCart();
@@ -143,6 +147,7 @@ const ProductList = () => {
 
   return (
     <div className="min-h-screen">
+
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
@@ -261,6 +266,10 @@ const ProductList = () => {
                 key={product._id}
                 product={product}
                 handleAddToCart={handleAddToCart}
+                onViewDetails={() => {
+                setSelectedProduct(product);
+                setIsModalOpen(true);
+                  }}
               />
             ))}
           </div>
@@ -300,6 +309,14 @@ const ProductList = () => {
           </a>
         </li>
       </ul>
+
+      {isModalOpen && (
+  <ProductModal
+    product={selectedProduct}
+    onClose={() => setIsModalOpen(false)}
+  />
+)}
+
     </div>
   );
 };

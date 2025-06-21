@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { toast } from "react-hot-toast";
-const ProductCard = ({ product, handleAddToCart }) => {
+const ProductCard = ({ product, handleAddToCart, onViewDetails }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
   const [quantity, setQuantity] = useState();
   const handleClick = () => {
@@ -15,10 +15,10 @@ const ProductCard = ({ product, handleAddToCart }) => {
   return (
     <div
       ref={ref}
-      className={`border rounded-lg p-3 h-62 shadow-sm  flex flex-col justify-between transition-opacity duration-700 ${inView ? "opacity-100" : "opacity-0"
+      className={`cursor-pointer border rounded-lg p-3 h-62 shadow-sm  flex flex-col justify-between transition-opacity duration-700 ${inView ? "opacity-100" : "opacity-0"
         }`}
     >
-      <div>
+      <div onClick={onViewDetails}>
         <div className="relative">
           <img
             src={product.image}

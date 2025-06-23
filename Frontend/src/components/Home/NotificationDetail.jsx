@@ -100,7 +100,7 @@ const NotificationDetail = () => {
         <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white text-lg">Notification</h1>
+            <h1 className="text-white text-lg">All Notification</h1>
           </nav>
 
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
@@ -124,7 +124,7 @@ const NotificationDetail = () => {
           >
             {notification.status === 'Confirm'
               ? 'Your order is confirmed'
-              : 'Shipping unavailable to your area'}
+              : 'Your order is pending'}
           </span>
         </p>
         <p className="text-gray-600 mb-6 font-medium">Total Amount: ₹{notification.totalAmount}</p>

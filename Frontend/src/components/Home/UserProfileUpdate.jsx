@@ -80,7 +80,7 @@ const UserProfileUpdate = ({ data }) => {
           <input
             type="text"
             name="name"
-            placeholder="Full Name"
+           
             value={formData.name}
             onChange={handleChange}
             className="w-full border p-2 rounded"
@@ -93,7 +93,7 @@ const UserProfileUpdate = ({ data }) => {
           <input
             type="text"
             name="companyName"
-            placeholder="Enter Company Name"
+         
             value={formData.companyName}
             onChange={handleChange}
             className="w-full border p-2 rounded"
@@ -106,7 +106,7 @@ const UserProfileUpdate = ({ data }) => {
           <input
             type="tel"
             name="mobile"
-            placeholder="Enter Your Mobile Number"
+           
             value={formData.mobile}
             onChange={handleChange}
             className="w-full border p-2 rounded"
@@ -119,7 +119,7 @@ const UserProfileUpdate = ({ data }) => {
           <input
             type="tel"
             name="whatsapp"
-            placeholder="Enter Your WhatsApp Number"
+           
             value={formData.whatsapp}
             onChange={handleChange}
             className="w-full border p-2 rounded"
@@ -132,7 +132,7 @@ const UserProfileUpdate = ({ data }) => {
           <input
             type="email"
             name="email"
-            placeholder="Enter Your Email Address"
+           
             value={formData.email}
             onChange={handleChange}
             className="w-full border p-2 rounded"
@@ -141,61 +141,78 @@ const UserProfileUpdate = ({ data }) => {
 
         {/* Address Section */}
         <div className="col-span-2">
-          <label className="block mb-1 font-medium">Address</label>
-        </div>
-
-        <div className="col-span-2 grid grid-cols-2 gap-4">
+          <label className="block mb-1 font-medium">Full Address</label>
           <input
             type="text"
             name="address"
-            placeholder="Enter Your Address"
+
             value={formData.address}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="w-full border p-2 rounded"
           />
+        </div>
+
+        {/* City and District in one row */}
+        <div className="col-span-1">
+          <label className="block mb-1 font-medium">City</label>
           <input
             type="text"
             name="city"
-            placeholder="City Name"
+
             value={formData.city}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="w-full border p-2 rounded"
           />
+        </div>
+
+        <div className="col-span-1">
+          <label className="block mb-1 font-medium">District</label>
           <input
             type="text"
             name="district"
-            placeholder="District Name"
+           
             value={formData.district}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="w-full border p-2 rounded"
           />
+        </div>
+
+        {/* State and Pin Code in next row */}
+        <div className="col-span-1">
+          <label className="block mb-1 font-medium">State</label>
           <input
             type="text"
             name="state"
-            placeholder="State"
+
             value={formData.state}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="w-full border p-2 rounded"
           />
+        </div>
+
+        <div className="col-span-1">
+          <label className="block mb-1 font-medium">Pin Code</label>
           <input
             type="text"
             name="pincode"
-            placeholder="Pin Code"
+
             value={formData.pincode}
             onChange={handleChange}
-            className="border p-2 rounded"
+            className="w-full border p-2 rounded"
           />
-          <div className="col-span-2">
-            <input
-              type="text"
-              name="gstNumber"
-              placeholder="GST Number*"
-              value={formData.gstNumber}
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-            />
-          </div>
         </div>
+        <div className="col-span-2">
+          <label className="block mb-1 font-medium">GST Number</label>
+          <input
+            type="text"
+            name="gstNumber"
+          
+            value={formData.gstNumber}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+        </div>
+
 
         <div className="col-span-2 flex justify-end">
           <button

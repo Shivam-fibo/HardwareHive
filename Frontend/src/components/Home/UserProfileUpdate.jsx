@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const UserProfileUpdate = ({ data }) => {
   const { setEditProfile, editProfile, user } = data;
+  const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -25,41 +28,50 @@ const UserProfileUpdate = ({ data }) => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
-    const userId = storedUser._id;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const updatedFields = {};
-    for (const key in formData) {
-      if (formData[key] !== user[key]) {
-        updatedFields[key] = formData[key];
-      }
+  const storedUser = JSON.parse(sessionStorage.getItem("user"));
+  const userId = storedUser._id;
+
+  const updatedFields = {};
+  for (const key in formData) {
+    if (formData[key] !== user[key]) {
+      updatedFields[key] = formData[key];
     }
+  }
 
-    if (Object.keys(updatedFields).length === 0) {
-      alert("No changes detected.");
-      return;
+  if (Object.keys(updatedFields).length === 0) {
+    toast.error("No changes detected.");
+    return;
+  }
+
+  try {
+    const res = await fetch("https://hardware-hive-backend.vercel.app/api/profile/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        oldData: user,
+        newData: updatedFields,
+      }),
+    });
+
+    if (res.ok) {
+      toast.success("Update request submitted. Awaiting admin approval.");
+      setEditProfile(false);
+      setTimeout(() => {
+        navigate("/")
+      }, 1000);
+    } else {
+      alert("Failed to submit update request.");
     }
+  } catch (error) {
+    console.error("Submission error:", error);
+    alert("An error occurred while submitting the request.");
+  }
+};
 
-    try {
-      const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/update/${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedFields),
-      });
-
-      if (res.ok) {
-        alert("Profile updated successfully.");
-        setEditProfile(false);
-      } else {
-        alert("Failed to update profile.");
-      }
-    } catch (error) {
-      console.error("Update error:", error);
-      alert("An error occurred while updating.");
-    }
-  };
 
   return (
     <div className="flex-1 p-6 bg-white rounded-xl">

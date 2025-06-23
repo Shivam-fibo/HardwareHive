@@ -69,9 +69,10 @@ const CartPage = () => {
 
     const fetchSavedItems = async () => {
       try {
-        const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getSavedItems/${userId}`);
+        const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/savedItems/${userId}`);
         const data = await res.json();
-        if (data?.items) setSavedItems(data.items.reverse());
+
+        if (data?.savedItems) setSavedItems(data.savedItems.reverse());
       } catch (error) {
         console.error("Error fetching saved items:", error);
       }

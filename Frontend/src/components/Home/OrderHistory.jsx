@@ -4,6 +4,7 @@ import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import CartIcon from './CartIcon';
 import { useNavigate } from "react-router-dom";
 import { RiCustomerService2Fill } from 'react-icons/ri';
+import Footer from "../LandingPage/Module/Footer";
 
 
 
@@ -127,39 +128,71 @@ const OrderHistory = () => {
           <p className="text-center text-gray-500">No confirmed orders found</p>
         ) : (
           <div className="space-y-6">
-            {orders.map((order) => (
-              <div key={order._id} className="border p-4 rounded-lg shadow-md bg-white">
+  {orders.map((order, orderIndex) => (
+    <div key={order._id} className="border rounded-xl shadow-sm bg-white p-4 space-y-4">
+      
+      {/* Order Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Order #{orderIndex + 1}</h2>
+          <p className="text-sm text-gray-600">ID: {order._id}</p>
+        </div>
+        <div className="text-right sm:text-left mt-2 sm:mt-0">
+          <p className="text-sm text-gray-700">
+            <strong>Total:</strong> ₹{order.totalAmount}
+          </p>
 
-                {/* Order Details */}
-                <div className="mb-3">
-                  <h2 className="text-xl font-semibold">Order ID: {order._id}</h2>
-                  <p className="text-gray-700"><strong>Total Amount:</strong> ₹{order.totalAmount}</p>
-                  <p className="text-green-600 font-semibold"><strong>Status:</strong> {order.status}</p>
-                  <p className="text-gray-500 text-sm"><strong>Ordered On:</strong> {new Date(order.createdAt).toLocaleString()}</p>
+          <p className="text-xs text-gray-400 mt-1">
+            Ordered on: {new Date(order.createdAt).toLocaleString()}
+          </p>
+        </div>
+      </div>
+
+      <hr className="border-gray-200" />
+
+      {/* Items */}
+      <div className="space-y-3">
+        <h3 className="text-base font-semibold text-gray-700">Ordered Items</h3>
+        {order.items.map((item, index) => (
+          <div key={index} className="flex items-start gap-3 border rounded-md p-3 shadow-sm flex-wrap bg-gray-50">
+            
+            {/* Index Number */}
+            <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-1">
+              {index + 1}
+            </div>
+
+            {/* Item Image */}
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-16 h-16 object-contain border rounded bg-white"
+            />
+
+            {/* Info Section */}
+            <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex justify-between items-center">
+                <div className="min-w-0">
+                  <h4 className="font-medium text-gray-800 text-sm truncate">{item.title}</h4>
+                  <p className="text-xs text-gray-500 mt-0.5">{item.subheading}</p>
                 </div>
-
-                <hr className="my-3" />
-
-                {/* Ordered Items */}
-                <h3 className="text-lg font-semibold mb-2">Ordered Items</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {order.items.map((item, index) => (
-                    <div key={index} className="flex items-center border p-3 rounded-md shadow-sm">
-                      <img src={item.image} alt={item.title} className="w-20 h-20 object-cover rounded-md" />
-                      <div className="ml-4">
-                        <h4 className="font-semibold">{item.title}</h4>
-                        <p className="text-gray-500">{item.subheading}</p>
-                        <p className="font-bold">₹{item.price} x {item.quantity} = ₹{item.price * item.quantity}</p>
-                      </div>
-                    </div>
-                  ))}
+                <div className="font-semibold text-sm whitespace-nowrap">
+                  ₹{item.price * item.quantity}
                 </div>
-
               </div>
-            ))}
+              <p className="text-sm text-gray-600 mt-1">
+                ₹{item.price} × {item.quantity}
+              </p>
+            </div>
           </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
         )}
       </div>
+      <Footer/>
     </div>
   );
 };

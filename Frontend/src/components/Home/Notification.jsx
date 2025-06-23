@@ -158,7 +158,7 @@ const NotificationPage = () => {
                 <FaUserCircle className="text-3xl text-gray-600" />
                 <div>
                   <div className="font-semibold text-md">Order ID: {notification._id}</div>
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-green-600">
                     {renderMessage(notification.status)}
                   </div>
                 </div>

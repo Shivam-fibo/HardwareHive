@@ -142,12 +142,12 @@ const OrderHistory = () => {
 
                   </div>
                   <div className="text-right sm:text-left mt-2 sm:mt-0">
-                    <p className="text-sm text-black ">
+                    <div className="text-sm text-black ">
                       <div className="flex gap-13">
                         <strong>Total:₹{order.totalAmount}</strong>
                         <PiFilePdfDuotone size={25} className="text-red-500 " />
                       </div>
-                    </p>
+                    </div>
 
                     <p className="text-xs text-black mt-1">
                       <strong>  Date: {new Date(order.createdAt).toLocaleString()}</strong>
@@ -201,6 +201,8 @@ const OrderHistory = () => {
               </div>
             ))}
           </div>
+
+
 
         )}
 

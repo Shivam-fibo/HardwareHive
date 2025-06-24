@@ -290,7 +290,7 @@ const ProductList = () => {
         </div>
       </div>
 
-      <ul className="flex justify-center gap-1 text-gray-900 mt-14">
+      <ul className="flex justify-center gap-1 text-gray-900 my-10">
         <li>
           <a
             href="#"

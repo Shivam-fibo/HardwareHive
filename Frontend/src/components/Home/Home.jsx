@@ -5,7 +5,7 @@ import Footer from '../LandingPage/Module/Footer'
 
 const Home = () => {
   return (
-    <div>
+    <div className='bg-[#F3F4F6]'>
       <Navbar/>
       <ProductList/>
       <Footer/>

@@ -182,13 +182,13 @@ export default function Profile() {
             <div className="space-y-2 px-4">
               <hr  className="my-1 border-1"/>
               <div>
-                <div className="font-bold text-lg">Email Id</div>
-                <div className="text-sm font-semibold text-gray-200">{user?.email}</div>
+                <div className="font-semibold text-lg">Email Id</div>
+                <div className="text-sm  text-gray-200">{user?.email}</div>
               </div>
                 <hr  className="my-1 border-1"/>
               <div>
-                <div className=" font-bold text-lg">Address</div>
-                <div className="text-sm font-semibold text-gray-200">{user?.address}</div>
+                <div className=" font-semibold text-lg">Address</div>
+                <div className="text-sm  text-gray-200">{user?.address}</div>
               </div>
                 <hr  className="mt-1 border-1"/>
             </div>

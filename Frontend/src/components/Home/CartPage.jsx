@@ -9,6 +9,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { History } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 
@@ -23,9 +24,9 @@ const CartPage = () => {
 
   const navigate = useNavigate()
 
-  const {clearCart} = useCart()
-  useEffect(() =>{
-clearCart() 
+  const { clearCart } = useCart()
+  useEffect(() => {
+    clearCart()
   }, [])
 
   const handleNotification = () => {
@@ -261,6 +262,9 @@ clearCart()
                   <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                     <FaRegUser size={12} /> My Account
                   </p>
+                   <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
                   <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                     <IoLogOutOutline size={14} /> Logout
                   </p>
@@ -295,11 +299,11 @@ clearCart()
 
       {/* My Orders Section */}
 
-      <div className="max-w-6xl mx-auto px-4 py-2">
+      <div className="max-w-6xl mx-auto px-4 py-4">
         {cartItems.length > 0 && (
           <div className="bg-white rounded-lg shadow-sm  mb-6">
             {/* Header */}
-            
+
 
             <div className="flex flex-col lg:flex-row w-full ">
               {/* Left Side - Cart Items */}
@@ -384,79 +388,79 @@ clearCart()
 
               {/* mobile -------------------------- */}
               <div className="flex-1 px-4 py-2 block sm:hidden w-full">
-  {cartItems.map((item, index) => (
-    <div key={item._id} className="flex items-start gap-3 border-b py-2 w-full flex-wrap">
-      {/* Serial Number */}
-      <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
-        {index + 1}
-      </div>
+                {cartItems.map((item, index) => (
+                  <div key={item._id} className="flex items-start gap-3 border-b py-2 w-full flex-wrap">
+                    {/* Serial Number */}
+                    <div className="w-8 h-8 bg-blue-100 text-blue-600 flex items-center justify-center rounded text-sm font-medium mt-2">
+                      {index + 1}
+                    </div>
 
-      {/* Product Image */}
-      <img
-        src={item.image}
-        alt={item.title}
-        className="w-16 h-16 object-contain rounded border mt-1"
-      />
+                    {/* Product Image */}
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-16 h-16 object-contain rounded border mt-1"
+                    />
 
-      {/* Product Info + Price + Actions (stacked in small screen) */}
-      <div className="flex flex-col flex-1 gap-2 mt-1 w-full">
+                    {/* Product Info + Price + Actions (stacked in small screen) */}
+                    <div className="flex flex-col flex-1 gap-2 mt-1 w-full">
 
-        {/* Product Title + Price */}
-        <div className="flex justify-between w-full">
-          <div className="flex-1 min-w-0">
-            <h3 className="font-medium text-gray-800 text-sm truncate">{item.title}</h3>
-            <p className="text-sm text-gray-600 mt-1">₹{item.price}</p>
-          </div>
-          <div className="text-right text-green-600 font-semibold whitespace-nowrap">
-            ₹ {item.price * item.quantity}
-          </div>
-        </div>
+                      {/* Product Title + Price */}
+                      <div className="flex justify-between w-full">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-gray-800 text-sm truncate">{item.title}</h3>
+                          <p className="text-sm text-gray-600 mt-1">₹{item.price}</p>
+                        </div>
+                        <div className="text-right text-green-600 font-semibold whitespace-nowrap">
+                          ₹ {item.price * item.quantity}
+                        </div>
+                      </div>
 
-        {/* Quantity and Action buttons */}
-        <div className="flex justify-between items-center gap-2 flex-wrap">
-          
-          {/* Quantity Selector */}
-          <div className="flex items-center border rounded text-sm w-[100px] justify-between">
-            <button
-              onClick={() => handleDecrease(item._id)}
-              className="px-2 py-0.5 border-r"
-              disabled={item.quantity <= 1}
-            >
-              −
-            </button>
-            <span className="px-2 py-0.5 text-center w-6">{item.quantity}</span>
-            <button
-              onClick={() => handleIncrease(item._id)}
-              className="px-2 py-0.5 border-l"
-            >
-              +
-            </button>
-          </div>
+                      {/* Quantity and Action buttons */}
+                      <div className="flex justify-between items-center gap-2 flex-wrap">
 
-          {/* Save + Delete Buttons */}
-          <div className="flex gap-1">
-            <button
-              onClick={() => handleSaveForLater(item)}
-              className="text-red-500 hover:text-red-600 p-1 border rounded"
-              title="Save for later"
-            >
-              <IoHeartSharp size={14} />
-            </button>
-            <button
-              onClick={() => handleRemoveItem(item)}
-              className="text-black-500 hover:text-black-600 p-1 border rounded"
-              title="Remove item"
-            >
-              <MdDelete size={14} />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  ))}
+                        {/* Quantity Selector */}
+                        <div className="flex items-center border rounded text-sm w-[100px] justify-between">
+                          <button
+                            onClick={() => handleDecrease(item._id)}
+                            className="px-2 py-0.5 border-r"
+                            disabled={item.quantity <= 1}
+                          >
+                            −
+                          </button>
+                          <span className="px-2 py-0.5 text-center w-6">{item.quantity}</span>
+                          <button
+                            onClick={() => handleIncrease(item._id)}
+                            className="px-2 py-0.5 border-l"
+                          >
+                            +
+                          </button>
+                        </div>
 
-  <h1 className="text-center my-4">Place order</h1>
-</div>
+                        {/* Save + Delete Buttons */}
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => handleSaveForLater(item)}
+                            className="text-red-500 hover:text-red-600 p-1 border rounded"
+                            title="Save for later"
+                          >
+                            <IoHeartSharp size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleRemoveItem(item)}
+                            className="text-black-500 hover:text-black-600 p-1 border rounded"
+                            title="Remove item"
+                          >
+                            <MdDelete size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                <h1 className="text-center my-4">Place order</h1>
+              </div>
 
 
 
@@ -525,37 +529,37 @@ clearCart()
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {savedItems.map((item) => (
                   <div key={item._id} className="border rounded-lg p-2 hover:shadow-md transition-shadow">
-  {/* Product Image */}
-  <div className="relative mb-2">
-    <img
-      src={item.image}
-      alt={item.title}
-      className="w-full h-24 object-contain rounded"
-    />
-  </div>
+                    {/* Product Image */}
+                    <div className="relative mb-2">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="w-full h-24 object-contain rounded"
+                      />
+                    </div>
 
-  {/* Product Info */}
-  <div className="mb-2">
-    <h3 className="font-medium text-xs text-gray-800 mb-1">{item.title}</h3>
-    <p className="text-base font-semibold text-gray-800">₹ {item.price}</p>
-  </div>
+                    {/* Product Info */}
+                    <div className="mb-2">
+                      <h3 className="font-medium text-xs text-gray-800 mb-1">{item.title}</h3>
+                      <p className="text-base font-semibold text-gray-800">₹ {item.price}</p>
+                    </div>
 
-  {/* Actions */}
-  <div className="flex gap-2">
-    <button
-      onClick={() => handleRemoveSavedItem(item)}
-      className="p-2 border border-gray-300 text-gray-700 rounded text-xs transition-colors"
-    >
-      <MdDelete size={14} />
-    </button>
-    <button
-      onClick={() => handleMoveToCart(item)}
-      className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black py-1.5 px-3 rounded text-xs font-medium transition-colors"
-    >
-      Add to Cart
-    </button>
-  </div>
-</div>
+                    {/* Actions */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleRemoveSavedItem(item)}
+                        className="p-2 border border-gray-300 text-gray-700 rounded text-xs transition-colors"
+                      >
+                        <MdDelete size={14} />
+                      </button>
+                      <button
+                        onClick={() => handleMoveToCart(item)}
+                        className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black py-1.5 px-3 rounded text-xs font-medium transition-colors"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
 
                 ))}
               </div>

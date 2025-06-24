@@ -1,28 +1,20 @@
 import { useEffect, useState, useRef } from "react";
 import {
-  User,
-  Edit,
-  Save,
-  X,
-  Mail,
-  Building,
-  Phone,
-  MessageSquare,
-  MapPin,
-  CreditCard,
-  Pencil,
 
+  Pencil,
+  History
 } from "lucide-react";
-import { FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
+
 
 import { FaRegUser } from "react-icons/fa6";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import Header from "./Nabar";
+
 import Footer from "../LandingPage/Module/Footer";
 import UserProfileUpdate from "./UserProfileUpdate";
 import CartIcon from "./CartIcon";
+
 
 import { PiBellBold } from "react-icons/pi";
 export default function Profile() {
@@ -123,7 +115,7 @@ export default function Profile() {
               {/* Mobile Icons */}
               <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
                 <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
-
+          
                 <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => handleNotification()} /></button>
                 <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
                   <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
@@ -135,6 +127,9 @@ export default function Profile() {
                   ref={profileRef}
                   className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
                 >
+                    <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
 
                   <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                     <IoLogOutOutline size={14} /> Logout
@@ -164,7 +159,7 @@ export default function Profile() {
 
 
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white font-semibold text-lg">My Account</h1>
+            <h1 className="text-white font-bold text-lg">My Account</h1>
           </nav>
 
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
@@ -174,9 +169,9 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12 sm:bg-gray-100 ">
+      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-0 sm:bg-gray-100 ">
         {/* Sidebar */}
-        <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-6 sm:py-0">
+        <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-4 ">
 
           <div className="relative w-full bg-[#013E70] p-6 py-8 rounded-xl">
             <button onClick={() => setEditProfile(true)} className="text-white cursor-pointer flex items-center gap-1 text-sm absolute top-4 right-4 ">
@@ -187,17 +182,17 @@ export default function Profile() {
             <div className="space-y-2 px-4">
               <hr  className="my-1 border-1"/>
               <div>
-                <div className="font-bold text-xl">Email Id</div>
-                <div className="text-sm font-bold text-gray-200">{user?.email}</div>
+                <div className="font-bold text-lg">Email Id</div>
+                <div className="text-sm font-semibold text-gray-200">{user?.email}</div>
               </div>
                 <hr  className="my-1 border-1"/>
               <div>
-                <div className=" font-bold text-xl">Address</div>
-                <div className="text-sm font-bold text-gray-200">{user?.address}</div>
+                <div className=" font-bold text-lg">Address</div>
+                <div className="text-sm font-semibold text-gray-200">{user?.address}</div>
               </div>
                 <hr  className="mt-1 border-1"/>
             </div>
-            <div className="text-sm bg-[#013E70] font-bold rounded-xl p-4 ">
+            <div className="text-sm bg-[#013E70]  rounded-xl p-4 ">
               {[
                 { label: "Contact No", value: user?.mobile },
                 { label: "WhatsApp No", value: user?.whatsapp },
@@ -215,14 +210,7 @@ export default function Profile() {
             </div>
           </div>
 
-          <div className="relative space-y-2  w-full bg-[#013E70] p-6 rounded-xl">
-            <h2 className="text-lg font-semibold flex gap-2 items-center"> <FaRegUser size={18} strokeWidth={0.5} />My Account</h2>
-            <ul className="space-y-1 text-sm ml-7">
-              <li className="hover:underline cursor-pointer"> Notification</li>
-              <li className="hover:underline cursor-pointer">History</li>
-              <li className="hover:underline cursor-pointer">Cart</li>
-            </ul>
-          </div>
+         
         </div>
 
         {/* Right Panel */}
@@ -230,7 +218,7 @@ export default function Profile() {
           editProfile ? (
             <UserProfileUpdate data={{ setEditProfile, editProfile, user }} />
           ) : (
-            <div className="hidden sm:flex flex-col justify-center items-center ml-40 h-[300px] text-6xl font-bold text-gray-600 space-y-4">
+            <div className="hidden sm:flex flex-col justify-center items-center ml-65 h-[300px] text-3xl font-bold text-gray-600 space-y-4">
               <div>
                 Thanks For Choosing
               </div>

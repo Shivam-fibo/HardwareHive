@@ -9,7 +9,7 @@ import Header from './Nabar';
 // import React from 'react';
 import { RiCustomerService2Fill } from 'react-icons/ri';
 import Footer from '../LandingPage/Module/Footer';
-
+import { History } from 'lucide-react';
 const NotificationPage = () => {
   const [notifications, setNotifications] = useState([]);
   const [showProfile, setShowProfile] = useState(false);
@@ -102,6 +102,9 @@ const NotificationPage = () => {
                   <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                     <FaRegUser size={12} /> My Account
                   </p>
+                    <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
                   <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                     <IoLogOutOutline size={14} /> Logout
                   </p>
@@ -138,8 +141,8 @@ const NotificationPage = () => {
           </div>
         </div>
       </div>
-
-      <div className="p-6 max-w-4xl mx-auto bg-white">
+           
+      <div className="p-6 mt-4 max-w-4xl mx-auto bg-white">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold text-gray-500 bg-[003F70] px-4 py-2 rounded-md shadow-sm border-l-4 border-[#003F70]">
             You can view up to the last 30 notifications

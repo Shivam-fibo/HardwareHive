@@ -10,6 +10,7 @@ import { PiBellBold } from "react-icons/pi";
 import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
+import { History } from "lucide-react";
 
 function Header() {
   const [showProfile, setShowProfile] = useState(false);
@@ -105,6 +106,9 @@ useEffect(() => {
                 <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                   <FaRegUser size={12} /> My Account
                 </p>
+                  <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
                 <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                   <IoLogOutOutline size={14} /> Logout
                 </p>

@@ -6,7 +6,7 @@ import { RiCustomerService2Fill } from 'react-icons/ri';
 import { FaRegUser } from "react-icons/fa6";
 import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import CartIcon from './CartIcon';
-
+import { History } from 'lucide-react';
 
 
 const NotificationDetail = () => {
@@ -78,6 +78,9 @@ const NotificationDetail = () => {
                         <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                           <FaRegUser size={12} /> My Account
                         </p>
+                          <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
                         <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
                           <IoLogOutOutline size={14} /> Logout
                         </p>

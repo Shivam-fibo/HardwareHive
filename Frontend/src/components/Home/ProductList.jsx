@@ -16,11 +16,11 @@ const ProductList = () => {
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [addedProductIds, setAddedProductIds] = useState(new Set());
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [addedProductIds, setAddedProductIds] = useState(new Set());
 
 
-  const itemsPerPage = 8;
+  const itemsPerPage = 20;
 
   const { addToCart } = useCart();
 
@@ -41,14 +41,14 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
   }, []);
 
   const handleAddToCart = async (item, quantity) => {
-      if (addedProductIds.has(item._id)) {
-    toast.error("Product already added to cart");
-    return;
-  }
+    if (addedProductIds.has(item._id)) {
+      toast.error("Product already added to cart");
+      return;
+    }
 
     addToCart({ ...item, quantity });
 
-      setAddedProductIds(prev => new Set(prev).add(item._id));
+    setAddedProductIds(prev => new Set(prev).add(item._id));
     const user = JSON.parse(sessionStorage.getItem("user"));
     const userId = user?._id;
     const cartItem = {
@@ -157,12 +157,12 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#F3F4F6]">
 
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white font-semibold text-lg">Product Add to List</h1>
+            <h1 className="text-white font-semibold text-lg">Item Add to List</h1>
           </nav>
 
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
@@ -190,15 +190,15 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
 
       <div className="md:flex gap-6 px-6 sm:mt-4">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
-       
-           <div className="bg-[#12578c] text-white p-2 rounded-xl  border border-[#003865]">
+
+          <div className="bg-[#12578c] text-white p-2 rounded-xl  border border-[#003865]">
             <label
               className="flex items-center justify-between  text-[14px] font-semibold cursor-pointer"
             >
-              All
+              All Item
               <input
                 type="checkbox"
-                className="form-checkbox h-5 w-5 text-[#003865] rounded"
+                className="form-checkbox h-5 w-8 accent-amber-50 rounded"
                 checked={selectedCategories.length === 0}
                 onChange={() => {
                   setSelectedCategories([]);
@@ -218,13 +218,15 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
                 {item}
                 <input
                   type="checkbox"
-                  className="form-checkbox h-5 w-5 text-[#003865] rounded"
+                  className="form-checkbox h-5 w-5 accent-amber-50  rounded"
                   checked={selectedCategories.includes(item)}
                   onChange={() => toggleCategory(item)}
                 />
+
               </label>
             ))}
           </div>
+
 
           {subcategories.length > 0 && (
             <div className="bg-[#003865] text-white p-4 rounded-xl border border-[#003865]">
@@ -248,7 +250,7 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
         </div>
 
         <div className="w-full">
-         
+
           <div className="w-full mt-2 mb-6.5  ml-4 hidden md:block">
             <nav className="flex items-center flex-wrap text-sm text-black">
               {getBreadcrumbItems().map((item, index) => (
@@ -259,8 +261,8 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
                   <button
                     onClick={() => handleBreadcrumbClick(item.level)}
                     className={`transition-colors duration-200 ${index === getBreadcrumbItems().length - 1
-                        ? 'font-semibold cursor-default'
-                        : 'hover:text-[#013E70] hover:underline'
+                      ? 'font-semibold cursor-default'
+                      : 'hover:text-[#013E70] hover:underline'
                       }`}
                     disabled={index === getBreadcrumbItems().length - 1}
                   >
@@ -277,22 +279,22 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
                 key={product._id}
                 product={product}
                 handleAddToCart={handleAddToCart}
-                 isAdded={addedProductIds.has(product._id)}
+                isAdded={addedProductIds.has(product._id)}
                 onViewDetails={() => {
-                setSelectedProduct(product);
-                setIsModalOpen(true);
-                  }}
+                  setSelectedProduct(product);
+                  setIsModalOpen(true);
+                }}
               />
             ))}
           </div>
         </div>
       </div>
 
-      <ul className="flex justify-center gap-1 text-gray-900 my-6">
+      <ul className="flex justify-center gap-1 text-gray-900 mt-14">
         <li>
           <a
             href="#"
-            className={`grid size-8 place-content-center rounded border border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === 1 && "cursor-not-allowed"}`}
+            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === 1 && "cursor-not-allowed"}`}
             onClick={() => handlePageChange(currentPage - 1)}
             aria-disabled={currentPage === 1}
           >
@@ -304,7 +306,7 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
             <a
               href="#"
               onClick={() => handlePageChange(index + 1)}
-              className={`flex justify-center items-center size-8 rounded border border-gray-200 text-sm font-medium transition-colors hover:bg-gray-50 ${currentPage === index + 1 ? "bg-[#013E70] text-white" : "text-gray-900"}`}
+              className={`flex justify-center items-center size-8 rounded border text-sm font-medium ${currentPage === index + 1 ? "bg-[#013E70] text-white" : ""}`}
             >
               {index + 1}
             </a>
@@ -313,7 +315,7 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
         <li>
           <a
             href="#"
-            className={`grid size-8 place-content-center rounded border border-gray-200 transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === totalPages && "cursor-not-allowed"}`}
+            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === totalPages && "cursor-not-allowed"}`}
             onClick={() => handlePageChange(currentPage + 1)}
             aria-disabled={currentPage === totalPages}
           >
@@ -323,11 +325,11 @@ const [addedProductIds, setAddedProductIds] = useState(new Set());
       </ul>
 
       {isModalOpen && (
-  <ProductModal
-    product={selectedProduct}
-    onClose={() => setIsModalOpen(false)}
-  />
-)}
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
 
     </div>
   );

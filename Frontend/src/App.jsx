@@ -38,7 +38,7 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/products" element={<ProductList />} />
             <Route path="/user" element={<UserProfile />} />
-            <Route path="/order" element={<OrderHistory />} />
+            <Route path="/history" element={<OrderHistory />} />
 <Route path="/notification" element={<NotificationPage />} />
     <Route path="/notification/:id" element={<NotificationDetail />} />
 

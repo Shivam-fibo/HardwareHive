@@ -52,7 +52,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded  }) => {
   className={`text-[10px] px-2 py-1 rounded font-semibold w-full text-nowrap
     ${isAdded
       ? "bg-gray-400 text-white"
-      : "bg-yellow-400 hover:bg-yellow-500 text-black"
+      : "bg-yellow-400 hover:bg-yellow-500 text-black cursor-pointer"
     }`}
   onClick={handleClick}
 >

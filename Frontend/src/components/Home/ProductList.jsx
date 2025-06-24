@@ -294,7 +294,7 @@ const ProductList = () => {
         <li>
           <a
             href="#"
-            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === 1 && "cursor-not-allowed"}`}
+            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === 1 && "pointer-events-none"}`}
             onClick={() => handlePageChange(currentPage - 1)}
             aria-disabled={currentPage === 1}
           >
@@ -315,7 +315,7 @@ const ProductList = () => {
         <li>
           <a
             href="#"
-            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === totalPages && "cursor-not-allowed"}`}
+            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === totalPages && "pointer-events-none"}`}
             onClick={() => handlePageChange(currentPage + 1)}
             aria-disabled={currentPage === totalPages}
           >

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   User,
   Edit,
@@ -22,13 +22,14 @@ import Header from "./Nabar";
 import Footer from "../LandingPage/Module/Footer";
 import UserProfileUpdate from "./UserProfileUpdate";
 
-
+import { PiBellBold } from "react-icons/pi";
 export default function Profile() {
   const [editProfile, setEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
@@ -39,6 +40,20 @@ export default function Profile() {
     }
   }, []);
   const navigate = useNavigate();
+  const profileRef = useRef(null);
+
+  useEffect(() => {
+      function handleClickOutside(event) {
+        if (profileRef.current && !profileRef.current.contains(event.target)) {
+          setShowProfile(false);
+        }
+      }
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
 
 
   // Handle input change
@@ -80,28 +95,75 @@ export default function Profile() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       
-      <div className="h-12">
-        <header
-          className="w-full h-full flex justify-between items-center p-2 ">
-          <img
-            src="/logo/ss_power_tool_logo.svg"
-            width={"150px"}
-            className="sm:ml-6 cursor-pointer"
-            alt="SS Power Tools Logo"
-            onClick={() => navigate("/home")}
-          />
-          <div className="text-black font-semibold text-[16px] whitespace-nowrap flex items-center justify-center gap-1 sm:mr-6">
+      <header className="bg-white top-0 z-50 shadow-sm">
+        <div className="sm:h-12 p-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
+
+            {/* Logo & Icons */}
+            <div className="flex items-center justify-between w-full sm:w-auto h-full">
+
+              {/* Logo */}
+              <button onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2">
+
+                <img
+                  src="/logo/ss_power_tool_logo.svg"
+                  width="150px"
+                  className="sm:ml-6"
+                  alt="SS Power Tools Logo"
+                />
+              </button>
+
+              {/* Mobile Icons */}
+              <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
+                
+                <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => handleNotification()} /></button>
+                <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                  <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
+                </button>
+              </div>
+
+              {showProfile && (
+                <div
+                  ref={profileRef}
+                  className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
+                >
+              
+                  <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+                    <IoLogOutOutline size={14} /> Logout
+                  </p>
+                </div>
+              )}
+            </div>
+
+
+            {/* Desktop Icons */}
+            <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
+         
+              <button aria-label="Notifications" className="cursor-pointer" onClick={() => handleNotification()}><PiBellBold size={22} strokeWidth={0.5} /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="bg-[#013E70] text-[#000000] py-2 ">
+        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+
+
+
+
+          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+            <h1 className="text-white text-lg">My Account</h1>
+          </nav>
+
+          <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
             <RiCustomerService2Fill size={20} />
             <span className="font-bold">+91 9804611111</span>
           </div>
-        </header>
+        </div>
       </div>
-
-
-      {/* Page Title */}
-      <h1 className="text-center bg-[#013E70] text-white py-1.5 text-[18px] font-semibold">
-        Welcome, {user?.name || "User"}
-      </h1>
 
       <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-12 sm:bg-gray-100 ">
         {/* Sidebar */}

@@ -14,6 +14,9 @@ import CartIcon from "./CartIcon";
 function Header() {
   const [showProfile, setShowProfile] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+const [searchResults, setSearchResults] = useState([]);
+
 
   const profileRef = useRef(null);
   const navigate = useNavigate();
@@ -34,6 +37,30 @@ function Header() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+
+
+useEffect(() => {
+  if (!searchQuery.trim()) {
+    setSearchResults([]);
+    return;
+  }
+
+  const delayDebounce = setTimeout(async () => {
+    try {
+      const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/search?q=${encodeURIComponent(searchQuery)}`);
+      const data = await res.json();
+      console.log("Search Results:", data);
+      setSearchResults(data);
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+  }, 400); // 400ms debounce
+
+  return () => clearTimeout(delayDebounce);
+}, [searchQuery]);
+
+
 
 
   const handleNotification = () =>{
@@ -91,6 +118,7 @@ function Header() {
               type="text"
               placeholder="Search"
               className="w-full border border-[#0D2F4B] rounded-full py-2 pl-5 pr-20 text-sm"
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <button className="absolute right-12 top-1/2 -translate-y-1/2 text-[#0D2F4B]">
               <FaMicrophone size={18} />

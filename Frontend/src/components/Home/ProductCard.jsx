@@ -47,17 +47,17 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded  }) => {
           placeholder="Add Qty."
           className="border border-black rounded pl-2 py-1 text-[10px]  w-full "
         />
-        <button
+       <button
   className={`text-[10px] px-2 py-1 rounded font-semibold w-full text-nowrap
     ${isAdded
-      ? "bg-gray-400 text-white cursor-not-allowed"
+      ? "bg-gray-400 text-white"
       : "bg-yellow-400 hover:bg-yellow-500 text-black"
     }`}
   onClick={handleClick}
-  disabled={isAdded}
 >
   {isAdded ? "Added" : "Add to list"}
 </button>
+
 
       </div>
     </div>

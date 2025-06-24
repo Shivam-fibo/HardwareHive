@@ -55,6 +55,11 @@ export default function Profile() {
       };
     }, []);
 
+     const handleNotification = () => {
+    console.log("notiification clicked!!!")
+    navigate("/notification")
+  }
+
 
   // Handle input change
   const handleChange = (e) => {

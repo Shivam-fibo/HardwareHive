@@ -1,4 +1,4 @@
-// First, modify your CartContext.jsx to expose the cart item count
+
 import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
@@ -6,7 +6,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   
-  // Load cart from sessionStorage on initial render
+ 
   useEffect(() => {
     try {
       const storedCart = sessionStorage.getItem("cart");
@@ -28,7 +28,7 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   // Calculate total items in cart
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartItemCount = cart.length
 
   const addToCart = (newItem) => {
     setCart((prevCart) => {

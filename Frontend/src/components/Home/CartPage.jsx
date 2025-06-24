@@ -9,6 +9,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 
 const CartPage = () => {
@@ -21,6 +22,11 @@ const CartPage = () => {
   const profileRef = useRef(null);
 
   const navigate = useNavigate()
+
+  const {clearCart} = useCart()
+  useEffect(() =>{
+clearCart() 
+  }, [])
 
   const handleNotification = () => {
     console.log("notiification clicked!!!")
@@ -42,6 +48,7 @@ const CartPage = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
+    sessionStorage.removeItem("cart")
     if (user) {
       const parsedUser = JSON.parse(user);
       const id = parsedUser._id;
@@ -276,7 +283,7 @@ const CartPage = () => {
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white text-lg">Get to cart</h1>
+            <h1 className="text-white font-semibold text-lg">My Orders</h1>
           </nav>
 
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
@@ -292,9 +299,7 @@ const CartPage = () => {
         {cartItems.length > 0 && (
           <div className="bg-white rounded-lg shadow-sm  mb-6">
             {/* Header */}
-            <div className="border-b px-6 py-4">
-              <h2 className="text-lg font-semibold text-gray-800">My Orders</h2>
-            </div>
+            
 
             <div className="flex flex-col lg:flex-row w-full ">
               {/* Left Side - Cart Items */}
@@ -457,7 +462,7 @@ const CartPage = () => {
 
 
               {/* Right Side - Price Details */}
-              <div className="w-full lg:w-80  p-6 border-t lg:border-t-0 lg:border-l">
+              <div className="w-full lg:w-80  p-6">
 
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Price Details</h3>
 

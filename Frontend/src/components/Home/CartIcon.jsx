@@ -5,9 +5,9 @@ import { useCart } from "../context/CartContext";
 const CartIcon = () => {
   const { cartItemCount } = useCart();
   
-  // Animation effect when count changes
+
   useEffect(() => {
-    // Skip animation on initial render
+   
     if (cartItemCount > 0) {
       const badge = document.getElementById("cart-badge");
       if (badge) {

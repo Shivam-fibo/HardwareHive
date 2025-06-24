@@ -514,50 +514,49 @@ clearCart()
 
 
         {savedItems.length > 0 &&
-          <div className="bg-white rounded-lg shadow-sm border">
+          <div className="bg-white rounded-lg shadow-sm ">
             {/* Header */}
-            <div className="border-b px-6 py-4">
-              <h2 className="text-lg font-semibold text-gray-800">Saved for Later</h2>
+            <div className=" px-6 py-4">
+              <h2 className="text-lg font-bold text-gray-800">Saved for Later</h2>
             </div>
 
             {/* Saved Items Grid */}
             <div className="p-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {savedItems.map((item) => (
-                  <div key={item._id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    {/* Product Image */}
-                    <div className="relative mb-3">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-32 object-contain rounded"
-                      />
+                  <div key={item._id} className="border rounded-lg p-2 hover:shadow-md transition-shadow">
+  {/* Product Image */}
+  <div className="relative mb-2">
+    <img
+      src={item.image}
+      alt={item.title}
+      className="w-full h-24 object-contain rounded"
+    />
+  </div>
 
-                    </div>
+  {/* Product Info */}
+  <div className="mb-2">
+    <h3 className="font-medium text-xs text-gray-800 mb-1">{item.title}</h3>
+    <p className="text-base font-semibold text-gray-800">₹ {item.price}</p>
+  </div>
 
-                    {/* Product Info */}
-                    <div className="mb-3">
-                      <h3 className="font-medium text-sm text-gray-800 mb-1">{item.title}</h3>
+  {/* Actions */}
+  <div className="flex gap-2">
+    <button
+      onClick={() => handleRemoveSavedItem(item)}
+      className="p-2 border border-gray-300 text-gray-700 rounded text-xs transition-colors"
+    >
+      <MdDelete size={14} />
+    </button>
+    <button
+      onClick={() => handleMoveToCart(item)}
+      className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black py-1.5 px-3 rounded text-xs font-medium transition-colors"
+    >
+      Add to Cart
+    </button>
+  </div>
+</div>
 
-                      <p className="text-lg font-semibold text-gray-800">₹ {item.price}</p>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleRemoveSavedItem(item)}
-                        className="p-2 border border-gray-300 hover: text-gray-700 rounded text-sm transition-colors"
-                      >
-                        <MdDelete size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleMoveToCart(item)}
-                        className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black py-2 px-4 rounded text-sm font-medium transition-colors"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
                 ))}
               </div>
             </div>

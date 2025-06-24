@@ -15,6 +15,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded  }) => {
     }
     handleAddToCart(product, quantity);
   };
+  
 
   return (
     <div
@@ -41,7 +42,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded  }) => {
       <div className="flex gap-2 mt-3">
         <input
           type="number"
-          min="1"
+          min="0"
           value={quantity || ""}
           onChange={(e) => setQuantity(Number(e.target.value))}
           placeholder="Add Qty."

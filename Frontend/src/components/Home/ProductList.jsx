@@ -4,6 +4,8 @@ import ProductCard from "./ProductCard";
 import { RiCustomerService2Fill } from "react-icons/ri";
 import FilterDrawer from "./FilterDrawer";
 import ProductModal from "./ProductModel";
+import { toast } from "react-hot-toast";
+
 import Header from "./Nabar";
 const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
 
@@ -15,6 +17,8 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
 const [isModalOpen, setIsModalOpen] = useState(false);
+const [addedProductIds, setAddedProductIds] = useState(new Set());
+
 
   const itemsPerPage = 8;
 
@@ -37,7 +41,14 @@ const [isModalOpen, setIsModalOpen] = useState(false);
   }, []);
 
   const handleAddToCart = async (item, quantity) => {
+      if (addedProductIds.has(item._id)) {
+    toast.error("Product already added to cart");
+    return;
+  }
+
     addToCart({ ...item, quantity });
+
+      setAddedProductIds(prev => new Set(prev).add(item._id));
     const user = JSON.parse(sessionStorage.getItem("user"));
     const userId = user?._id;
     const cartItem = {
@@ -151,7 +162,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white text-lg">Please select item and add to list</h1>
+            <h1 className="text-white text-lg">Product All to List</h1>
           </nav>
 
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
@@ -179,8 +190,8 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
       <div className="md:flex gap-6 px-6 sm:mt-4">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
-          <h2 className="text-lg font-bold text-[#0D2F4B] mb-6">Category</h2>
-           <div className="bg-[#12578c] text-white p-4 rounded-xl  border border-[#003865]">
+       
+           <div className="bg-[#12578c] text-white p-2 rounded-xl  border border-[#003865]">
             <label
               className="flex items-center justify-between  text-[14px] font-semibold cursor-pointer"
             >
@@ -238,7 +249,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 
         <div className="w-full">
          
-          <div className="w-full mt-14  ml-4 hidden md:block">
+          <div className="w-full mt-2 mb-6.5  ml-4 hidden md:block">
             <nav className="flex items-center flex-wrap text-sm text-black">
               {getBreadcrumbItems().map((item, index) => (
                 <div key={index} className="flex items-center">
@@ -266,6 +277,7 @@ const [isModalOpen, setIsModalOpen] = useState(false);
                 key={product._id}
                 product={product}
                 handleAddToCart={handleAddToCart}
+                 isAdded={addedProductIds.has(product._id)}
                 onViewDetails={() => {
                 setSelectedProduct(product);
                 setIsModalOpen(true);

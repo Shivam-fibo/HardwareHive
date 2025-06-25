@@ -1,12 +1,11 @@
-
 import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  
- 
+  const [cartItemLenght, setCartItemLenght] = useState(0);
+
   useEffect(() => {
     try {
       const storedCart = sessionStorage.getItem("cart");
@@ -27,61 +26,70 @@ export const CartProvider = ({ children }) => {
     }
   }, [cart]);
 
-  // Calculate total items in cart
-  const cartItemCount = cart.length
-
-  const addToCart = (newItem) => {
-    setCart((prevCart) => {
-      const existingItemIndex = prevCart.findIndex(item => item._id === newItem._id);
-      if (existingItemIndex !== -1) {
-        const updatedCart = [...prevCart];
-        updatedCart[existingItemIndex].quantity += newItem.quantity;
-        return updatedCart;
-      } else {
-        return [...prevCart, newItem];
-      }
-    });
-  
-    sessionStorage.setItem("cart", JSON.stringify(
-      (prevCart) => {
-        const existingItemIndex = prevCart.findIndex(item => item._id === newItem._id);
-        if (existingItemIndex !== -1) {
-          const updatedCart = [...prevCart];
-          updatedCart[existingItemIndex].quantity += newItem.quantity;
-          return updatedCart;
+  // Function to fetch cart items from server
+  const fetchCartItems = async () => {
+    try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const userId = user?._id;
+      if (userId) {
+        const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
+        const data = await response.json();
+        if (data && data.items) {
+          setCartItemLenght(data.items.length);
         } else {
-          return [...prevCart, newItem];
+          setCartItemLenght(0);
         }
       }
-    ));
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      setCartItemLenght(0);
+    }
+  };
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  const cartItemCount = cartItemLenght;
+
+  const addToCart = (newItem) => {
+   
+    setCart((prevCart) => {
+      const alreadyExists = prevCart.some(item => item._id === newItem._id);
+      if (alreadyExists) {
+        return prevCart; 
+      } else {
+        return [...prevCart, newItem]; 
+      }
+    });
+
+    setTimeout(() => {
+      fetchCartItems();
+    }, 500);
   };
 
   const clearCart = () => {
     setCart([]);
+    setCartItemLenght(0);
     sessionStorage.removeItem("cart");
   };
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
-  };
 
-  const updateQuantity = (productId, quantity) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item._id === productId ? { ...item, quantity: quantity } : item
-      )
-    );
+  // Function to refresh cart count (can be called from other components)
+  const refreshCartCount = () => {
+    fetchCartItems();
   };
 
   return (
-    <CartContext.Provider 
-      value={{ 
-        cart, 
+    <CartContext.Provider
+      value={{
+        cart,
         setCart,
-        addToCart, 
-        removeFromCart, 
-        updateQuantity, 
         clearCart,
-        cartItemCount // Include cart item count
+        addToCart,
+        cartItemCount,
+        cartItemLenght,
+        refreshCartCount, // Export this function
+        fetchCartItems    // Export this function too
       }}
     >
       {children}

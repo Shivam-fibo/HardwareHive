@@ -22,9 +22,9 @@ const ProductList = () => {
 
   const itemsPerPage = 20;
 
-  const { addToCart } = useCart();
+ const { addToCart, refreshCartCount } = useCart();
 
-  // ✅ useRef to track the selected category
+  //  useRef to track the selected category
   const selectedCategoryRef = useRef(null);
 
   useEffect(() => {
@@ -37,8 +37,27 @@ const ProductList = () => {
         console.error("Error fetching products:", error);
       }
     };
-    fetchProducts();
-  }, []);
+
+    const fetchCartItems = async () => {
+    try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const userId = user?._id;
+      const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
+      const data = await res.json();
+      if (data?.items) {  
+        const alreadyAdded = new Set(data.items.map(item => item.productId));
+        setAddedProductIds(alreadyAdded);
+      }
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
+  fetchProducts();
+  fetchCartItems();
+
+   refreshCartCount();
+  }, [refreshCartCount]);
 
   const handleAddToCart = async (item, quantity) => {
     if (addedProductIds.has(item._id)) {
@@ -71,12 +90,14 @@ const ProductList = () => {
 
       const data = await res.json();
       console.log(data);
+
+     
     } catch (error) {
       console.error("Error sending to backend:", error);
     }
   };
 
-  // ✅ Updated to allow only one category selection
+  //  Updated to allow only one category selection
   const toggleCategory = (category) => {
     if (selectedCategoryRef.current === category) {
       // Deselect if already selected
@@ -126,7 +147,7 @@ const ProductList = () => {
     }
   };
 
-  // ✅ Breadcrumb click handlers
+  //  Breadcrumb click handlers
   const handleBreadcrumbClick = (level) => {
     if (level === 'shop') {
       // Reset to show all products
@@ -139,7 +160,7 @@ const ProductList = () => {
     }
   };
 
-  // ✅ Generate breadcrumb items
+  //  Generate breadcrumb items
   const getBreadcrumbItems = () => {
     const items = [{ label: 'Shop All', level: 'shop' }];
 
@@ -294,7 +315,7 @@ const ProductList = () => {
         <li>
           <a
             href="#"
-            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === 1 && "pointer-events-none"}`}
+            className={`grid size-8 place-content-center rounded border border-black transition-colors  rtl:rotate-180 ${currentPage === 1 && "pointer-events-none"}`}
             onClick={() => handlePageChange(currentPage - 1)}
             aria-disabled={currentPage === 1}
           >
@@ -315,7 +336,7 @@ const ProductList = () => {
         <li>
           <a
             href="#"
-            className={`grid size-8 place-content-center rounded border border-black transition-colors hover:bg-gray-50 rtl:rotate-180 ${currentPage === totalPages && "pointer-events-none"}`}
+            className={`grid size-8 place-content-center rounded border border-black transition-colors  rtl:rotate-180 ${currentPage === totalPages && "pointer-events-none"}`}
             onClick={() => handlePageChange(currentPage + 1)}
             aria-disabled={currentPage === totalPages}
           >

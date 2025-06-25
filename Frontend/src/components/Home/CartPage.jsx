@@ -24,10 +24,6 @@ const CartPage = () => {
 
   const navigate = useNavigate()
 
-  const { clearCart } = useCart()
-  useEffect(() => {
-    clearCart()
-  }, [])
 
   const handleNotification = () => {
     console.log("notiification clicked!!!")
@@ -220,6 +216,7 @@ const CartPage = () => {
       const resCart = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
       const updatedCart = await resCart.json();
       setCartItems(updatedCart?.items || []);
+      // window.reload()
     } catch (error) {
       toast.error("Failed to place order");
       console.error(error);

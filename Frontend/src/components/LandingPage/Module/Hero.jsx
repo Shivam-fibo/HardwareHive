@@ -134,8 +134,8 @@ const Hero = () => {
       </div>
 
       {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-transparent p-4 z-10">
-          <div className="relative bg-white p-8 rounded-xl w-full max-w-md shadow-lg border border-gray-200 text-gray-900">
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent  p-4 z-10">
+          <div className="relative bg-white p-8 rounded-xl w-full max-w-md shadow-lg border-2  text-gray-900">
             <button
               className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1"
               onClick={() => setShowPopup(false)}
@@ -177,13 +177,13 @@ const Hero = () => {
 
               <div className="flex justify-between mt-2">
                 <div
-                  className="text-left text-blue-500 cursor-pointer"
+                  className="text-left text-blue-800 cursor-pointer"
                   onClick={() => setShowForgotPopup(true)}
                 >
                   Forgot Password?
                 </div>
                 <div
-                  className="text-right text-blue-500 cursor-pointer"
+                  className="text-right text-blue-800 cursor-pointer"
                   onClick={() => setShowChangePasswordPopup(true)}
                 >
                   Change Password

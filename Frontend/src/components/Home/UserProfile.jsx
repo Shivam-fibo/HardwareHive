@@ -152,12 +152,8 @@ export default function Profile() {
         </div>
 
 
-      <div className="bg-[#013E70] text-[#000000] py-2 ">
+      <div className="bg-[#013E70] text-[#000000] py-2 hidden sm:block ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-
-
-
-
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
             <h1 className="text-white font-bold text-lg">My Account</h1>
           </nav>
@@ -166,6 +162,17 @@ export default function Profile() {
             <RiCustomerService2Fill size={20} />
             <span className="font-bold">+91 9804611111</span>
           </div>
+        </div>
+      </div>
+
+
+         <div className="bg-[#013E70] text-[#000000] py-2 block sm:hidden mb-4 ">
+        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+      
+            <h1 className="text-white font-bold text-lg">My Account</h1>
+       
+
+         
         </div>
       </div>
             </header>

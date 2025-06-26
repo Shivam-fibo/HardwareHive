@@ -281,7 +281,7 @@ const CartPage = () => {
         </div>
       
 
-      <div className="bg-[#013E70] text-[#000000] py-2 ">
+      <div className="bg-[#013E70] text-[#000000] py-2  sm:block hidden">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
             <h1 className="text-white font-semibold text-lg">My Orders</h1>
@@ -291,6 +291,13 @@ const CartPage = () => {
             <RiCustomerService2Fill size={20} />
             <span className="font-bold">+91 9804611111</span>
           </div>
+        </div>
+      </div>
+
+
+      <div className="bg-[#013E70] text-[#000000] py-2  sm:hidden block">
+        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <h1 className="text-white font-semibold text-lg">My Orders</h1>
         </div>
       </div>
       </header>

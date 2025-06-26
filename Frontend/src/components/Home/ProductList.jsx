@@ -177,6 +177,20 @@ const ProductList = () => {
     return items;
   };
 
+    useEffect(() => {
+    // Prevent body scrolling when filter drawer is open on mobile
+    if (showFilter) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showFilter]);
+
   return (
     <div className="min-h-screen bg-[#F3F4F6]">
   
@@ -218,7 +232,7 @@ const ProductList = () => {
             </label>
           </div>
 
-          <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
+         <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865] ">
             {categories.map((item, i) => (
               <label
                 key={i}

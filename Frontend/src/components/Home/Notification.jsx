@@ -60,7 +60,7 @@ const NotificationPage = () => {
   };
 
   // Filter notifications based on status
-  const filteredNotifications = notifications.filter((n) => 
+  const filteredNotifications = notifications.filter((n) =>
     !filterStatus || n.status === filterStatus
   );
 
@@ -129,22 +129,29 @@ const NotificationPage = () => {
             </div>
           </div>
         </div>
-     
 
-      <div className="bg-[#013E70] text-[#000000] py-2 ">
-        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white font-bold text-lg">All Notification</h1>
-          </nav>
 
-          <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
-            <RiCustomerService2Fill size={20} />
-            <span className="font-bold">+91 9804611111</span>
+        <div className="bg-[#013E70] text-[#000000] py-2 hidden sm:block ">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+              <h1 className="text-white font-bold text-lg">All Notification</h1>
+            </nav>
+            <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+              <RiCustomerService2Fill size={20} />
+              <span className="font-bold">+91 9804611111</span>
+            </div>
           </div>
         </div>
-      </div>
-       </header>
-           
+
+
+        <div className="bg-[#013E70] text-[#000000] py-2 sm:hidden block">
+  <div className="w-full text-center">
+    <h1 className="text-white font-bold text-lg">All Notification</h1>
+  </div>
+</div>
+
+      </header>
+
       <div className="p-6 mt-4 max-w-4xl mx-auto bg-white rounded-xl">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold text-gray-500 bg-[003F70] px-4 py-2 rounded-md shadow-sm border-l-4 border-[#003F70]">
@@ -267,8 +274,8 @@ const NotificationPage = () => {
           </ul>
         )}
       </div>
-      
- 
+
+
       <Footer />
     </div>
   );

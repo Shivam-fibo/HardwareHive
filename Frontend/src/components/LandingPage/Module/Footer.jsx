@@ -53,7 +53,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="bg-[#013E70] text-white   border-white">
+    <div className="bg-[#013E70] text-white mt-4  border-white">
       <div className="px-6 md:px-10 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 sm:gap-20 gap-10">
         {/* Address Section */}
         <div className="text-[12px] space-y-4">

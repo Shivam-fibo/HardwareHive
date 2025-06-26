@@ -43,7 +43,7 @@ const NotificationDetail = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-     <header className="bg-white top-0 z-50 shadow-sm">
+     <header className="bg-white top-0 z-50 shadow-sm sticky">
               <div className="sm:h-12 p-2">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
       
@@ -99,11 +99,11 @@ const NotificationDetail = () => {
                   </div>
                 </div>
               </div>
-            </header>
+        
         <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
           <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white text-lg">All Notification</h1>
+            <h1 className="text-white font-bold text-lg">All Notification</h1>
           </nav>
 
           <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
@@ -112,6 +112,7 @@ const NotificationDetail = () => {
           </div>
         </div>
       </div>
+          </header>
 
 
 

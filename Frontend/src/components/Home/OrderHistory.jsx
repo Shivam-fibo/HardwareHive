@@ -50,8 +50,8 @@ const OrderHistory = () => {
 
 
   return (
-    <div>
-      <header className="bg-white top-0 z-50 shadow-sm">
+    <div className="bg-[#F3F5F7]">
+      <header className="bg-white top-0 z-50 shadow-sm sticky">
         <div className="sm:h-12 p-2">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
@@ -71,9 +71,9 @@ const OrderHistory = () => {
 
               {/* Mobile Icons */}
               <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
-                <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => navigate("/notification")} /></button>
+                
                 <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
-
+<button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => navigate("/notification")} /></button>
                 <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
                   <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
                 </button>
@@ -97,16 +97,16 @@ const OrderHistory = () => {
 
             {/* Desktop Icons */}
             <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
-              <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => navigate("/notification")} /></button>
+              
               <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
-
+<button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => navigate("/notification")} /></button>
               <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
                 <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
               </button>
             </div>
           </div>
         </div>
-      </header>
+  
 
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
@@ -124,6 +124,7 @@ const OrderHistory = () => {
           </div>
         </div>
       </div>
+          </header>
       <div className="p-4 bg-[#F3F4F6]">
 
 

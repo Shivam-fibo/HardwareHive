@@ -225,7 +225,7 @@ const CartPage = () => {
 
   return (
     <div className="min-h-screen  bg-[#F2F5F6]">
-      <header className="bg-white top-0 z-50 shadow-sm">
+      <header className="bg-white top-0 z-50 shadow-sm sticky">
         <div className="sm:h-12 p-2">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
@@ -279,7 +279,7 @@ const CartPage = () => {
             </div>
           </div>
         </div>
-      </header>
+      
 
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
@@ -293,6 +293,7 @@ const CartPage = () => {
           </div>
         </div>
       </div>
+      </header>
 
       {/* My Orders Section */}
 

@@ -11,6 +11,7 @@ import { IoClose, IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import CartIcon from "./CartIcon";
 import { History } from "lucide-react";
+import { RiCustomerService2Fill } from "react-icons/ri";
 
 function Header() {
   const [showProfile, setShowProfile] = useState(false);
@@ -71,7 +72,7 @@ useEffect(() => {
 
 
   return (
-    <header className="bg-white top-0 z-50 shadow-sm">
+    <header className="bg-white top-0 z-50 shadow-sm sticky">
       <div className="sm:h-12 p-2">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
@@ -139,6 +140,19 @@ useEffect(() => {
             <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
               <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
             </button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="bg-[#013E70] text-[#000000] py-2 ">
+        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4 sticky">
+          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+            <h1 className="text-white font-semibold text-lg">Item Add to List</h1>
+          </nav>
+
+          <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+            <RiCustomerService2Fill size={20} />
+            <span className="font-bold">+91 9804611111</span>
           </div>
         </div>
       </div>

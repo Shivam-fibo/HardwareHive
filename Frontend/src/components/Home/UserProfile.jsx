@@ -91,10 +91,10 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F3F5F7]">
       {/* Header */}
 
-      <header className="bg-white top-0 z-50 shadow-sm">
+      <header className="bg-white top-0 z-50 shadow-sm sticky">
         <div className="sm:h-12 p-2">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
 
@@ -150,7 +150,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-      </header>
+
 
       <div className="bg-[#013E70] text-[#000000] py-2 ">
         <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
@@ -168,10 +168,11 @@ export default function Profile() {
           </div>
         </div>
       </div>
+            </header>
 
-      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:p-0 sm:bg-gray-100 ">
+      <div className="flex sm:flex-row flex-col-reverse sm:px-20 sm:py-4 sm:bg-gray-100  ">
         {/* Sidebar */}
-        <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 py-4 ">
+        <div className=" sm:flex flex-col items-start sm:w-1/3 sm:max-w-sm text-white px-6 space-y-6 ">
 
           <div className="relative w-full bg-[#013E70] p-6 py-8 rounded-xl">
             <button onClick={() => setEditProfile(true)} className="text-white cursor-pointer flex items-center gap-1 text-sm absolute top-4 right-4 ">
@@ -218,7 +219,7 @@ export default function Profile() {
           editProfile ? (
             <UserProfileUpdate data={{ setEditProfile, editProfile, user }} />
           ) : (
-            <div className="hidden sm:flex flex-col justify-center items-center ml-65 h-[300px] text-3xl font-bold text-gray-600 space-y-4">
+            <div className="hidden sm:flex flex-col justify-center items-center ml-65 h-[300px] text-3xl font-bold text-gray-600 space-y-4 py-4">
               <div>
                 Thanks For Choosing
               </div>

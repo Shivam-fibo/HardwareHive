@@ -179,19 +179,7 @@ const ProductList = () => {
 
   return (
     <div className="min-h-screen bg-[#F3F4F6]">
-
-      <div className="bg-[#013E70] text-[#000000] py-2 ">
-        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white font-semibold text-lg">Item Add to List</h1>
-          </nav>
-
-          <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
-            <RiCustomerService2Fill size={20} />
-            <span className="font-bold">+91 9804611111</span>
-          </div>
-        </div>
-      </div>
+  
 
       <div className="flex justify-between py-4 px-6 sm:hidden">
         <h1 className="font-medium text-xl">All List Items</h1>
@@ -351,6 +339,7 @@ const ProductList = () => {
           onClose={() => setIsModalOpen(false)}
         />
       )}
+
 
     </div>
   );

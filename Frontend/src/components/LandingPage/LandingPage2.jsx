@@ -8,9 +8,9 @@ import Footer from './Module/Footer'
 const LandingPage2 = () => {
 
   useEffect(() =>{
-    const user = sessionStorage.getItem('user')
+    const user = localStorage.getItem('user')
     if (user) {
-      sessionStorage.removeItem('user')
+      localStorage.removeItem('user')
     }
   })
 

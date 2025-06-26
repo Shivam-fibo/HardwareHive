@@ -45,7 +45,7 @@ const OrderHistory = () => {
   }, []);
 
   useEffect(() => {
-    const userData = sessionStorage.getItem("user");
+    const userData = localStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
       setUserId(user._id);

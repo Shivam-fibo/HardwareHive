@@ -26,11 +26,14 @@ export default function Profile() {
 
 
   useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
       setFormData(parsedUser);
+    }
+    else{
+      navigate("/")
     }
   }, []);
   const navigate = useNavigate();
@@ -74,7 +77,7 @@ export default function Profile() {
 
       if (response.ok) {
         const updatedUser = await response.json();
-        sessionStorage.setItem("user", JSON.stringify(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
         setUser(updatedUser);
 
         setIsEditing(false); // Exit edit mode

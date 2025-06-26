@@ -31,7 +31,7 @@ const UserProfileUpdate = ({ data }) => {
  const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const storedUser = JSON.parse(sessionStorage.getItem("user"));
+  const storedUser = JSON.parse(localStorage.getItem("user"));
   const userId = storedUser._id;
 
   const updatedFields = {};

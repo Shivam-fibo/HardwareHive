@@ -14,7 +14,7 @@ const ProductModal = ({ product, onClose }) => {
     console.log(quantity, "quantity is: ")
     addToCart({ ...item, quantity });
     setAddedProductIds(prev => new Set(prev).add(item._id));
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?._id;
     const cartItem = {
       productId: product._id,

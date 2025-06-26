@@ -13,6 +13,7 @@ import { History } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 
+
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [savedItems, setSavedItems] = useState([]);
@@ -44,8 +45,8 @@ const CartPage = () => {
   }, []);
 
   useEffect(() => {
-    const user = sessionStorage.getItem("user");
-    sessionStorage.removeItem("cart")
+    const user = localStorage.getItem("user");
+    localStorage.removeItem("cart")
     if (user) {
       const parsedUser = JSON.parse(user);
       const id = parsedUser._id;

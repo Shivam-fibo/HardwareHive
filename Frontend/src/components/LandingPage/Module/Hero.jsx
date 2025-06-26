@@ -45,7 +45,7 @@ const Hero = () => {
       const result = await response.json();
       if (response.ok) {
         toast.success("Login successful!");
-        sessionStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("user", JSON.stringify(result.user));
         navigate("/home");
       } else {
         toast.error(result.message || "Invalid credentials");

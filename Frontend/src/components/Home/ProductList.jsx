@@ -18,8 +18,7 @@ const ProductList = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addedProductIds, setAddedProductIds] = useState(new Set());
-
-
+  const [savedForLaterIds, setSavedForLaterIds] = useState(new Set());
   const itemsPerPage = 20;
 
  const { addToCart, refreshCartCount } = useCart();
@@ -40,7 +39,7 @@ const ProductList = () => {
 
     const fetchCartItems = async () => {
     try {
-      const user = JSON.parse(sessionStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user"));
       const userId = user?._id;
       const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
       const data = await res.json();
@@ -53,8 +52,26 @@ const ProductList = () => {
     }
   };
 
+
+   const fetchSavedForLaterItems = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?._id;
+        const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/savedItems/${userId}`);
+        const data = await res.json();
+        if (data?.savedItems) {
+          const savedIds = new Set(data.savedItems.map(item => item.productId));
+          setSavedForLaterIds(savedIds);
+        }
+      } catch (error) {
+        console.error("Error fetching saved for later items:", error);
+      }
+    };
+
+
   fetchProducts();
   fetchCartItems();
+  fetchSavedForLaterItems();
 
    refreshCartCount();
   }, [refreshCartCount]);
@@ -68,7 +85,7 @@ const ProductList = () => {
     addToCart({ ...item, quantity });
 
     setAddedProductIds(prev => new Set(prev).add(item._id));
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?._id;
     const cartItem = {
       productId: item._id,

@@ -8,28 +8,28 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     try {
-      const storedCart = sessionStorage.getItem("cart");
+      const storedCart = localStorage.getItem("cart");
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       }
     } catch (error) {
-      console.error("Error loading cart from sessionStorage:", error);
+      console.error("Error loading cart from localStorage:", error);
     }
   }, []);
 
-  // Save cart to sessionStorage whenever it changes
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
     try {
-      sessionStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
     } catch (error) {
-      console.error("Error saving cart to sessionStorage:", error);
+      console.error("Error saving cart to localStorage:", error);
     }
   }, [cart]);
 
   // Function to fetch cart items from server
   const fetchCartItems = async () => {
     try {
-      const user = JSON.parse(sessionStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user"));
       const userId = user?._id;
       if (userId) {
         const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
@@ -71,7 +71,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     setCart([]);
     setCartItemLenght(0);
-    sessionStorage.removeItem("cart");
+    localStorage.removeItem("cart");
   };
 
   // Function to refresh cart count (can be called from other components)

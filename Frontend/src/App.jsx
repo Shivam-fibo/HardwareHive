@@ -18,6 +18,7 @@ import NotificationDetail from './components/Home/NotificationDetail';
 import { PiWhatsappLogoDuotone } from 'react-icons/pi';
 import './App.css';
 import ContactButton from './components/Home/ContactButton.jsx';
+import SavedForLater from './components/Home/SaveForLater.jsx';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="/history" element={<OrderHistory />} />
 <Route path="/notification" element={<NotificationPage />} />
     <Route path="/notification/:id" element={<NotificationDetail />} />
+    <Route path='/saved' element={<SavedForLater/>}/>
 
           </Routes>
         </CartProvider>

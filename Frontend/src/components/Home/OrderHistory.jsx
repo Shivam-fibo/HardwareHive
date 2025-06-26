@@ -802,65 +802,67 @@ const OrderHistory = () => {
 
                 {/* Mobile Version */}
                 <div className="border mx-auto rounded-xl shadow-sm bg-white p-4 space-y-2 block sm:hidden">
-                  {/* Order Header */}
-                  <div className="flex flex-col">
-                    <div>
-                      <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Order #{orderIndex + 1 + ((currentPage - 1) * itemsPerPage)}</h2>
-                    </div>
-                    <div className="text-right sm:text-left mt-2 sm:mt-0">
-                      <div className="text-sm text-black">
-                        <div className="flex gap-13">
-                          <strong>Total:₹{order.totalAmount}</strong>
+  {/* Order Header - Improved layout for mobile */}
+  <div className="flex justify-between items-start">
+    <div>
+      <h2 className="text-lg font-semibold text-gray-800">
+        Order #{orderIndex + 1 + ((currentPage - 1) * itemsPerPage)}
+      </h2>
+      <p className="text-xs text-black mt-1">
+        <strong>Date: {formatDate(order.createdAt)}</strong>
+      </p>
+    </div>
+    <div className="flex flex-col items-end gap-1">
+      <strong className="text-sm">Total: ₹{order.totalAmount}</strong>
+      <PiFilePdfDuotone
+        size={20}
+        className="text-red-500 cursor-pointer"
+        onClick={() => downloadOrderAsPdfCDN(order, orderIndex)}
+      />
+    </div>
+  </div>
 
-                          <PiFilePdfDuotone
-                            size={25}
-                            className="text-red-500 cursor-pointer"
-                            onClick={() => downloadOrderAsPdfCDN(order, orderIndex)}
-                          />
-                        </div>
-                      </div>
-                      <p className="text-xs text-black mt-1">
-                        <strong>Date: {formatDate(order.createdAt)}</strong>
-                      </p>
-                    </div>
-                  </div>
+  <div className="space-y-3">
+    <h3 className="text-base font-bold">Items</h3>
+    {order.items.map((item, index) => (
+      <div key={index} className="border rounded-md p-3 shadow-sm bg-gray-50">
+        <div className="flex gap-3">
+          {/* Index Number */}
+          <div className="w-8 h-8 bg-blue-100 text-black border flex items-center justify-center rounded text-sm font-medium">
+            {index + 1}
+          </div>
 
-                  <div className="space-y-3">
-                    <h3 className="text-base font-bold">Items</h3>
-                    {order.items.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3 border rounded-md p-3 shadow-sm flex-wrap bg-gray-50">
+          {/* Item Image */}
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-16 h-16 object-contain border rounded bg-white"
+          />
 
-                        {/* Index Number */}
-                        <div className="w-8 h-8 bg-blue-100 text-black border flex items-center justify-center rounded text-sm font-medium mt-1">
-                          {index + 1}
-                        </div>
+          {/* Info Section - Split into two columns */}
+          <div className="flex-1 grid grid-cols-2 gap-2">
+            {/* Left Column - Title and Subtitle */}
+            <div className="col-span-1">
+              <div className="font-medium text-gray-800 line-clamp-2">
+                {item.title}
+              </div>
+                <div className="text-sm font-bold">₹{item.price}</div>
+            </div>
 
-                        {/* Item Image */}
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-16 h-16 object-contain border rounded bg-white"
-                        />
-
-                        {/* Info Section */}
-                        <div className="flex flex-1 justify-between items-center flex-wrap gap-4">
-                          <div className="flex flex-col font-medium text-gray-800 mb-8 min-w-[150px]">
-                            <div>{item.title}</div>
-                            <div>{item.price}</div>
-                          </div>
-
-                          <p className="text-sm font-bold min-w-[120px] my-auto">
-                            Quantity: {item.quantity}
-                          </p>
-
-                          <p className="text-sm text-green-700 font-bold min-w-[120px] my-auto">
-                            Total: ₹{item.price * item.quantity}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+            {/* Right Column - Price and Quantity */}
+            <div className="col-span-1 text-right">
+            
+              <div className="text-sm">Quantity:{item.quantity}</div>
+              <div className="text-sm text-green-700 font-bold mt-1">
+                ₹{item.price * item.quantity}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
               </div>
             ))}
 

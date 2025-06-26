@@ -40,7 +40,7 @@ const CartIcon = () => {
         {cartItemCount > 0 && (
           <div 
             id="cart-badge"
-            className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-all duration-300"
+            className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center transition-all duration-300 mt-1 sm:mt-0"
           >
             {cartItemCount}
           </div>

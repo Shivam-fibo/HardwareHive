@@ -11,7 +11,7 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { History } from "lucide-react";
 import { useCart } from "../context/CartContext";
-
+import { moveToCart } from "../hooks/moveToCart";
 
 
 const CartPage = () => {
@@ -131,25 +131,11 @@ const CartPage = () => {
     }
   };
 
-  const moveToCart = async (productId) => {
-    try {
-      const res = await fetch("https://hardware-hive-backend.vercel.app/api/user/addSavedItemToCart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, userId }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-      return data;
-    } catch (err) {
-      console.error("Error moving item to cart:", err);
-      throw err;
-    }
-  };
+ 
 
   const handleMoveToCart = async (item) => {
     try {
-      await moveToCart(item.productId);
+      await moveToCart(item.productId, userId);
       toast.success("Moved to cart");
       setSavedItems((prev) => prev.filter((si) => si.productId !== item.productId));
       setCartItems(prev => [...prev, item]);

@@ -5,7 +5,7 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 import FilterDrawer from "./FilterDrawer";
 import ProductModal from "./ProductModel";
 import { toast } from "react-hot-toast";
-
+import { moveToCart } from "../hooks/moveToCart";
 import Header from "./Nabar";
 const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
 
@@ -77,16 +77,32 @@ const ProductList = () => {
   }, [refreshCartCount]);
 
   const handleAddToCart = async (item, quantity) => {
+      const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?._id;
+    console.log(item, item.id)
     if (addedProductIds.has(item._id)) {
       toast.error("Product already added to cart");
       return;
     }
+ if(savedForLaterIds.has(item._id)) {
+    console.log("Item is saved for later, moving to cart");
+    await moveToCart(item._id, userId); 
+    toast.success("Moved from saved items to cart");
+    setSavedForLaterIds(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(item._id);
+      return newSet;
+    });
+    setAddedProductIds(prev => new Set(prev).add(item._id));
+    refreshCartCount();
+    return;
+  }
+
 
     addToCart({ ...item, quantity });
 
     setAddedProductIds(prev => new Set(prev).add(item._id));
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user?._id;
+  
     const cartItem = {
       productId: item._id,
       title: item.title,
@@ -319,6 +335,7 @@ const ProductList = () => {
                 key={product._id}
                 product={product}
                 handleAddToCart={handleAddToCart}
+                 isSavedForLater={savedForLaterIds.has(product._id)}
                 isAdded={addedProductIds.has(product._id)}
                 onViewDetails={() => {
                   setSelectedProduct(product);

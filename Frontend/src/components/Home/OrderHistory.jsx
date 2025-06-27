@@ -22,6 +22,8 @@ const OrderHistory = () => {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
@@ -45,21 +47,38 @@ const OrderHistory = () => {
   }, []);
 
   useEffect(() => {
+  const fetchOrderHistory = async () => {
+    const startTime = Date.now();
     const userData = localStorage.getItem("user");
+
     if (userData) {
       const user = JSON.parse(userData);
       setUserId(user._id);
 
-      fetch(`https://hardware-hive-backend.vercel.app/api/user/history/${user._id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          setOrders(sortedData);
-          setFilteredOrders(sortedData);
-        })
-        .catch((error) => console.error("Error fetching order history:", error));
+      try {
+        const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/history/${user._id}`);
+        const data = await res.json();
+
+        const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setOrders(sortedData);
+        setFilteredOrders(sortedData);
+      } catch (error) {
+        console.error("Error fetching order history:", error);
+      } finally{
+const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(100 - elapsed, 0);
+
+        setTimeout(() => {
+          setMinimumLoadTimePassed(true);
+          setIsLoading(false);
+        }, remainingTime);
+      }
     }
-  }, []);
+  };
+
+  fetchOrderHistory();
+}, []);
+
 
   const handleDateFilter = () => {
     if (!fromDate && !toDate) {
@@ -342,6 +361,373 @@ const OrderHistory = () => {
 
 
   };
+
+
+
+   if (isLoading || !minimumLoadTimePassed) {
+    return (
+      <div>
+        <header className="bg-white top-0 z-50 shadow-sm sticky">
+        <div className="sm:h-12 p-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
+            {/* Logo & Icons */}
+            <div className="flex items-center justify-between w-full sm:w-auto h-full">
+              {/* Logo */}
+              <button onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2">
+                <img
+                  src="/logo/ss_power_tool_logo.svg"
+                  width="150px"
+                  className="sm:ml-6"
+                  alt="SS Power Tools Logo"
+                />
+              </button>
+
+              {/* Mobile Icons */}
+              <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
+                <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
+                <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => navigate("/notification")} /></button>
+                <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                  <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
+                </button>
+              </div>
+
+              {showProfile && (
+                <div
+                  ref={profileRef}
+                  className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
+                >
+                  <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <FaRegUser size={12} /> My Account
+                  </p>
+                  <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+                    <IoLogOutOutline size={14} /> Logout
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Icons */}
+            <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
+              <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
+              <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => navigate("/notification")} /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-[#013E70] text-[#000000] py-2 hidden sm:block ">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+              <div className="flex items-center gap-4">
+                <h1 className="text-white font-bold text-lg">Order History</h1>
+
+                {/* Calendar Filter Button */}
+                <div className="relative">
+                  <button
+                    onClick={() => setShowCalendar(!showCalendar)}
+                    className="flex items-center gap-2 bg-white text-[#013E70] px-3 py-1 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium"
+                  >
+                    <MdDateRange size={16} />
+
+                  </button>
+
+                  {/* Calendar Dropdown */}
+                  {showCalendar && (
+                    <div>
+                      <div
+                        ref={calendarRef}
+                        className="absolute hidden sm:block top-full mt-6.5 left-0 bg-white rounded-lg shadow-lg border p-4 z-50 min-w-[300px]"
+                      >
+                        <div className="space-y-3">
+                          <h3 className="font-semibold text-gray-800 text-sm">Select Date</h3>
+
+                          <div className="grid grid-cols-1 gap-3">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
+                              <input
+                                type="date"
+                                value={fromDate}
+                                onChange={(e) => setFromDate(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
+                              <input
+                                type="date"
+                                value={toDate}
+                                onChange={(e) => setToDate(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 pt-2">
+
+                            <button
+                              onClick={clearDateFilter}
+                              className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
+                            >
+                              Clear
+                            </button>
+                            <button
+                              onClick={handleDateFilter}
+                              className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
+                            >
+                              Apply
+                            </button>
+                          </div>
+
+                          {(fromDate || toDate) && (
+                            <div className="text-xs text-gray-600 pt-1">
+                              {fromDate && toDate ? (
+                                `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
+                              ) : fromDate ? (
+                                `Showing orders from ${formatDate(fromDate)} onwards`
+                              ) : (
+                                `Showing orders up to ${formatDate(toDate)}`
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div
+                        ref={calendarRef}
+                        className="fixed  block sm:hidden mt-6.5 sm:w-auto sm:min-w-[300px] bg-white rounded-lg shadow-lg border p-4 z-50"
+                      >
+                        <div className="space-y-3">
+                          <h3 className="font-semibold text-gray-800 text-sm">Filter Orders by Date Range</h3>
+
+                          <div className="grid grid-cols-1 gap-3">
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
+                              <input
+                                type="date"
+                                value={fromDate}
+                                onChange={(e) => setFromDate(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
+                              <input
+                                type="date"
+                                value={toDate}
+                                onChange={(e) => setToDate(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 pt-2">
+                            <button
+                              onClick={handleDateFilter}
+                              className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
+                            >
+                              Apply Filter
+                            </button>
+                            <button
+                              onClick={clearDateFilter}
+                              className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
+                            >
+                              Clear
+                            </button>
+                          </div>
+
+                          {(fromDate || toDate) && (
+                            <div className="text-xs text-gray-600 pt-1">
+                              {fromDate && toDate ? (
+                                `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
+                              ) : fromDate ? (
+                                `Showing orders from ${formatDate(fromDate)} onwards`
+                              ) : (
+                                `Showing orders up to ${formatDate(toDate)}`
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </nav>
+
+            <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+              <RiCustomerService2Fill size={20} />
+              <span className="font-bold">+91 9804611111</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-[#013E70] text-[#000000] py-2 block sm:hidden ">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+
+            <div className="flex items-center gap-4">
+              <h1 className="text-white font-bold text-lg">Order History</h1>
+
+              {/* Calendar Filter Button */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowCalendar(!showCalendar)}
+                  className="flex items-center gap-2 bg-white text-[#013E70] px-3 py-1 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium"
+                >
+                  <MdDateRange size={16} />
+
+                </button>
+
+                {/* Calendar Dropdown */}
+                {showCalendar && (
+                  <div>
+                    <div
+                      ref={calendarRef}
+                      className="absolute hidden sm:block top-full mt-6.5 left-0 bg-white rounded-lg shadow-lg border p-4 z-50 min-w-[300px]"
+                    >
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-gray-800 text-sm">Select Date</h3>
+
+                        <div className="grid grid-cols-1 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
+                            <input
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
+                            <input
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2">
+
+                          <button
+                            onClick={clearDateFilter}
+                            className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
+                          >
+                            Clear
+                          </button>
+                          <button
+                            onClick={handleDateFilter}
+                            className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
+                          >
+                            Apply
+                          </button>
+                        </div>
+
+                        {(fromDate || toDate) && (
+                          <div className="text-xs text-gray-600 pt-1">
+                            {fromDate && toDate ? (
+                              `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
+                            ) : fromDate ? (
+                              `Showing orders from ${formatDate(fromDate)} onwards`
+                            ) : (
+                              `Showing orders up to ${formatDate(toDate)}`
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div
+                      ref={calendarRef}
+                      className="fixed  block sm:hidden mt-6.5 sm:w-auto sm:min-w-[300px] bg-white rounded-lg shadow-lg border p-4 z-50"
+                    >
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-gray-800 text-sm">Filter Orders by Date Range</h3>
+
+                        <div className="grid grid-cols-1 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
+                            <input
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
+                            <input
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={handleDateFilter}
+                            className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
+                          >
+                            Apply Filter
+                          </button>
+                          <button
+                            onClick={clearDateFilter}
+                            className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
+                          >
+                            Clear
+                          </button>
+                        </div>
+
+                        {(fromDate || toDate) && (
+                          <div className="text-xs text-gray-600 pt-1">
+                            {fromDate && toDate ? (
+                              `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
+                            ) : fromDate ? (
+                              `Showing orders from ${formatDate(fromDate)} onwards`
+                            ) : (
+                              `Showing orders up to ${formatDate(toDate)}`
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </header>
+        <div className="min-h-screen bg-[#F3F4F6] flex flex-col">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <div
+                className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-[#013F71] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status">
+                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                  Loading...
+                </span>
+              </div>
+              <p className="mt-4 text-xl font-medium text-[#013F71]">Loading products...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#F3F5F7]">

@@ -15,6 +15,9 @@ const NotificationPage = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [filterStatus, setFilterStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
+
   const itemsPerPage = 10;
 
   const navigate = useNavigate();
@@ -35,6 +38,7 @@ const NotificationPage = () => {
 
   useEffect(() => {
     const fetchNotifications = async () => {
+      const startTime = Date.now();
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user || !user._id) return;
 
@@ -44,6 +48,14 @@ const NotificationPage = () => {
         if (Array.isArray(data)) setNotifications(data);
       } catch (err) {
         console.error("Error fetching notifications:", err);
+      } finally {
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(100 - elapsed, 0);
+
+        setTimeout(() => {
+          setMinimumLoadTimePassed(true);
+          setIsLoading(false);
+        }, remainingTime);
       }
     };
 
@@ -76,6 +88,99 @@ const NotificationPage = () => {
       setCurrentPage(page);
     }
   };
+
+  if (isLoading || !minimumLoadTimePassed) {
+    return (
+      <div>
+<header className="bg-white top-0 z-50 shadow-sm sticky">
+        <div className="sm:h-12 p-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
+            {/* Logo & Icons */}
+            <div className="flex items-center justify-between w-full sm:w-auto h-full">
+              {/* Logo */}
+              <button onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2">
+                <img
+                  src="/logo/ss_power_tool_logo.svg"
+                  width="150px"
+                  className="sm:ml-6"
+                  alt="SS Power Tools Logo"
+                />
+              </button>
+
+              {/* Mobile Icons */}
+              <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
+                <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
+                <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                  <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
+                </button>
+              </div>
+
+              {showProfile && (
+                <div
+                  ref={profileRef}
+                  className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
+                >
+                  <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <FaRegUser size={12} /> My Account
+                  </p>
+                  <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
+                  <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+                    <IoLogOutOutline size={14} /> Logout
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop Icons */}
+            <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
+              <button aria-label="Cart"><CartIcon size={20} strokeWidth={0.5} /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-[#013E70] text-[#000000] py-2 hidden sm:block ">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+              <h1 className="text-white font-bold text-lg">All Notification</h1>
+            </nav>
+            <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+              <RiCustomerService2Fill size={20} />
+              <span className="font-bold">+91 9804611111</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-[#013E70] text-[#000000] py-2 sm:hidden block">
+          <div className="w-full text-center">
+            <h1 className="text-white font-bold text-lg">All Notification</h1>
+          </div>
+        </div>
+
+      </header>
+        <div className="min-h-screen bg-[#F3F4F6] flex flex-col">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <div
+                className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-[#013F71] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                role="status">
+                <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                  Loading...
+                </span>
+              </div>
+              <p className="mt-4 text-xl font-medium text-[#013F71]">Loading products...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='bg-[#F2F5F6]'>
@@ -145,10 +250,10 @@ const NotificationPage = () => {
 
 
         <div className="bg-[#013E70] text-[#000000] py-2 sm:hidden block">
-  <div className="w-full text-center">
-    <h1 className="text-white font-bold text-lg">All Notification</h1>
-  </div>
-</div>
+          <div className="w-full text-center">
+            <h1 className="text-white font-bold text-lg">All Notification</h1>
+          </div>
+        </div>
 
       </header>
 

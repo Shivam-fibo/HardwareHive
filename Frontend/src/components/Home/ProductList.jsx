@@ -65,7 +65,6 @@ const ProductList = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        // Calculate remaining time to reach 1 second
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(100 - elapsed, 0);
         

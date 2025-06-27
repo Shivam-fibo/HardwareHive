@@ -225,6 +225,99 @@ const CartPage = () => {
 
   if (isLoading || minimumLoadTimePassed) {
     return (
+      <div>
+        <header className="bg-white top-0 z-50 shadow-sm sticky">
+        <div className="sm:h-12 p-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-10 h-full">
+
+            {/* Logo & Icons */}
+            <div className="flex items-center justify-between w-full sm:w-auto h-full">
+
+              {/* Logo */}
+              <button onClick={() => navigate("/home")} className=" cursor-pointer flex items-center space-x-2">
+
+                <img
+                  src="/logo/ss_power_tool_logo.svg"
+                  width="150px"
+                  className="sm:ml-6"
+                  alt="SS Power Tools Logo"
+                />
+              </button>
+
+              {/* Mobile Icons */}
+              <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
+                <div className="relative">
+                <FaRegHeart size={22} className="text-black" />
+                {savedItems.length > 0 && (
+                  <span className="absolute -top-2 -right-3.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {savedItems.length}
+                  </span>
+                )}
+              </div>
+                <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => handleNotification()} /></button>
+                <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                  <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
+                </button>
+              </div>
+
+              {showProfile && (
+                <div
+                  ref={profileRef}
+                  className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
+                >
+                  <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <FaRegUser size={12} /> My Account
+                  </p>
+                  <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                    <History size={12} /> My History
+                  </p>
+                  <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+                    <IoLogOutOutline size={14} /> Logout
+                  </p>
+                </div>
+              )}
+            </div>
+
+
+            {/* Desktop Icons */}
+            <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
+              <div className="relative">
+                <FaRegHeart size={22} className="text-black" />
+                {savedItems.length > 0 && (
+                  <span className="absolute -top-2 -right-3.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {savedItems.length}
+                  </span>
+                )}
+              </div>
+              <button aria-label="Notifications" className="cursor-pointer" onClick={() => handleNotification()}><PiBellBold size={22} strokeWidth={0.5} /></button>
+              <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
+                <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-[#013E70] text-[#000000] py-2  sm:block hidden">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+              <h1 className="text-white font-semibold text-lg">My Orders</h1>
+            </nav>
+
+            <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+              <RiCustomerService2Fill size={20} />
+              <span className="font-bold">+91 9804611111</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-[#013E70] text-[#000000] py-2  sm:hidden block">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <h1 className="text-white font-semibold text-lg">My Orders</h1>
+          </div>
+        </div>
+      </header>
       <div className="flex justify-center items-center min-h-screen">
       <div className="min-h-screen  flex ">
       
@@ -242,7 +335,7 @@ const CartPage = () => {
         </div>
        
       </div>
-
+</div>
     </div>
     )
   }

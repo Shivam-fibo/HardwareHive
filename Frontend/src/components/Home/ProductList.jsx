@@ -19,90 +19,93 @@ const ProductList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addedProductIds, setAddedProductIds] = useState(new Set());
   const [savedForLaterIds, setSavedForLaterIds] = useState(new Set());
+    const [isLoading, setIsLoading] = useState(true);
+  const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
   const itemsPerPage = 20;
 
- const { addToCart, refreshCartCount } = useCart();
+  const { addToCart, refreshCartCount } = useCart();
 
   //  useRef to track the selected category
   const selectedCategoryRef = useRef(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("https://hardware-hive-backend.vercel.app/api/user/getallProduct");
-        const data = await res.json();
-        setProducts(data.reverse());
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    const fetchCartItems = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const userId = user?._id;
-      const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
-      const data = await res.json();
-      if (data?.items) {  
-        const alreadyAdded = new Set(data.items.map(item => item.productId));
-        setAddedProductIds(alreadyAdded);
-      }
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
-    }
-  };
-
-
-   const fetchSavedForLaterItems = async () => {
+    const fetchData = async () => {
+      const startTime = Date.now();
+      
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?._id;
-        const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/savedItems/${userId}`);
-        const data = await res.json();
-        if (data?.savedItems) {
-          const savedIds = new Set(data.savedItems.map(item => item.productId));
+
+        // Fetch all data in parallel
+        const [productsRes, cartRes, savedRes] = await Promise.all([
+          fetch("https://hardware-hive-backend.vercel.app/api/user/getallProduct"),
+          fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`),
+          fetch(`https://hardware-hive-backend.vercel.app/api/user/savedItems/${userId}`)
+        ]);
+
+        const [productsData, cartData, savedData] = await Promise.all([
+          productsRes.json(),
+          cartRes.json(),
+          savedRes.json()
+        ]);
+
+        setProducts(productsData.reverse());
+
+        if (cartData?.items) {
+          const alreadyAdded = new Set(cartData.items.map(item => item.productId));
+          setAddedProductIds(alreadyAdded);
+        }
+
+        if (savedData?.savedItems) {
+          const savedIds = new Set(savedData.savedItems.map(item => item.productId));
           setSavedForLaterIds(savedIds);
         }
+
+        refreshCartCount();
       } catch (error) {
-        console.error("Error fetching saved for later items:", error);
+        console.error("Error fetching data:", error);
+      } finally {
+        // Calculate remaining time to reach 1 second
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(100 - elapsed, 0);
+        
+        setTimeout(() => {
+          setMinimumLoadTimePassed(true);
+          setIsLoading(false);
+        }, remainingTime);
       }
     };
 
-
-  fetchProducts();
-  fetchCartItems();
-  fetchSavedForLaterItems();
-
-   refreshCartCount();
+    fetchData();
   }, [refreshCartCount]);
 
   const handleAddToCart = async (item, quantity) => {
-      const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?._id;
     console.log(item, item.id)
     if (addedProductIds.has(item._id)) {
       toast.error("Product already added to cart");
       return;
     }
- if(savedForLaterIds.has(item._id)) {
-    console.log("Item is saved for later, moving to cart");
-    await moveToCart(item._id, userId); 
-    toast.success("Moved from saved items to cart");
-    setSavedForLaterIds(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(item._id);
-      return newSet;
-    });
-    setAddedProductIds(prev => new Set(prev).add(item._id));
-    refreshCartCount();
-    return;
-  }
+    if (savedForLaterIds.has(item._id)) {
+      console.log("Item is saved for later, moving to cart");
+      await moveToCart(item._id, userId);
+      toast.success("Moved from saved items to cart");
+      setSavedForLaterIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(item._id);
+        return newSet;
+      });
+      setAddedProductIds(prev => new Set(prev).add(item._id));
+      refreshCartCount();
+      return;
+    }
 
 
     addToCart({ ...item, quantity });
 
     setAddedProductIds(prev => new Set(prev).add(item._id));
-  
+
     const cartItem = {
       productId: item._id,
       title: item.title,
@@ -124,7 +127,7 @@ const ProductList = () => {
       const data = await res.json();
       console.log(data);
 
-     
+
     } catch (error) {
       console.error("Error sending to backend:", error);
     }
@@ -210,7 +213,7 @@ const ProductList = () => {
     return items;
   };
 
-    useEffect(() => {
+  useEffect(() => {
     // Prevent body scrolling when filter drawer is open on mobile
     if (showFilter) {
       document.body.style.overflow = 'hidden';
@@ -224,9 +227,30 @@ const ProductList = () => {
     };
   }, [showFilter]);
 
+
+  if (isLoading || !minimumLoadTimePassed) {
+    return (
+      <div className="min-h-screen bg-[#F3F4F6] flex flex-col">
+     
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div
+              className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-[#013F71] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status">
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
+            </div>
+            <p className="mt-4 text-xl font-medium text-[#013F71]">Loading products...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F3F4F6]">
-  
+
 
       <div className="flex justify-between py-4 px-6 sm:hidden">
         <h1 className="font-medium text-xl">All List Items</h1>
@@ -265,22 +289,27 @@ const ProductList = () => {
             </label>
           </div>
 
-         <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865] ">
-            {categories.map((item, i) => (
-              <label
-                key={i}
-                className="flex items-center justify-between mb-3 text-[14px] font-semibold cursor-pointer"
-              >
-                {item}
-                <input
-                  type="checkbox"
-                  className="form-checkbox h-5 w-5 accent-amber-50  rounded"
-                  checked={selectedCategories.includes(item)}
-                  onChange={() => toggleCategory(item)}
-                />
+          <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865] ">
+            {categories.map((item, i) => {
+              const isChecked = selectedCategories.includes(item);
 
-              </label>
-            ))}
+              return (
+                <label
+                  key={i}
+                  className="flex items-center justify-between mb-3 text-[14px] font-semibold cursor-pointer"
+                >
+                  {item}
+                  <input
+                    type="checkbox"
+                    className={`h-5 w-5 rounded border-2 ${isChecked ? 'accent-amber-50 border-amber-50' : 'accent-red-500 border-red-500'
+                      }`}
+                    checked={isChecked}
+                    onChange={() => toggleCategory(item)}
+                  />
+                </label>
+              );
+            })}
+
           </div>
 
 
@@ -335,7 +364,7 @@ const ProductList = () => {
                 key={product._id}
                 product={product}
                 handleAddToCart={handleAddToCart}
-                 isSavedForLater={savedForLaterIds.has(product._id)}
+                isSavedForLater={savedForLaterIds.has(product._id)}
                 isAdded={addedProductIds.has(product._id)}
                 onViewDetails={() => {
                   setSelectedProduct(product);

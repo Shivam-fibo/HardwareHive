@@ -152,7 +152,7 @@ const NotificationPage = () => {
 
       </header>
 
-      <div className="p-6 mt-4 max-w-4xl mx-auto bg-white rounded-xl">
+      <div className="p-6 mt-4 max-w-4xl mx-auto bg-white rounded-xl border">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-xl font-semibold text-gray-500 bg-[003F70] px-4 py-2 rounded-md shadow-sm border-l-4 border-[#003F70]">
             You can view up to the last 30 notifications

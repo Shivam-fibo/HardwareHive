@@ -124,44 +124,44 @@ const OrderHistory = () => {
 
 
   const downloadOrderAsPdfCDN = async (order, orderIndex) => {
-  try {
-    // Load html2pdf from CDN if not already loaded
-    if (!window.html2pdf) {
-      console.log('Loading html2pdf library...');
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-      document.head.appendChild(script);
-      
-      // Wait for script to load with proper error handling
-      await new Promise((resolve, reject) => {
-        script.onload = () => {
-          console.log('html2pdf loaded successfully');
-          resolve();
-        };
-        script.onerror = () => {
-          console.error('Failed to load html2pdf');
-          reject(new Error('Failed to load PDF library'));
-        };
-        
-        // Timeout after 10 seconds
-        setTimeout(() => {
-          reject(new Error('PDF library loading timeout'));
-        }, 10000);
-      });
-    }
+    try {
+      // Load html2pdf from CDN if not already loaded
+      if (!window.html2pdf) {
+        console.log('Loading html2pdf library...');
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        document.head.appendChild(script);
 
-    // Wait a bit more to ensure the library is fully initialized
-    await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait for script to load with proper error handling
+        await new Promise((resolve, reject) => {
+          script.onload = () => {
+            console.log('html2pdf loaded successfully');
+            resolve();
+          };
+          script.onerror = () => {
+            console.error('Failed to load html2pdf');
+            reject(new Error('Failed to load PDF library'));
+          };
 
-    // Create the PDF content with better styling
-    const element = document.createElement('div');
-    element.style.width = '210mm'; // A4 width
-    element.style.minHeight = '297mm'; // A4 height
-    element.style.margin = '0';
-    element.style.padding = '20px';
-    element.style.boxSizing = 'border-box';
-    
-    element.innerHTML = `
+          // Timeout after 10 seconds
+          setTimeout(() => {
+            reject(new Error('PDF library loading timeout'));
+          }, 10000);
+        });
+      }
+
+      // Wait a bit more to ensure the library is fully initialized
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Create the PDF content with better styling
+      const element = document.createElement('div');
+      element.style.width = '210mm'; // A4 width
+      element.style.minHeight = '297mm'; // A4 height
+      element.style.margin = '0';
+      element.style.padding = '20px';
+      element.style.boxSizing = 'border-box';
+
+      element.innerHTML = `
       <div style="
         font-family: 'Arial', 'Helvetica', sans-serif; 
         line-height: 1.4;
@@ -284,64 +284,64 @@ const OrderHistory = () => {
       </div>
     `;
 
-    // Append to body temporarily to ensure proper rendering
-    document.body.appendChild(element);
+      // Append to body temporarily to ensure proper rendering
+      document.body.appendChild(element);
 
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: `order_${order._id}_${new Date().getTime()}.pdf`,
-      image: { 
-        type: 'jpeg', 
-        quality: 0.98 
-      },
-      html2canvas: { 
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        height: element.scrollHeight,
-        width: element.scrollWidth
-      },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'portrait',
-        compress: true
-      },
-      pagebreak: { 
-        mode: ['avoid-all', 'css', 'legacy'] 
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: `order_${order._id}_${new Date().getTime()}.pdf`,
+        image: {
+          type: 'jpeg',
+          quality: 0.98
+        },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          height: element.scrollHeight,
+          width: element.scrollWidth
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait',
+          compress: true
+        },
+        pagebreak: {
+          mode: ['avoid-all', 'css', 'legacy']
+        }
+      };
+
+      console.log('Generating PDF...');
+
+      // Generate and save PDF
+      await window.html2pdf().from(element).set(opt).save();
+
+      console.log('PDF generated successfully');
+
+      // Remove the temporary element
+      document.body.removeChild(element);
+
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+
+      // More specific error messages
+      let errorMessage = 'Failed to generate PDF. ';
+      if (error.message.includes('timeout')) {
+        errorMessage += 'The PDF library took too long to load. Please check your internet connection and try again.';
+      } else if (error.message.includes('Failed to load')) {
+        errorMessage += 'Could not load the PDF library. Please check your internet connection and try again.';
+      } else {
+        errorMessage += 'Please try again. If the problem persists, try refreshing the page.';
       }
+
+      alert(errorMessage);
+
     };
 
-    console.log('Generating PDF...');
-    
-    // Generate and save PDF
-    await window.html2pdf().from(element).set(opt).save();
-    
-    console.log('PDF generated successfully');
-
-    // Remove the temporary element
-    document.body.removeChild(element);
-
-  } catch (error) {
-    console.error('Error generating PDF:', error);
-    
-    // More specific error messages
-    let errorMessage = 'Failed to generate PDF. ';
-    if (error.message.includes('timeout')) {
-      errorMessage += 'The PDF library took too long to load. Please check your internet connection and try again.';
-    } else if (error.message.includes('Failed to load')) {
-      errorMessage += 'Could not load the PDF library. Please check your internet connection and try again.';
-    } else {
-      errorMessage += 'Please try again. If the problem persists, try refreshing the page.';
-    }
-    
-    alert(errorMessage);
-  
-};
 
 
-
-};
+  };
 
   return (
     <div className="bg-[#F3F5F7]">
@@ -546,146 +546,146 @@ const OrderHistory = () => {
 
         <div className="bg-[#013E70] text-[#000000] py-2 block sm:hidden ">
           <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-            
-              <div className="flex items-center gap-4">
-                <h1 className="text-white font-bold text-lg">Order History</h1>
 
-                {/* Calendar Filter Button */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowCalendar(!showCalendar)}
-                    className="flex items-center gap-2 bg-white text-[#013E70] px-3 py-1 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium"
-                  >
-                    <MdDateRange size={16} />
+            <div className="flex items-center gap-4">
+              <h1 className="text-white font-bold text-lg">Order History</h1>
 
-                  </button>
+              {/* Calendar Filter Button */}
+              <div className="relative">
+                <button
+                  onClick={() => setShowCalendar(!showCalendar)}
+                  className="flex items-center gap-2 bg-white text-[#013E70] px-3 py-1 rounded-md hover:bg-gray-100 transition-colors text-sm font-medium"
+                >
+                  <MdDateRange size={16} />
 
-                  {/* Calendar Dropdown */}
-                  {showCalendar && (
-                    <div>
-                      <div
-                        ref={calendarRef}
-                        className="absolute hidden sm:block top-full mt-6.5 left-0 bg-white rounded-lg shadow-lg border p-4 z-50 min-w-[300px]"
-                      >
-                        <div className="space-y-3">
-                          <h3 className="font-semibold text-gray-800 text-sm">Select Date</h3>
+                </button>
 
-                          <div className="grid grid-cols-1 gap-3">
-                            <div>
-                              <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
-                              <input
-                                type="date"
-                                value={fromDate}
-                                onChange={(e) => setFromDate(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
-                              />
-                            </div>
+                {/* Calendar Dropdown */}
+                {showCalendar && (
+                  <div>
+                    <div
+                      ref={calendarRef}
+                      className="absolute hidden sm:block top-full mt-6.5 left-0 bg-white rounded-lg shadow-lg border p-4 z-50 min-w-[300px]"
+                    >
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-gray-800 text-sm">Select Date</h3>
 
-                            <div>
-                              <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
-                              <input
-                                type="date"
-                                value={toDate}
-                                onChange={(e) => setToDate(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
-                              />
-                            </div>
+                        <div className="grid grid-cols-1 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
+                            <input
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
                           </div>
 
-                          <div className="flex gap-2 pt-2">
-
-                            <button
-                              onClick={clearDateFilter}
-                              className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
-                            >
-                              Clear
-                            </button>
-                            <button
-                              onClick={handleDateFilter}
-                              className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
-                            >
-                              Apply
-                            </button>
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
+                            <input
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
                           </div>
-
-                          {(fromDate || toDate) && (
-                            <div className="text-xs text-gray-600 pt-1">
-                              {fromDate && toDate ? (
-                                `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
-                              ) : fromDate ? (
-                                `Showing orders from ${formatDate(fromDate)} onwards`
-                              ) : (
-                                `Showing orders up to ${formatDate(toDate)}`
-                              )}
-                            </div>
-                          )}
                         </div>
-                      </div>
 
-                      <div
-                        ref={calendarRef}
-                        className="fixed  block sm:hidden mt-6.5 sm:w-auto sm:min-w-[300px] bg-white rounded-lg shadow-lg border p-4 z-50"
-                      >
-                        <div className="space-y-3">
-                          <h3 className="font-semibold text-gray-800 text-sm">Filter Orders by Date Range</h3>
+                        <div className="flex gap-2 pt-2">
 
-                          <div className="grid grid-cols-1 gap-3">
-                            <div>
-                              <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
-                              <input
-                                type="date"
-                                value={fromDate}
-                                onChange={(e) => setFromDate(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
-                              />
-                            </div>
-
-                            <div>
-                              <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
-                              <input
-                                type="date"
-                                value={toDate}
-                                onChange={(e) => setToDate(e.target.value)}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="flex gap-2 pt-2">
-                            <button
-                              onClick={handleDateFilter}
-                              className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
-                            >
-                              Apply Filter
-                            </button>
-                            <button
-                              onClick={clearDateFilter}
-                              className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
-                            >
-                              Clear
-                            </button>
-                          </div>
-
-                          {(fromDate || toDate) && (
-                            <div className="text-xs text-gray-600 pt-1">
-                              {fromDate && toDate ? (
-                                `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
-                              ) : fromDate ? (
-                                `Showing orders from ${formatDate(fromDate)} onwards`
-                              ) : (
-                                `Showing orders up to ${formatDate(toDate)}`
-                              )}
-                            </div>
-                          )}
+                          <button
+                            onClick={clearDateFilter}
+                            className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
+                          >
+                            Clear
+                          </button>
+                          <button
+                            onClick={handleDateFilter}
+                            className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
+                          >
+                            Apply
+                          </button>
                         </div>
+
+                        {(fromDate || toDate) && (
+                          <div className="text-xs text-gray-600 pt-1">
+                            {fromDate && toDate ? (
+                              `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
+                            ) : fromDate ? (
+                              `Showing orders from ${formatDate(fromDate)} onwards`
+                            ) : (
+                              `Showing orders up to ${formatDate(toDate)}`
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
-  
 
-            
+                    <div
+                      ref={calendarRef}
+                      className="fixed  block sm:hidden mt-6.5 sm:w-auto sm:min-w-[300px] bg-white rounded-lg shadow-lg border p-4 z-50"
+                    >
+                      <div className="space-y-3">
+                        <h3 className="font-semibold text-gray-800 text-sm">Filter Orders by Date Range</h3>
+
+                        <div className="grid grid-cols-1 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">From Date:</label>
+                            <input
+                              type="date"
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-gray-700 mb-1">To Date:</label>
+                            <input
+                              type="date"
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#013E70] focus:border-transparent text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={handleDateFilter}
+                            className="flex-1 bg-[#013E70] text-white px-3 py-2 rounded-md hover:bg-[#012a52] transition-colors text-sm font-medium"
+                          >
+                            Apply Filter
+                          </button>
+                          <button
+                            onClick={clearDateFilter}
+                            className="flex-1 bg-gray-200 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-300 transition-colors text-sm font-medium"
+                          >
+                            Clear
+                          </button>
+                        </div>
+
+                        {(fromDate || toDate) && (
+                          <div className="text-xs text-gray-600 pt-1">
+                            {fromDate && toDate ? (
+                              `Showing orders from ${formatDate(fromDate)} to ${formatDate(toDate)}`
+                            ) : fromDate ? (
+                              `Showing orders from ${formatDate(fromDate)} onwards`
+                            ) : (
+                              `Showing orders up to ${formatDate(toDate)}`
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+
+
           </div>
         </div>
       </header>
@@ -802,67 +802,67 @@ const OrderHistory = () => {
 
                 {/* Mobile Version */}
                 <div className="border mx-auto rounded-xl shadow-sm bg-white p-4 space-y-2 block sm:hidden">
-  {/* Order Header - Improved layout for mobile */}
-  <div className="flex justify-between items-start">
-    <div>
-      <h2 className="text-lg font-semibold text-gray-800">
-        Order #{orderIndex + 1 + ((currentPage - 1) * itemsPerPage)}
-      </h2>
-      <p className="text-xs text-black mt-1">
-        <strong>Date: {formatDate(order.createdAt)}</strong>
-      </p>
-    </div>
-    <div className="flex flex-col items-end gap-1">
-      <strong className="text-sm">Total: ₹{order.totalAmount}</strong>
-      <PiFilePdfDuotone
-        size={20}
-        className="text-red-500 cursor-pointer"
-        onClick={() => downloadOrderAsPdfCDN(order, orderIndex)}
-      />
-    </div>
-  </div>
+                  {/* Order Header - Improved layout for mobile */}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h2 className="text-lg font-semibold text-gray-800">
+                        Order #{orderIndex + 1 + ((currentPage - 1) * itemsPerPage)}
+                      </h2>
+                      <p className="text-xs text-black mt-1">
+                        <strong>Date: {formatDate(order.createdAt)}</strong>
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <strong className="text-sm">Total: ₹{order.totalAmount}</strong>
+                      <PiFilePdfDuotone
+                        size={20}
+                        className="text-red-500 cursor-pointer"
+                        onClick={() => downloadOrderAsPdfCDN(order, orderIndex)}
+                      />
+                    </div>
+                  </div>
 
-  <div className="space-y-3">
-    <h3 className="text-base font-bold">Items</h3>
-    {order.items.map((item, index) => (
-      <div key={index} className="border rounded-md p-3 shadow-sm bg-gray-50">
-        <div className="flex gap-3">
-          {/* Index Number */}
-          <div className="w-8 h-8 bg-blue-100 text-black border flex items-center justify-center rounded text-sm font-medium">
-            {index + 1}
-          </div>
+                  <div className="space-y-3">
+                    <h3 className="text-base font-bold">Items</h3>
+                    {order.items.map((item, index) => (
+                      <div key={index} className="border rounded-md p-3 shadow-sm bg-gray-50">
+                        <div className="flex gap-3">
+                          {/* Index Number */}
+                          <div className="w-8 h-8 bg-blue-100 text-black border flex items-center justify-center rounded text-sm font-medium">
+                            {index + 1}
+                          </div>
 
-          {/* Item Image */}
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-16 h-16 object-contain border rounded bg-white"
-          />
+                          {/* Item Image */}
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-16 h-16 object-contain border rounded bg-white"
+                          />
 
-          {/* Info Section - Split into two columns */}
-          <div className="flex-1 grid grid-cols-2 gap-2">
-            {/* Left Column - Title and Subtitle */}
-            <div className="col-span-1">
-              <div className="font-medium text-gray-800 line-clamp-2">
-                {item.title}
-              </div>
-                <div className="text-sm font-bold">₹{item.price}</div>
-            </div>
+                          {/* Info Section - Split into two columns */}
+                          <div className="flex-1 grid grid-cols-2 gap-2">
+                            {/* Left Column - Title and Subtitle */}
+                            <div className="col-span-1">
+                              <div className="font-medium text-gray-800 line-clamp-2">
+                                {item.title}
+                              </div>
+                              <div className="text-sm font-bold">₹{item.price}</div>
+                            </div>
 
-            {/* Right Column - Price and Quantity */}
-            <div className="col-span-1 text-right">
-            
-              <div className="text-sm">Quantity:{item.quantity}</div>
-              <div className="text-sm text-green-700 font-bold mt-1">
-                ₹{item.price * item.quantity}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
+                            {/* Right Column - Price and Quantity */}
+                            <div className="col-span-1 text-right">
+
+                              <div className="text-sm">Quantity:{item.quantity}</div>
+                              <div className="text-sm text-green-700 font-bold mt-1">
+                                ₹{item.price * item.quantity}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             ))}
 

@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { History } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { moveToCart } from "../hooks/moveToCart";
+import { FaRegHeart } from "react-icons/fa";
+
 
 
 const CartPage = () => {
@@ -21,6 +23,8 @@ const CartPage = () => {
   const [userData, setUserData] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
   const profileRef = useRef(null);
 
   const navigate = useNavigate()
@@ -67,8 +71,17 @@ const CartPage = () => {
         const res = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
         const data = await res.json();
         if (data?.items) setCartItems(data.items.reverse());
+         const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(1000 - elapsed, 100);
+        
+        setTimeout(() => {
+          setMinimumLoadTimePassed(true);
+          setIsLoading(false);
+        }, remainingTime);
       } catch (error) {
         console.error("Error fetching cart items:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -131,7 +144,7 @@ const CartPage = () => {
     }
   };
 
- 
+
 
   const handleMoveToCart = async (item) => {
     try {
@@ -210,7 +223,32 @@ const CartPage = () => {
     }
   };
 
+  if (isLoading || minimumLoadTimePassed) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+      <div className="min-h-screen  flex ">
+      
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div
+              className="inline-block h-18 w-18 animate-spin rounded-full border-4 border-solid border-[#013F71] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+              role="status">
+              <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                Loading...
+              </span>
+            </div>
+            <p className="mt-4 text-2xl font-medium text-[#013F71]">Loading your cart...</p>
+          </div>
+        </div>
+       
+      </div>
+
+    </div>
+    )
+  }
+
   return (
+
     <div className="min-h-screen  bg-[#F2F5F6]">
       <header className="bg-white top-0 z-50 shadow-sm sticky">
         <div className="sm:h-12 p-2">
@@ -232,6 +270,14 @@ const CartPage = () => {
 
               {/* Mobile Icons */}
               <div className="flex sm:hidden items-center space-x-3 text-black mr-2 sm:mr-0">
+                <div className="relative">
+                <FaRegHeart size={22} className="text-black" />
+                {savedItems.length > 0 && (
+                  <span className="absolute -top-2 -right-3.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {savedItems.length}
+                  </span>
+                )}
+              </div>
                 <button aria-label="Notifications"><PiBellBold size={22} strokeWidth={0.5} onClick={() => handleNotification()} /></button>
                 <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
                   <FaRegUser size={20} strokeWidth={0.5} className="cursor-pointer" />
@@ -246,7 +292,7 @@ const CartPage = () => {
                   <p onClick={() => navigate("/user")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                     <FaRegUser size={12} /> My Account
                   </p>
-                   <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
+                  <p onClick={() => navigate("/history")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5 text-nowrap">
                     <History size={12} /> My History
                   </p>
                   <p onClick={() => navigate("/")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
@@ -259,6 +305,14 @@ const CartPage = () => {
 
             {/* Desktop Icons */}
             <div className="hidden sm:flex items-center space-x-4 text-black mr-6">
+              <div className="relative">
+                <FaRegHeart size={22} className="text-black" />
+                {savedItems.length > 0 && (
+                  <span className="absolute -top-2 -right-3.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {savedItems.length}
+                  </span>
+                )}
+              </div>
               <button aria-label="Notifications" className="cursor-pointer" onClick={() => handleNotification()}><PiBellBold size={22} strokeWidth={0.5} /></button>
               <button aria-label="User" onClick={() => setShowProfile(!showProfile)}>
                 <FaRegUser size={22} strokeWidth={0.5} className="cursor-pointer" />
@@ -266,34 +320,34 @@ const CartPage = () => {
             </div>
           </div>
         </div>
-      
 
-      <div className="bg-[#013E70] text-[#000000] py-2  sm:block hidden">
-        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-          <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-            <h1 className="text-white font-semibold text-lg">My Orders</h1>
-          </nav>
 
-          <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
-            <RiCustomerService2Fill size={20} />
-            <span className="font-bold">+91 9804611111</span>
+        <div className="bg-[#013E70] text-[#000000] py-2  sm:block hidden">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+            <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+              <h1 className="text-white font-semibold text-lg">My Orders</h1>
+            </nav>
+
+            <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
+              <RiCustomerService2Fill size={20} />
+              <span className="font-bold">+91 9804611111</span>
+            </div>
           </div>
         </div>
-      </div>
 
 
-      <div className="bg-[#013E70] text-[#000000] py-2  sm:hidden block">
-        <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
+        <div className="bg-[#013E70] text-[#000000] py-2  sm:hidden block">
+          <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
             <h1 className="text-white font-semibold text-lg">My Orders</h1>
+          </div>
         </div>
-      </div>
       </header>
 
       {/* My Orders Section */}
 
       <div className="max-w-6xl mx-auto px-4 py-4">
         {cartItems.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm  mb-6">
+          <div className="bg-white rounded-lg shadow-sm border  mb-6">
             {/* Header */}
 
 
@@ -430,7 +484,7 @@ const CartPage = () => {
                         </div>
 
                         {/* Save + Delete Buttons */}
-                        <div className="flex gap-1">
+                        <div className="flex gap-2">
                           <button
                             onClick={() => handleSaveForLater(item)}
                             className="text-red-500 hover:text-red-600 p-1 border rounded"
@@ -493,7 +547,7 @@ const CartPage = () => {
         {cartItems.length === 0 && (
           <div className="bg-white rounded-lg shadow-sm border mb-6 px-6 py-8 text-center text-gray-500 flex flex-col items-center justify-center">
             <img
-              src="/images/empty-cart.webp" // Make sure to place your image in the `public/images` folder
+              src="/images/empty-cart.webp" 
               alt="Empty cart"
               className="w-48 h-auto mb-6"
             />
@@ -510,7 +564,7 @@ const CartPage = () => {
 
 
         {savedItems.length > 0 &&
-          <div className="bg-white rounded-lg shadow-sm ">
+          <div className="bg-white rounded-lg shadow-sm border ">
             {/* Header */}
             <div className=" px-6 py-4">
               <h2 className="text-lg font-bold text-gray-800">Saved for Later</h2>
@@ -562,6 +616,8 @@ const CartPage = () => {
 
       <Footer />
     </div>
+
+    
   );
 };
 

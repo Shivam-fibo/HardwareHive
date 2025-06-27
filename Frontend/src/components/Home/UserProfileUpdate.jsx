@@ -74,7 +74,7 @@ const UserProfileUpdate = ({ data }) => {
 
 
   return (
-    <div className="flex-1 p-6 bg-white rounded-xl">
+    <div className="flex-1 p-6 bg-white rounded-xl border">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">Profile Information</h2>
         <button

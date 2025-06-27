@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import Header from "./Nabar";
-import Footer from "../LandingPage/Module/Footer";
+import Footer from "../Home/Footer";
 
 const SavedForLater = () => {
   const [savedItems, setSavedItems] = useState([]);

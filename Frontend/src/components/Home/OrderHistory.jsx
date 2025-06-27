@@ -4,7 +4,7 @@ import { IoLogOutOutline } from "react-icons/io5";
 import CartIcon from './CartIcon';
 import { useNavigate } from "react-router-dom";
 import { RiCustomerService2Fill } from 'react-icons/ri';
-import Footer from "../LandingPage/Module/Footer";
+import Footer from "../Home/Footer";
 import { PiBellBold } from "react-icons/pi";
 import { PiFilePdfDuotone } from "react-icons/pi";
 import { MdDateRange } from "react-icons/md";

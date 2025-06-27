@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { toast } from "react-hot-toast";
 import Header from "./Nabar";
-import Footer from "../LandingPage/Module/Footer";
+import Footer from "../Home/Footer";
 import { IoHeartSharp } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { PiBellBold } from "react-icons/pi";

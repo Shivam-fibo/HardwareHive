@@ -2,7 +2,8 @@ import { useState } from "react";
 import Header from "../LandingPage/Module/Header";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-hot-toast';
-import Footer from "../LandingPage/Module/Footer";
+// import Footer from "../Home/Footer";
+import Footer from "../Home/Footer";
 
 export default function Register() {
   const navigate = useNavigate();

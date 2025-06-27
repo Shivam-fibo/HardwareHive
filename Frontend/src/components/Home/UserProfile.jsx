@@ -11,7 +11,7 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-import Footer from "../LandingPage/Module/Footer";
+import Footer from "../Home/Footer";
 import UserProfileUpdate from "./UserProfileUpdate";
 import CartIcon from "./CartIcon";
 

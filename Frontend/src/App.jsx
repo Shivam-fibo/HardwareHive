@@ -19,7 +19,7 @@ import SavedForLater from './components/Home/SaveForLater.jsx';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const user = localStorage.getItem('user'); // or your specific user token/item
+  const user = localStorage.getItem('user'); 
   if (!user) {
     return <Navigate to="/" replace />;
   }

@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import ProductCard from "./ProductCard";
-import { RiCustomerService2Fill } from "react-icons/ri";
 import FilterDrawer from "./FilterDrawer";
 import ProductModal from "./ProductModel";
 import { toast } from "react-hot-toast";
 import { moveToCart } from "../hooks/moveToCart";
-import Header from "./Nabar";
+import CategoryCard from "./CategoryCard";
 const categories = ["Machinery", "Spare Parts", "Brands", "Accessories"];
 
 const ProductList = () => {
@@ -19,9 +18,11 @@ const ProductList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [addedProductIds, setAddedProductIds] = useState(new Set());
   const [savedForLaterIds, setSavedForLaterIds] = useState(new Set());
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
   const itemsPerPage = 20;
+  const [selectedCategoryImage, setSelectedCategoryImage] = useState(null);
+  const [showCategoryProducts, setShowCategoryProducts] = useState(false);
 
   const { addToCart, refreshCartCount } = useCart();
 
@@ -31,7 +32,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       const startTime = Date.now();
-      
+
       try {
         const user = JSON.parse(localStorage.getItem("user"));
         const userId = user?._id;
@@ -67,7 +68,7 @@ const ProductList = () => {
       } finally {
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(100 - elapsed, 0);
-        
+
         setTimeout(() => {
           setMinimumLoadTimePassed(true);
           setIsLoading(false);
@@ -132,19 +133,30 @@ const ProductList = () => {
     }
   };
 
-  //  Updated to allow only one category selection
+
+
+
   const toggleCategory = (category) => {
     if (selectedCategoryRef.current === category) {
-      // Deselect if already selected
+
       selectedCategoryRef.current = null;
       setSelectedCategories([]);
       setSelectedSubcategories([]);
+      setSelectedCategoryImage(null);
+      setShowCategoryProducts(false);
     } else {
+
       selectedCategoryRef.current = category;
       setSelectedCategories([category]);
-      setSelectedSubcategories([]); // Reset subcategories when category changes
+      setSelectedSubcategories([]);
+      setShowCategoryProducts(false);
+
+
+      const categoryProduct = products.find((p) => p.category === category);
+      setSelectedCategoryImage(categoryProduct?.categoryPic || null);
     }
   };
+
 
   const toggleSubcategory = (sub) => {
     setSelectedSubcategories((prev) =>
@@ -182,7 +194,7 @@ const ProductList = () => {
     }
   };
 
-  //  Breadcrumb click handlers
+
   const handleBreadcrumbClick = (level) => {
     if (level === 'shop') {
       // Reset to show all products
@@ -195,7 +207,7 @@ const ProductList = () => {
     }
   };
 
-  //  Generate breadcrumb items
+
   const getBreadcrumbItems = () => {
     const items = [{ label: 'Shop All', level: 'shop' }];
 
@@ -213,14 +225,14 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    // Prevent body scrolling when filter drawer is open on mobile
+    
     if (showFilter) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
 
-    // Cleanup function to reset overflow when component unmounts
+    
     return () => {
       document.body.style.overflow = 'auto';
     };
@@ -230,7 +242,7 @@ const ProductList = () => {
   if (isLoading || !minimumLoadTimePassed) {
     return (
       <div className="min-h-screen bg-[#F3F4F6] flex flex-col">
-     
+
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div
@@ -356,22 +368,34 @@ const ProductList = () => {
               ))}
             </nav>
           </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4  w-full sm:mt-0">
-            {currentProducts.map((product) => (
-              <ProductCard
-                key={product._id}
-                product={product}
-                handleAddToCart={handleAddToCart}
-                isSavedForLater={savedForLaterIds.has(product._id)}
-                isAdded={addedProductIds.has(product._id)}
-                onViewDetails={() => {
-                  setSelectedProduct(product);
-                  setIsModalOpen(true);
-                }}
+          {selectedCategoryImage && !showCategoryProducts && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-0">
+              <CategoryCard
+                category={selectedCategories[0]}
+                image={selectedCategoryImage}
+                onClick={() => setShowCategoryProducts(true)}
               />
-            ))}
-          </div>
+            </div>
+          )}
+
+
+          {(!selectedCategoryImage || showCategoryProducts) && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-0">
+              {currentProducts.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  product={product}
+                  handleAddToCart={handleAddToCart}
+                  isSavedForLater={savedForLaterIds.has(product._id)}
+                  isAdded={addedProductIds.has(product._id)}
+                  onViewDetails={() => {
+                    setSelectedProduct(product);
+                    setIsModalOpen(true);
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

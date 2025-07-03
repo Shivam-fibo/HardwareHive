@@ -6,25 +6,26 @@ const CategoryCard = ({ category, image, onClick }) => {
   return (
     <div
       ref={ref}
-      className={`cursor-pointer border rounded-lg p-3 h-62 shadow-sm bg-white flex flex-col transition-opacity duration-700 ${
-        inView ? "opacity-100" : "opacity-0"
-      }`}
       onClick={onClick}
+      className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200 transform hover:scale-105"
     >
-      <div className="relative">
-        <img
-          src={image}
-          alt={category}
-          className="w-full h-34 object-contain border rounded-lg p-3 shadow-sm"
-        />
+      <div className="aspect-square">
+        {inView && (
+          <img
+            src={image}
+            alt={category}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        )}
       </div>
-      <div className="mt-2 flex justify-between items-start">
-        <div>
-          <h2 className="text-sm font-medium line-clamp-1">{category}</h2>
-          <p className="text-xs text-gray-500 line-clamp-2">
-            Click to view all {category} products
-          </p>
-        </div>
+      <div className="p-3">
+        <h3 className="font-medium text-gray-800 text-sm mb-1 truncate">
+          {category}
+        </h3>
+        <p className="text-xs text-gray-600 leading-tight">
+          Click to view all {category} products
+        </p>
       </div>
     </div>
   );

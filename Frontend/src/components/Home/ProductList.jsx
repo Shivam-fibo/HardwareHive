@@ -19,7 +19,7 @@ const ProductList = () => {
   const [savedForLaterIds, setSavedForLaterIds] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
-  const [showAllProducts, setShowAllProducts] = useState(true); // New state for "All Item" selection
+  const [showAllProducts, setShowAllProducts] = useState(true);
   const itemsPerPage = 20;
   
   // New states for category/subcategory management
@@ -28,6 +28,9 @@ const ProductList = () => {
   const [selectedCategoryForSub, setSelectedCategoryForSub] = useState(null);
   const [showProducts, setShowProducts] = useState(false);
   const [selectedSubcategoryForProducts, setSelectedSubcategoryForProducts] = useState(null);
+  // New state to track if we're showing filtered subcategories
+  const [showFilteredSubcategories, setShowFilteredSubcategories] = useState(false);
+  const [filteredSubcategoryId, setFilteredSubcategoryId] = useState(null);
 
   const { addToCart, refreshCartCount } = useCart();
 
@@ -148,17 +151,36 @@ const ProductList = () => {
       setShowSubcategories(true);
       setShowProducts(false);
       setShowAllProducts(false);
+      setShowFilteredSubcategories(false);
+      setFilteredSubcategoryId(null);
       setSelectedCategoryForSub(categories.find(cat => cat.name === category));
       setSelectedSubcategoryForProducts(null);
       setCurrentPage(1);
     }
   };
 
-  const toggleSubcategory = (sub) => {
-    setSelectedSubcategories((prev) =>
-      prev.includes(sub) ? prev.filter((s) => s !== sub) : [...prev, sub]
-    );
-  };
+ const toggleSubcategory = (sub) => {
+  setSelectedSubcategories([sub]); // Only one subcategory selected at a time
+
+  // Show filtered subcategory card
+  const selectedSubcategoryObj = selectedCategoryForSub?.subcategories.find(
+    (subcategory) => subcategory.name === sub
+  );
+
+  if (selectedSubcategoryObj) {
+    setSelectedSubcategoryForProducts(selectedSubcategoryObj);
+    setShowFilteredSubcategories(true);
+    setShowSubcategories(false);
+    setShowProducts(false);
+    setShowAllProducts(false);
+    setCurrentPage(1);
+  } else {
+    // Fallback in case subcategory not found (shouldn't normally happen)
+    setShowFilteredSubcategories(false);
+    setSelectedSubcategoryForProducts(null);
+  }
+};
+
 
   const resetToAllProducts = () => {
     selectedCategoryRef.current = null;
@@ -167,6 +189,8 @@ const ProductList = () => {
     setShowSubcategories(false);
     setShowProducts(false);
     setShowAllProducts(true);
+    setShowFilteredSubcategories(false);
+    setFilteredSubcategoryId(null);
     setSelectedCategoryForSub(null);
     setSelectedSubcategoryForProducts(null);
     setCurrentPage(1);
@@ -181,16 +205,19 @@ const ProductList = () => {
       setShowSubcategories(true);
       setShowProducts(false);
       setShowAllProducts(false);
+      setShowFilteredSubcategories(false);
+      setFilteredSubcategoryId(null);
       setSelectedSubcategoryForProducts(null);
       setCurrentPage(1);
     }
   };
 
-  // Handle subcategory card click to show products
+  // Modified: Handle subcategory card click to show only that subcategory
   const handleSubcategoryCardClick = (subcategory) => {
     setSelectedSubcategoryForProducts(subcategory);
+    setShowFilteredSubcategories(true);
     setShowSubcategories(false);
-    setShowProducts(true);
+    setShowProducts(false);
     setShowAllProducts(false);
     setCurrentPage(1);
   };
@@ -201,6 +228,8 @@ const ProductList = () => {
       setShowSubcategories(false);
       setShowProducts(true);
       setShowAllProducts(false);
+      setShowFilteredSubcategories(false);
+      setFilteredSubcategoryId(null);
       setSelectedSubcategoryForProducts(null);
       setCurrentPage(1);
     }
@@ -269,14 +298,17 @@ const ProductList = () => {
       if (selectedCategoryForSub) {
         setShowSubcategories(true);
         setShowProducts(false);
+        setShowFilteredSubcategories(false);
         setSelectedSubcategoryForProducts(null);
         setCurrentPage(1);
       }
     } else if (level === 'subcategory') {
-      setShowProducts(false);
-      setShowSubcategories(true);
-      setSelectedSubcategoryForProducts(null);
-      setCurrentPage(1);
+      if (selectedSubcategoryForProducts) {
+        setShowFilteredSubcategories(true);
+        setShowProducts(false);
+        setShowSubcategories(false);
+        setCurrentPage(1);
+      }
     }
   };
 
@@ -287,7 +319,7 @@ const ProductList = () => {
       items.push({ label: selectedCategoryForSub.name, level: 'category' });
     }
 
-    if (selectedSubcategoryForProducts && showProducts) {
+    if (selectedSubcategoryForProducts && (showProducts || showFilteredSubcategories)) {
       items.push({ label: selectedSubcategoryForProducts.name, level: 'subcategory' });
     }
 
@@ -422,12 +454,9 @@ const ProductList = () => {
             </nav>
           </div>
 
-          {/* Show subcategory cards when a category is selected */}
+          {/* Show all subcategories when a category is selected */}
           {showSubcategories && selectedCategoryForSub && (
             <div className="w-full">
-              {/* Show all products button for the selected category */}
-              
-              
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {selectedCategoryForSub.subcategories.map((subcategory) => (
                   <CategoryCard
@@ -437,6 +466,42 @@ const ProductList = () => {
                     onClick={() => handleSubcategoryCardClick(subcategory)}
                   />
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Show only the selected subcategory when filtered */}
+          {showFilteredSubcategories && selectedSubcategoryForProducts && (
+            <div className="w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                <CategoryCard
+                  key={selectedSubcategoryForProducts._id}
+                  category={selectedSubcategoryForProducts.name}
+                  image={selectedSubcategoryForProducts.image}
+                  onClick={() => {
+                    setShowProducts(true);
+                    setShowFilteredSubcategories(false);
+                    setCurrentPage(1);
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Show filtered subcategories based on left sidebar selection */}
+          {selectedSubcategories.length > 0 && selectedCategoryForSub && !showFilteredSubcategories && (
+            <div className="w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {selectedCategoryForSub.subcategories
+                  .filter(subcategory => selectedSubcategories.includes(subcategory.name))
+                  .map((subcategory) => (
+                    <CategoryCard
+                      key={subcategory._id}
+                      category={subcategory.name}
+                      image={subcategory.image}
+                      onClick={() => handleSubcategoryCardClick(subcategory)}
+                    />
+                  ))}
               </div>
             </div>
           )}

@@ -433,19 +433,23 @@ const ProductList = () => {
     }
   };
 
-  const getBreadcrumbItems = () => {
-    const items = [{ label: 'Shop All', level: 'shop' }];
+const getBreadcrumbItems = () => {
+  const items = [{ label: 'Shop All', level: 'shop' }];
 
-    if (selectedCategoryForSub) {
-      items.push({ label: selectedCategoryForSub.name, level: 'category' });
-    }
+  if (selectedCategoryForSub) {
+    items.push({ label: selectedCategoryForSub.name, level: 'category' });
+  }
 
-    if (selectedBrand && showBrandProducts) {
-      items.push({ label: selectedBrand.name, level: 'brand' });
-    }
+  if (selectedSubcategoryForProducts) {
+    items.push({ label: selectedSubcategoryForProducts.name, level: 'subcategory' });
+  }
 
-    return items;
-  };
+  if (selectedBrand) {
+    items.push({ label: selectedBrand.name, level: 'brand' });
+  }
+
+  return items;
+};
 
   useEffect(() => {
     if (showFilter) {
@@ -601,6 +605,7 @@ const ProductList = () => {
                   <CategoryCard
                     key={brand._id}
                     category={brand.name}
+                    modelNum = {brand.productId}
                     image={brand.image}
                     onClick={() => handleBrandCardClick(brand)}
                   />
@@ -618,6 +623,7 @@ const ProductList = () => {
                     key={brand._id}
                     category={brand.name}
                     image={brand.image}
+                    modelNum = {brand.productId}
                     onClick={() => handleBrandCardClick(brand)}
                   />
                 ))}

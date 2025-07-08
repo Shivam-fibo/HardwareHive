@@ -1,6 +1,6 @@
 import { useInView } from "react-intersection-observer";
 
-const CategoryCard = ({ category, image, onClick }) => {
+const CategoryCard = ({ category, image, onClick, modelNum }) => {
   const { ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
   return (
@@ -25,8 +25,9 @@ const CategoryCard = ({ category, image, onClick }) => {
         <h3 className="font-semibold text-gray-800 text-base mb-1 truncate">
           {category}
         </h3>
+     
         <p className="text-xs text-gray-600 leading-tight">
-          Click to view all {category} products
+           {modelNum} 
         </p>
       </div>
     </div>

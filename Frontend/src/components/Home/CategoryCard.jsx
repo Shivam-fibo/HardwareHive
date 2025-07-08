@@ -1,6 +1,7 @@
 import { useInView } from "react-intersection-observer";
 
-const CategoryCard = ({ category, image, onClick, modelNum }) => {
+const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
+  console.log(model, size, "-----------")
   const { ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
   return (
@@ -28,6 +29,12 @@ const CategoryCard = ({ category, image, onClick, modelNum }) => {
      
         <p className="text-xs text-gray-600 leading-tight">
            {modelNum} 
+        </p>
+              <p className="text-xs text-gray-600 leading-tight">
+           {model} 
+        </p>
+              <p className="text-xs text-gray-600 leading-tight">
+           {size} 
         </p>
       </div>
     </div>

@@ -607,6 +607,8 @@ const getBreadcrumbItems = () => {
                     category={brand.name}
                     modelNum = {brand.productId}
                     image={brand.image}
+                     model={brand.model}
+                    size = {brand.size}
                     onClick={() => handleBrandCardClick(brand)}
                   />
                 ))}
@@ -624,6 +626,8 @@ const getBreadcrumbItems = () => {
                     category={brand.name}
                     image={brand.image}
                     modelNum = {brand.productId}
+                    model={brand.model}
+                    size = {brand.size}
                     onClick={() => handleBrandCardClick(brand)}
                   />
                 ))}

@@ -6,7 +6,6 @@ import ProductModal from "./ProductModel";
 import { toast } from "react-hot-toast";
 import { moveToCart } from "../hooks/moveToCart";
 import CategoryCard from "./CategoryCard";
-import BrandCard from "./BrandCard";
 
 const ProductList = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -23,7 +22,7 @@ const ProductList = () => {
   const [showAllProducts, setShowAllProducts] = useState(true);
   const itemsPerPage = 20;
   
-  // New states for category/subcategory management
+  // New states for category/subcategory/brand management
   const [categories, setCategories] = useState([]);
   const [showSubcategories, setShowSubcategories] = useState(false);
   const [selectedCategoryForSub, setSelectedCategoryForSub] = useState(null);
@@ -35,8 +34,8 @@ const ProductList = () => {
   
   // New states for brand management
   const [showBrands, setShowBrands] = useState(false);
-  const [selectedBrandForProducts, setSelectedBrandForProducts] = useState(null);
-  const [availableBrands, setAvailableBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [showBrandProducts, setShowBrandProducts] = useState(false);
 
   const { addToCart, refreshCartCount } = useCart();
 
@@ -96,6 +95,24 @@ const ProductList = () => {
     fetchData();
   }, [refreshCartCount]);
 
+  // Effect to auto-select subcategory when showing brand products
+  useEffect(() => {
+    if (showBrandProducts && selectedBrand && selectedCategoryForSub) {
+      // Find the subcategory that contains products of the selected brand
+      const brandProducts = products.filter(product => 
+        product.brandId?._id === selectedBrand._id &&
+        product.categoryId?._id === selectedCategoryForSub._id
+      );
+
+      if (brandProducts.length > 0) {
+        const subcategoryName = brandProducts[0].subCategoryId?.name;
+        if (subcategoryName && !selectedSubcategories.includes(subcategoryName)) {
+          setSelectedSubcategories([subcategoryName]);
+        }
+      }
+    }
+  }, [showBrandProducts, selectedBrand, selectedCategoryForSub, products]);
+
   const handleAddToCart = async (item, quantity) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?._id;
@@ -154,45 +171,46 @@ const ProductList = () => {
       selectedCategoryRef.current = category;
       setSelectedCategories([category]);
       setSelectedSubcategories([]);
-      setShowSubcategories(true);
+      // Show brands directly instead of subcategories
+      setShowBrands(true);
+      setShowSubcategories(false);
       setShowProducts(false);
       setShowAllProducts(false);
       setShowFilteredSubcategories(false);
       setFilteredSubcategoryId(null);
       setSelectedCategoryForSub(categories.find(cat => cat.name === category));
       setSelectedSubcategoryForProducts(null);
-      // Reset brand states
-      setShowBrands(false);
-      setSelectedBrandForProducts(null);
-      setAvailableBrands([]);
+      setSelectedBrand(null);
+      setShowBrandProducts(false);
       setCurrentPage(1);
     }
   };
 
-  const toggleSubcategory = (sub) => {
-    setSelectedSubcategories([sub]); 
+ const toggleSubcategory = (sub) => {
+  setSelectedSubcategories([sub]); 
 
-    const selectedSubcategoryObj = selectedCategoryForSub?.subcategories.find(
-      (subcategory) => subcategory.name === sub
-    );
+  const selectedSubcategoryObj = selectedCategoryForSub?.subcategories.find(
+    (subcategory) => subcategory.name === sub
+  );
 
-    if (selectedSubcategoryObj) {
-      setSelectedSubcategoryForProducts(selectedSubcategoryObj);
-      setShowFilteredSubcategories(true);
-      setShowSubcategories(false);
-      setShowProducts(false);
-      setShowAllProducts(false);
-      // Reset brand states
-      setShowBrands(false);
-      setSelectedBrandForProducts(null);
-      setAvailableBrands([]);
-      setCurrentPage(1);
-    } else {
-      // Fallback in case subcategory not found (shouldn't normally happen)
-      setShowFilteredSubcategories(false);
-      setSelectedSubcategoryForProducts(null);
-    }
-  };
+  if (selectedSubcategoryObj) {
+    setSelectedSubcategoryForProducts(selectedSubcategoryObj);
+    // Show brands directly instead of showing filtered subcategories
+    setShowBrands(true);
+    setShowFilteredSubcategories(false);
+    setShowSubcategories(false);
+    setShowProducts(false);
+    setShowAllProducts(false);
+    // Reset brand states
+    setSelectedBrand(null);
+    setShowBrandProducts(false);
+    setCurrentPage(1);
+  } else {
+    // Fallback in case subcategory not found (shouldn't normally happen)
+    setShowFilteredSubcategories(false);
+    setSelectedSubcategoryForProducts(null);
+  }
+};
 
   const resetToAllProducts = () => {
     selectedCategoryRef.current = null;
@@ -207,27 +225,26 @@ const ProductList = () => {
     setSelectedSubcategoryForProducts(null);
     // Reset brand states
     setShowBrands(false);
-    setSelectedBrandForProducts(null);
-    setAvailableBrands([]);
+    setSelectedBrand(null);
+    setShowBrandProducts(false);
     setCurrentPage(1);
   };
 
-  // Handle category card click to show subcategories
+  // Handle category card click to show brands directly
   const handleCategoryCardClick = (categoryName) => {
     const selectedCategory = categories.find(cat => cat.name === categoryName);
     if (selectedCategory) {
       setSelectedCategoryForSub(selectedCategory);
       setSelectedCategories([categoryName]);
-      setShowSubcategories(true);
+      setShowBrands(true);
+      setShowSubcategories(false);
       setShowProducts(false);
       setShowAllProducts(false);
       setShowFilteredSubcategories(false);
       setFilteredSubcategoryId(null);
       setSelectedSubcategoryForProducts(null);
-      // Reset brand states
-      setShowBrands(false);
-      setSelectedBrandForProducts(null);
-      setAvailableBrands([]);
+      setSelectedBrand(null);
+      setShowBrandProducts(false);
       setCurrentPage(1);
     }
   };
@@ -235,38 +252,25 @@ const ProductList = () => {
   // Modified: Handle subcategory card click to show brands instead of products
   const handleSubcategoryCardClick = (subcategory) => {
     setSelectedSubcategoryForProducts(subcategory);
-    
-    // Get all unique brands for this subcategory
-    const subcategoryProducts = products.filter(product => 
-      product.subCategoryId?._id === subcategory._id
-    );
-    
-    // Extract unique brands
-    const uniqueBrands = subcategoryProducts.reduce((acc, product) => {
-      if (product.brandId && !acc.find(brand => brand._id === product.brandId._id)) {
-        acc.push(product.brandId);
-      }
-      return acc;
-    }, []);
-    
-    // Shuffle the brands randomly
-    const shuffledBrands = [...uniqueBrands].sort(() => Math.random() - 0.5);
-    
-    setAvailableBrands(shuffledBrands);
     setShowBrands(true);
     setShowFilteredSubcategories(false);
     setShowSubcategories(false);
     setShowProducts(false);
     setShowAllProducts(false);
-    setSelectedBrandForProducts(null);
+    setShowBrandProducts(false);
+    setSelectedBrand(null);
     setCurrentPage(1);
   };
 
-  // Handle brand card click to show products
+  // Modified: Handle brand card click to show products for that brand
   const handleBrandCardClick = (brand) => {
-    setSelectedBrandForProducts(brand);
+    setSelectedBrand(brand);
+    setShowBrandProducts(true);
     setShowBrands(false);
-    setShowProducts(true);
+    setShowProducts(false);
+    setShowFilteredSubcategories(false);
+    setShowSubcategories(false);
+    setShowAllProducts(false);
     setCurrentPage(1);
   };
 
@@ -281,10 +285,42 @@ const ProductList = () => {
       setSelectedSubcategoryForProducts(null);
       // Reset brand states
       setShowBrands(false);
-      setSelectedBrandForProducts(null);
-      setAvailableBrands([]);
+      setSelectedBrand(null);
+      setShowBrandProducts(false);
       setCurrentPage(1);
     }
+  };
+
+  // Get unique brands for selected category
+  const getBrandsForCategory = () => {
+    if (!selectedCategoryForSub) return [];
+    
+    const brandsMap = new Map();
+    products
+      .filter(product => product.categoryId?._id === selectedCategoryForSub._id)
+      .forEach(product => {
+        if (product.brandId) {
+          brandsMap.set(product.brandId._id, product.brandId);
+        }
+      });
+    
+    return Array.from(brandsMap.values());
+  };
+
+  // Get unique brands for selected subcategory
+  const getBrandsForSubcategory = () => {
+    if (!selectedSubcategoryForProducts) return [];
+    
+    const brandsMap = new Map();
+    products
+      .filter(product => product.subCategoryId?._id === selectedSubcategoryForProducts._id)
+      .forEach(product => {
+        if (product.brandId) {
+          brandsMap.set(product.brandId._id, product.brandId);
+        }
+      });
+    
+    return Array.from(brandsMap.values());
   };
 
   const filteredProducts = products
@@ -297,14 +333,25 @@ const ProductList = () => {
         : true
     );
 
-  // Filter products for selected subcategory and brand
-  const subcategoryFilteredProducts = selectedSubcategoryForProducts && selectedBrandForProducts
-    ? products.filter(product => 
-        product.subCategoryId?._id === selectedSubcategoryForProducts._id &&
-        product.brandId?._id === selectedBrandForProducts._id
-      )
-    : selectedSubcategoryForProducts 
+  // Filter products for selected subcategory
+  const subcategoryFilteredProducts = selectedSubcategoryForProducts 
     ? products.filter(product => product.subCategoryId?._id === selectedSubcategoryForProducts._id)
+    : [];
+
+  // Modified: Filter products for selected brand within the selected category/subcategory
+  const brandFilteredProducts = selectedBrand && selectedCategoryForSub
+    ? products.filter(product => {
+        const categoryMatch = product.categoryId?._id === selectedCategoryForSub._id;
+        const brandMatch = product.brandId?._id === selectedBrand._id;
+        
+        // If we also have a selected subcategory, filter by that too
+        if (selectedSubcategoryForProducts) {
+          const subcategoryMatch = product.subCategoryId?._id === selectedSubcategoryForProducts._id;
+          return categoryMatch && brandMatch && subcategoryMatch;
+        }
+        
+        return categoryMatch && brandMatch;
+      })
     : [];
 
   // Filter products for selected category (all products in that category)
@@ -325,7 +372,9 @@ const ProductList = () => {
   const getProductsToShow = () => {
     if (showAllProducts) {
       return products;
-    } else if (showProducts && selectedSubcategoryForProducts && selectedBrandForProducts) {
+    } else if (showBrandProducts && selectedBrand) {
+      return brandFilteredProducts;
+    } else if (showProducts && selectedSubcategoryForProducts) {
       return subcategoryFilteredProducts;
     } else if (showProducts && selectedCategoryForSub && !selectedSubcategoryForProducts) {
       return categoryFilteredProducts;
@@ -353,24 +402,32 @@ const ProductList = () => {
       resetToAllProducts();
     } else if (level === 'category') {
       if (selectedCategoryForSub) {
-        setShowSubcategories(true);
+        setShowBrands(true);
+        setShowSubcategories(false);
         setShowProducts(false);
         setShowFilteredSubcategories(false);
-        setShowBrands(false);
+        setShowBrandProducts(false);
         setSelectedSubcategoryForProducts(null);
-        setSelectedBrandForProducts(null);
-        setAvailableBrands([]);
+        setSelectedBrand(null);
         setCurrentPage(1);
       }
     } else if (level === 'subcategory') {
       if (selectedSubcategoryForProducts) {
-        handleSubcategoryCardClick(selectedSubcategoryForProducts);
+        setShowBrands(true);
+        setShowBrandProducts(false);
+        setShowProducts(false);
+        setShowFilteredSubcategories(false);
+        setShowSubcategories(false);
+        setSelectedBrand(null);
+        setCurrentPage(1);
       }
     } else if (level === 'brand') {
-      if (selectedSubcategoryForProducts && availableBrands.length > 0) {
-        setShowBrands(true);
+      if (selectedBrand) {
+        setShowBrandProducts(true);
+        setShowBrands(false);
         setShowProducts(false);
-        setSelectedBrandForProducts(null);
+        setShowFilteredSubcategories(false);
+        setShowSubcategories(false);
         setCurrentPage(1);
       }
     }
@@ -383,12 +440,8 @@ const ProductList = () => {
       items.push({ label: selectedCategoryForSub.name, level: 'category' });
     }
 
-    if (selectedSubcategoryForProducts) {
-      items.push({ label: selectedSubcategoryForProducts.name, level: 'subcategory' });
-    }
-
-    if (selectedBrandForProducts) {
-      items.push({ label: selectedBrandForProducts.name, level: 'brand' });
+    if (selectedBrand && showBrandProducts) {
+      items.push({ label: selectedBrand.name, level: 'brand' });
     }
 
     return items;
@@ -522,8 +575,10 @@ const ProductList = () => {
             </nav>
           </div>
 
+      
+
           {/* Show all subcategories when a category is selected */}
-          {showSubcategories && selectedCategoryForSub && (
+          {/* {showSubcategories && selectedCategoryForSub &&  (
             <div className="w-full">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {selectedCategoryForSub.subcategories.map((subcategory) => (
@@ -536,24 +591,42 @@ const ProductList = () => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
 
-          {/* Show only the selected subcategory when filtered */}
-          {showFilteredSubcategories && selectedSubcategoryForProducts && (
+          {/* Show brands when a category is selected or when a subcategory is selected */}
+          {showBrands && selectedCategoryForSub && !selectedSubcategoryForProducts && (
             <div className="w-full">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                <CategoryCard
-                  key={selectedSubcategoryForProducts._id}
-                  category={selectedSubcategoryForProducts.name}
-                  image={selectedSubcategoryForProducts.image}
-                  onClick={() => handleSubcategoryCardClick(selectedSubcategoryForProducts)}
-                />
+                {getBrandsForCategory().map((brand) => (
+                  <CategoryCard
+                    key={brand._id}
+                    category={brand.name}
+                    image={brand.image}
+                    onClick={() => handleBrandCardClick(brand)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Show brands when a subcategory is selected */}
+          {showBrands && selectedSubcategoryForProducts && (
+            <div className="w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {getBrandsForSubcategory().map((brand) => (
+                  <CategoryCard
+                    key={brand._id}
+                    category={brand.name}
+                    image={brand.image}
+                    onClick={() => handleBrandCardClick(brand)}
+                  />
+                ))}
               </div>
             </div>
           )}
 
           {/* Show filtered subcategories based on left sidebar selection */}
-          {selectedSubcategories.length > 0 && selectedCategoryForSub && !showFilteredSubcategories && !showBrands && (
+          {/* {selectedSubcategories.length > 0 && selectedCategoryForSub && !showFilteredSubcategories && !showBrands && (
             <div className="w-full">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {selectedCategoryForSub.subcategories
@@ -568,25 +641,10 @@ const ProductList = () => {
                   ))}
               </div>
             </div>
-          )}
-
-          {/* Show brands when a subcategory is selected */}
-          {showBrands && availableBrands.length > 0 && (
-            <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {availableBrands.map((brand) => (
-                  <BrandCard
-                    key={brand._id}
-                    brand={brand}
-                    onClick={() => handleBrandCardClick(brand)}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
+          )} */}
 
           {/* Show products when "All Item" is selected, or when viewing products from category/subcategory/brand */}
-          {(showAllProducts || showProducts) && (
+          {(showAllProducts || showProducts || showBrandProducts) && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-0">
               {currentProducts.map((product) => (
                 <ProductCard

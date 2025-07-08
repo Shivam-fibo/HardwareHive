@@ -6,6 +6,7 @@ import ProductModal from "./ProductModel";
 import { toast } from "react-hot-toast";
 import { moveToCart } from "../hooks/moveToCart";
 import CategoryCard from "./CategoryCard";
+import BrandCard from "./BrandCard";
 
 const ProductList = () => {
   const [showFilter, setShowFilter] = useState(false);
@@ -31,6 +32,11 @@ const ProductList = () => {
   // New state to track if we're showing filtered subcategories
   const [showFilteredSubcategories, setShowFilteredSubcategories] = useState(false);
   const [filteredSubcategoryId, setFilteredSubcategoryId] = useState(null);
+  
+  // New states for brand management
+  const [showBrands, setShowBrands] = useState(false);
+  const [selectedBrandForProducts, setSelectedBrandForProducts] = useState(null);
+  const [availableBrands, setAvailableBrands] = useState([]);
 
   const { addToCart, refreshCartCount } = useCart();
 
@@ -155,32 +161,38 @@ const ProductList = () => {
       setFilteredSubcategoryId(null);
       setSelectedCategoryForSub(categories.find(cat => cat.name === category));
       setSelectedSubcategoryForProducts(null);
+      // Reset brand states
+      setShowBrands(false);
+      setSelectedBrandForProducts(null);
+      setAvailableBrands([]);
       setCurrentPage(1);
     }
   };
 
- const toggleSubcategory = (sub) => {
-  setSelectedSubcategories([sub]); // Only one subcategory selected at a time
+  const toggleSubcategory = (sub) => {
+    setSelectedSubcategories([sub]); 
 
-  // Show filtered subcategory card
-  const selectedSubcategoryObj = selectedCategoryForSub?.subcategories.find(
-    (subcategory) => subcategory.name === sub
-  );
+    const selectedSubcategoryObj = selectedCategoryForSub?.subcategories.find(
+      (subcategory) => subcategory.name === sub
+    );
 
-  if (selectedSubcategoryObj) {
-    setSelectedSubcategoryForProducts(selectedSubcategoryObj);
-    setShowFilteredSubcategories(true);
-    setShowSubcategories(false);
-    setShowProducts(false);
-    setShowAllProducts(false);
-    setCurrentPage(1);
-  } else {
-    // Fallback in case subcategory not found (shouldn't normally happen)
-    setShowFilteredSubcategories(false);
-    setSelectedSubcategoryForProducts(null);
-  }
-};
-
+    if (selectedSubcategoryObj) {
+      setSelectedSubcategoryForProducts(selectedSubcategoryObj);
+      setShowFilteredSubcategories(true);
+      setShowSubcategories(false);
+      setShowProducts(false);
+      setShowAllProducts(false);
+      // Reset brand states
+      setShowBrands(false);
+      setSelectedBrandForProducts(null);
+      setAvailableBrands([]);
+      setCurrentPage(1);
+    } else {
+      // Fallback in case subcategory not found (shouldn't normally happen)
+      setShowFilteredSubcategories(false);
+      setSelectedSubcategoryForProducts(null);
+    }
+  };
 
   const resetToAllProducts = () => {
     selectedCategoryRef.current = null;
@@ -193,6 +205,10 @@ const ProductList = () => {
     setFilteredSubcategoryId(null);
     setSelectedCategoryForSub(null);
     setSelectedSubcategoryForProducts(null);
+    // Reset brand states
+    setShowBrands(false);
+    setSelectedBrandForProducts(null);
+    setAvailableBrands([]);
     setCurrentPage(1);
   };
 
@@ -208,17 +224,49 @@ const ProductList = () => {
       setShowFilteredSubcategories(false);
       setFilteredSubcategoryId(null);
       setSelectedSubcategoryForProducts(null);
+      // Reset brand states
+      setShowBrands(false);
+      setSelectedBrandForProducts(null);
+      setAvailableBrands([]);
       setCurrentPage(1);
     }
   };
 
-  // Modified: Handle subcategory card click to show only that subcategory
+  // Modified: Handle subcategory card click to show brands instead of products
   const handleSubcategoryCardClick = (subcategory) => {
     setSelectedSubcategoryForProducts(subcategory);
-    setShowFilteredSubcategories(true);
+    
+    // Get all unique brands for this subcategory
+    const subcategoryProducts = products.filter(product => 
+      product.subCategoryId?._id === subcategory._id
+    );
+    
+    // Extract unique brands
+    const uniqueBrands = subcategoryProducts.reduce((acc, product) => {
+      if (product.brandId && !acc.find(brand => brand._id === product.brandId._id)) {
+        acc.push(product.brandId);
+      }
+      return acc;
+    }, []);
+    
+    // Shuffle the brands randomly
+    const shuffledBrands = [...uniqueBrands].sort(() => Math.random() - 0.5);
+    
+    setAvailableBrands(shuffledBrands);
+    setShowBrands(true);
+    setShowFilteredSubcategories(false);
     setShowSubcategories(false);
     setShowProducts(false);
     setShowAllProducts(false);
+    setSelectedBrandForProducts(null);
+    setCurrentPage(1);
+  };
+
+  // Handle brand card click to show products
+  const handleBrandCardClick = (brand) => {
+    setSelectedBrandForProducts(brand);
+    setShowBrands(false);
+    setShowProducts(true);
     setCurrentPage(1);
   };
 
@@ -231,6 +279,10 @@ const ProductList = () => {
       setShowFilteredSubcategories(false);
       setFilteredSubcategoryId(null);
       setSelectedSubcategoryForProducts(null);
+      // Reset brand states
+      setShowBrands(false);
+      setSelectedBrandForProducts(null);
+      setAvailableBrands([]);
       setCurrentPage(1);
     }
   };
@@ -245,8 +297,13 @@ const ProductList = () => {
         : true
     );
 
-  // Filter products for selected subcategory
-  const subcategoryFilteredProducts = selectedSubcategoryForProducts 
+  // Filter products for selected subcategory and brand
+  const subcategoryFilteredProducts = selectedSubcategoryForProducts && selectedBrandForProducts
+    ? products.filter(product => 
+        product.subCategoryId?._id === selectedSubcategoryForProducts._id &&
+        product.brandId?._id === selectedBrandForProducts._id
+      )
+    : selectedSubcategoryForProducts 
     ? products.filter(product => product.subCategoryId?._id === selectedSubcategoryForProducts._id)
     : [];
 
@@ -268,7 +325,7 @@ const ProductList = () => {
   const getProductsToShow = () => {
     if (showAllProducts) {
       return products;
-    } else if (showProducts && selectedSubcategoryForProducts) {
+    } else if (showProducts && selectedSubcategoryForProducts && selectedBrandForProducts) {
       return subcategoryFilteredProducts;
     } else if (showProducts && selectedCategoryForSub && !selectedSubcategoryForProducts) {
       return categoryFilteredProducts;
@@ -299,14 +356,21 @@ const ProductList = () => {
         setShowSubcategories(true);
         setShowProducts(false);
         setShowFilteredSubcategories(false);
+        setShowBrands(false);
         setSelectedSubcategoryForProducts(null);
+        setSelectedBrandForProducts(null);
+        setAvailableBrands([]);
         setCurrentPage(1);
       }
     } else if (level === 'subcategory') {
       if (selectedSubcategoryForProducts) {
-        setShowFilteredSubcategories(true);
+        handleSubcategoryCardClick(selectedSubcategoryForProducts);
+      }
+    } else if (level === 'brand') {
+      if (selectedSubcategoryForProducts && availableBrands.length > 0) {
+        setShowBrands(true);
         setShowProducts(false);
-        setShowSubcategories(false);
+        setSelectedBrandForProducts(null);
         setCurrentPage(1);
       }
     }
@@ -319,8 +383,12 @@ const ProductList = () => {
       items.push({ label: selectedCategoryForSub.name, level: 'category' });
     }
 
-    if (selectedSubcategoryForProducts && (showProducts || showFilteredSubcategories)) {
+    if (selectedSubcategoryForProducts) {
       items.push({ label: selectedSubcategoryForProducts.name, level: 'subcategory' });
+    }
+
+    if (selectedBrandForProducts) {
+      items.push({ label: selectedBrandForProducts.name, level: 'brand' });
     }
 
     return items;
@@ -478,18 +546,14 @@ const ProductList = () => {
                   key={selectedSubcategoryForProducts._id}
                   category={selectedSubcategoryForProducts.name}
                   image={selectedSubcategoryForProducts.image}
-                  onClick={() => {
-                    setShowProducts(true);
-                    setShowFilteredSubcategories(false);
-                    setCurrentPage(1);
-                  }}
+                  onClick={() => handleSubcategoryCardClick(selectedSubcategoryForProducts)}
                 />
               </div>
             </div>
           )}
 
           {/* Show filtered subcategories based on left sidebar selection */}
-          {selectedSubcategories.length > 0 && selectedCategoryForSub && !showFilteredSubcategories && (
+          {selectedSubcategories.length > 0 && selectedCategoryForSub && !showFilteredSubcategories && !showBrands && (
             <div className="w-full">
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                 {selectedCategoryForSub.subcategories
@@ -506,7 +570,22 @@ const ProductList = () => {
             </div>
           )}
 
-          {/* Show products when "All Item" is selected, or when viewing products from category/subcategory */}
+          {/* Show brands when a subcategory is selected */}
+          {showBrands && availableBrands.length > 0 && (
+            <div className="w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {availableBrands.map((brand) => (
+                  <BrandCard
+                    key={brand._id}
+                    brand={brand}
+                    onClick={() => handleBrandCardClick(brand)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Show products when "All Item" is selected, or when viewing products from category/subcategory/brand */}
           {(showAllProducts || showProducts) && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-0">
               {currentProducts.map((product) => (

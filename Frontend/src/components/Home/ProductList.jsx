@@ -37,6 +37,9 @@ const ProductList = () => {
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [showBrandProducts, setShowBrandProducts] = useState(false);
 
+  // New state for product details in breadcrumb
+  const [selectedProductForBreadcrumb, setSelectedProductForBreadcrumb] = useState(null);
+
   const { addToCart, refreshCartCount } = useCart();
 
   // useRef to track the selected category
@@ -182,6 +185,7 @@ const ProductList = () => {
       setSelectedSubcategoryForProducts(null);
       setSelectedBrand(null);
       setShowBrandProducts(false);
+      setSelectedProductForBreadcrumb(null);
       setCurrentPage(1);
     }
   };
@@ -204,6 +208,7 @@ const ProductList = () => {
     // Reset brand states
     setSelectedBrand(null);
     setShowBrandProducts(false);
+    setSelectedProductForBreadcrumb(null);
     setCurrentPage(1);
   } else {
     // Fallback in case subcategory not found (shouldn't normally happen)
@@ -227,6 +232,7 @@ const ProductList = () => {
     setShowBrands(false);
     setSelectedBrand(null);
     setShowBrandProducts(false);
+    setSelectedProductForBreadcrumb(null);
     setCurrentPage(1);
   };
 
@@ -245,6 +251,7 @@ const ProductList = () => {
       setSelectedSubcategoryForProducts(null);
       setSelectedBrand(null);
       setShowBrandProducts(false);
+      setSelectedProductForBreadcrumb(null);
       setCurrentPage(1);
     }
   };
@@ -259,6 +266,7 @@ const ProductList = () => {
     setShowAllProducts(false);
     setShowBrandProducts(false);
     setSelectedBrand(null);
+    setSelectedProductForBreadcrumb(null);
     setCurrentPage(1);
   };
 
@@ -271,6 +279,7 @@ const ProductList = () => {
     setShowFilteredSubcategories(false);
     setShowSubcategories(false);
     setShowAllProducts(false);
+    setSelectedProductForBreadcrumb(null);
     setCurrentPage(1);
   };
 
@@ -287,8 +296,16 @@ const ProductList = () => {
       setShowBrands(false);
       setSelectedBrand(null);
       setShowBrandProducts(false);
+      setSelectedProductForBreadcrumb(null);
       setCurrentPage(1);
     }
+  };
+
+  // Enhanced function to handle product click for breadcrumb
+  const handleProductClick = (product) => {
+    setSelectedProductForBreadcrumb(product);
+    setSelectedProduct(product);
+    setIsModalOpen(true);
   };
 
   // Get unique brands for selected category
@@ -409,6 +426,7 @@ const ProductList = () => {
         setShowBrandProducts(false);
         setSelectedSubcategoryForProducts(null);
         setSelectedBrand(null);
+        setSelectedProductForBreadcrumb(null);
         setCurrentPage(1);
       }
     } else if (level === 'subcategory') {
@@ -419,6 +437,7 @@ const ProductList = () => {
         setShowFilteredSubcategories(false);
         setShowSubcategories(false);
         setSelectedBrand(null);
+        setSelectedProductForBreadcrumb(null);
         setCurrentPage(1);
       }
     } else if (level === 'brand') {
@@ -428,28 +447,82 @@ const ProductList = () => {
         setShowProducts(false);
         setShowFilteredSubcategories(false);
         setShowSubcategories(false);
+        setSelectedProductForBreadcrumb(null);
         setCurrentPage(1);
       }
     }
   };
 
-const getBreadcrumbItems = () => {
-  const items = [{ label: 'Shop All', level: 'shop' }];
+  const getBreadcrumbItems = () => {
+    const items = [{ label: 'Shop All', level: 'shop' }];
 
-  if (selectedCategoryForSub) {
-    items.push({ label: selectedCategoryForSub.name, level: 'category' });
-  }
+    if (selectedCategoryForSub) {
+      items.push({ label: selectedCategoryForSub.name, level: 'category' });
+    }
 
-  if (selectedSubcategoryForProducts) {
-    items.push({ label: selectedSubcategoryForProducts.name, level: 'subcategory' });
-  }
+    if (selectedSubcategoryForProducts) {
+      items.push({ label: selectedSubcategoryForProducts.name, level: 'subcategory' });
+    }
 
-  if (selectedBrand) {
-    items.push({ label: selectedBrand.name, level: 'brand' });
-  }
+    if (selectedBrand) {
+      // Enhanced brand breadcrumb with product details
+      const brandDetails = [];
+      
+      // Add brand name
+      brandDetails.push(selectedBrand.name);
+      
+      // Add productId if available
+      if (selectedBrand.productId) {
+        brandDetails.push(` ${selectedBrand.productId}`);
+      }
+      
+      // Add model if available
+      if (selectedBrand.model) {
+        brandDetails.push(`${selectedBrand.model}`);
+      }
+      
+      // Add size if available
+      if (selectedBrand.size) {
+        brandDetails.push(`${selectedBrand.size}`);
+      }
+      
+      // Join all details with " | " separator
+      const brandLabel = brandDetails.join(' ');
+      
+      items.push({ label: brandLabel, level: 'brand' });
+    }
 
-  return items;
-};
+    // Add product details to breadcrumb when a product is selected
+    if (selectedProductForBreadcrumb) {
+      const productDetails = [];
+      
+      if (selectedProductForBreadcrumb.productId) {
+        productDetails.push(`${selectedProductForBreadcrumb.productId}`);
+      }
+      
+      if (selectedProductForBreadcrumb.model) {
+        productDetails.push(`${selectedProductForBreadcrumb.model}`);
+      }
+      
+      if (selectedProductForBreadcrumb.size) {
+        productDetails.push(`${selectedProductForBreadcrumb.size}`);
+      }
+      
+      if (productDetails.length > 0) {
+        items.push({ 
+          label: `${selectedProductForBreadcrumb.title} (${productDetails.join(', ')})`, 
+          level: 'product' 
+        });
+      } else {
+        items.push({ 
+          label: selectedProductForBreadcrumb.title, 
+          level: 'product' 
+        });
+      }
+    }
+
+    return items;
+  };
 
   useEffect(() => {
     if (showFilter) {
@@ -579,24 +652,6 @@ const getBreadcrumbItems = () => {
             </nav>
           </div>
 
-      
-
-          {/* Show all subcategories when a category is selected */}
-          {/* {showSubcategories && selectedCategoryForSub &&  (
-            <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {selectedCategoryForSub.subcategories.map((subcategory) => (
-                  <CategoryCard
-                    key={subcategory._id}
-                    category={subcategory.name}
-                    image={subcategory.image}
-                    onClick={() => handleSubcategoryCardClick(subcategory)}
-                  />
-                ))}
-              </div>
-            </div>
-          )} */}
-
           {/* Show brands when a category is selected or when a subcategory is selected */}
           {showBrands && selectedCategoryForSub && !selectedSubcategoryForProducts && (
             <div className="w-full">
@@ -605,10 +660,10 @@ const getBreadcrumbItems = () => {
                   <CategoryCard
                     key={brand._id}
                     category={brand.name}
-                    modelNum = {brand.productId}
+                    modelNum={brand.productId}
                     image={brand.image}
-                     model={brand.model}
-                    size = {brand.size}
+                    model={brand.model}
+                    size={brand.size}
                     onClick={() => handleBrandCardClick(brand)}
                   />
                 ))}
@@ -625,33 +680,15 @@ const getBreadcrumbItems = () => {
                     key={brand._id}
                     category={brand.name}
                     image={brand.image}
-                    modelNum = {brand.productId}
+                    modelNum={brand.productId}
                     model={brand.model}
-                    size = {brand.size}
+                    size={brand.size}
                     onClick={() => handleBrandCardClick(brand)}
                   />
                 ))}
               </div>
             </div>
           )}
-
-          {/* Show filtered subcategories based on left sidebar selection */}
-          {/* {selectedSubcategories.length > 0 && selectedCategoryForSub && !showFilteredSubcategories && !showBrands && (
-            <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {selectedCategoryForSub.subcategories
-                  .filter(subcategory => selectedSubcategories.includes(subcategory.name))
-                  .map((subcategory) => (
-                    <CategoryCard
-                      key={subcategory._id}
-                      category={subcategory.name}
-                      image={subcategory.image}
-                      onClick={() => handleSubcategoryCardClick(subcategory)}
-                    />
-                  ))}
-              </div>
-            </div>
-          )} */}
 
           {/* Show products when "All Item" is selected, or when viewing products from category/subcategory/brand */}
           {(showAllProducts || showProducts || showBrandProducts) && (
@@ -663,10 +700,7 @@ const getBreadcrumbItems = () => {
                   handleAddToCart={handleAddToCart}
                   isSavedForLater={savedForLaterIds.has(product._id)}
                   isAdded={addedProductIds.has(product._id)}
-                  onViewDetails={() => {
-                    setSelectedProduct(product);
-                    setIsModalOpen(true);
-                  }}
+                  onViewDetails={() => handleProductClick(product)}
                 />
               ))}
             </div>

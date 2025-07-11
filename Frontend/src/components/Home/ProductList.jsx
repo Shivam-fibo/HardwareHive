@@ -20,7 +20,7 @@ const ProductList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [minimumLoadTimePassed, setMinimumLoadTimePassed] = useState(false);
   const [showAllProducts, setShowAllProducts] = useState(true);
-  const itemsPerPage = 20;
+  const itemsPerPage = 10
   
   // New states for category/subcategory/brand management
   const [categories, setCategories] = useState([]);
@@ -508,17 +508,17 @@ const ProductList = () => {
         productDetails.push(`${selectedProductForBreadcrumb.size}`);
       }
       
-      if (productDetails.length > 0) {
-        items.push({ 
-          label: `${selectedProductForBreadcrumb.title} (${productDetails.join(', ')})`, 
-          level: 'product' 
-        });
-      } else {
-        items.push({ 
-          label: selectedProductForBreadcrumb.title, 
-          level: 'product' 
-        });
-      }
+      // if (productDetails.length > 0) {
+      //   items.push({ 
+      //     label: `${selectedProductForBreadcrumb.title} (${productDetails.join(', ')})`, 
+      //     level: 'product' 
+      //   });
+      // } else {
+      //   items.push({ 
+      //     label: selectedProductForBreadcrumb.title, 
+      //     level: 'product' 
+      //   });
+      // }
     }
 
     return items;
@@ -556,7 +556,7 @@ const ProductList = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6]">
+    <div className="min-h-screen bg-[#F3F4F6] flex flex-col">
       <div className="flex justify-between py-4 px-6 sm:hidden">
         <h1 className="font-medium text-xl">All List Items</h1>
         <span className="flex gap-2">
@@ -573,7 +573,7 @@ const ProductList = () => {
           toggleSubcategory={toggleSubcategory} />
       </div>
 
-      <div className="md:flex gap-6 px-6 sm:mt-4">
+      <div className="md:flex gap-6 px-6 sm:mt-4 flex-1">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
           <div className="bg-[#12578c] text-white p-2 rounded-xl border border-[#003865]">
             <label className="flex items-center justify-between text-[14px] font-semibold cursor-pointer">
@@ -629,7 +629,7 @@ const ProductList = () => {
           )}
         </div>
 
-        <div className="w-full">
+        <div className="w-full flex flex-col min-h-0">
           <div className="w-full mt-2 mb-6.5 ml-4 hidden md:block">
             <nav className="flex items-center flex-wrap text-sm text-black">
               {getBreadcrumbItems().map((item, index) => (
@@ -652,98 +652,117 @@ const ProductList = () => {
             </nav>
           </div>
 
-          {/* Show brands when a category is selected or when a subcategory is selected */}
-          {showBrands && selectedCategoryForSub && !selectedSubcategoryForProducts && (
-            <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {getBrandsForCategory().map((brand) => (
-                  <CategoryCard
-                    key={brand._id}
-                    category={brand.name}
-                    modelNum={brand.productId}
-                    image={brand.image}
-                    model={brand.model}
-                    size={brand.size}
-                    onClick={() => handleBrandCardClick(brand)}
-                  />
-                ))}
+          <div className="flex-1 flex flex-col">
+            {/* Show brands when a category is selected or when a subcategory is selected */}
+            {showBrands && selectedCategoryForSub && !selectedSubcategoryForProducts && (
+              <div className="w-full flex-1">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {getBrandsForCategory().map((brand) => (
+                    <CategoryCard
+                      key={brand._id}
+                      category={brand.name}
+                      modelNum={brand.productId}
+                      image={brand.image}
+                      model={brand.model}
+                      size={brand.size}
+                      onClick={() => handleBrandCardClick(brand)}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Show brands when a subcategory is selected */}
-          {showBrands && selectedSubcategoryForProducts && (
-            <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                {getBrandsForSubcategory().map((brand) => (
-                  <CategoryCard
-                    key={brand._id}
-                    category={brand.name}
-                    image={brand.image}
-                    modelNum={brand.productId}
-                    model={brand.model}
-                    size={brand.size}
-                    onClick={() => handleBrandCardClick(brand)}
-                  />
-                ))}
+            {/* Show brands when a subcategory is selected */}
+            {showBrands && selectedSubcategoryForProducts && (
+              <div className="w-full flex-1">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                  {getBrandsForSubcategory().map((brand) => (
+                    <CategoryCard
+                      key={brand._id}
+                      category={brand.name}
+                      image={brand.image}
+                      modelNum={brand.productId}
+                      model={brand.model}
+                      size={brand.size}
+                      onClick={() => handleBrandCardClick(brand)}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Show products when "All Item" is selected, or when viewing products from category/subcategory/brand */}
-          {(showAllProducts || showProducts || showBrandProducts) && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-0">
-              {currentProducts.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  product={product}
-                  handleAddToCart={handleAddToCart}
-                  isSavedForLater={savedForLaterIds.has(product._id)}
-                  isAdded={addedProductIds.has(product._id)}
-                  onViewDetails={() => handleProductClick(product)}
-                />
-              ))}
-            </div>
-          )}
+            {/* Show products when "All Item" is selected, or when viewing products from category/subcategory/brand */}
+            {(showAllProducts || showProducts || showBrandProducts) && (
+              <div className="flex-1 flex flex-col">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full sm:mt-0 flex-1">
+                  {currentProducts.map((product) => (
+                    <ProductCard
+                      key={product._id}
+                      product={product}
+                      handleAddToCart={handleAddToCart}
+                      isSavedForLater={savedForLaterIds.has(product._id)}
+                      isAdded={addedProductIds.has(product._id)}
+                      onViewDetails={() => handleProductClick(product)}
+                    />
+                  ))}
+                </div>
+                
+                {/* Pagination - positioned naturally after products */}
+                {totalPages > 1 && (
+                  <div className="py-8 sm:pr-52 ">
+                    <ul className="flex justify-center gap-1 text-gray-900">
+                      <li>
+                        <a
+                          href="#"
+                          className={`grid size-8 place-content-center rounded border border-black transition-colors rtl:rotate-180 ${currentPage === 1 ? "pointer-events-none opacity-50" : "hover:bg-gray-100"}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage > 1) handlePageChange(currentPage - 1);
+                          }}
+                          aria-disabled={currentPage === 1}
+                        >
+                          ‹
+                        </a>
+                      </li>
+                      {[...Array(totalPages)].map((_, index) => (
+                        <li key={index}>
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handlePageChange(index + 1);
+                            }}
+                            className={`flex justify-center items-center size-8 rounded border text-sm font-medium transition-colors ${
+                              currentPage === index + 1 
+                                ? "bg-[#013E70] text-white border-[#013E70]" 
+                                : "border-black hover:bg-gray-100"
+                            }`}
+                          >
+                            {index + 1}
+                          </a>
+                        </li>
+                      ))}
+                      <li>
+                        <a
+                          href="#"
+                          className={`grid size-8 place-content-center rounded border border-black transition-colors rtl:rotate-180 ${currentPage === totalPages ? "pointer-events-none opacity-50" : "hover:bg-gray-100"}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                          }}
+                          aria-disabled={currentPage === totalPages}
+                        >
+                          ›
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <ul className="flex justify-center gap-1 text-gray-900 my-10">
-          <li>
-            <a
-              href="#"
-              className={`grid size-8 place-content-center rounded border border-black transition-colors rtl:rotate-180 ${currentPage === 1 && "pointer-events-none"}`}
-              onClick={() => handlePageChange(currentPage - 1)}
-              aria-disabled={currentPage === 1}
-            >
-              ‹
-            </a>
-          </li>
-          {[...Array(totalPages)].map((_, index) => (
-            <li key={index}>
-              <a
-                href="#"
-                onClick={() => handlePageChange(index + 1)}
-                className={`flex justify-center items-center size-8 rounded border text-sm font-medium ${currentPage === index + 1 ? "bg-[#013E70] text-white" : ""}`}
-              >
-                {index + 1}
-              </a>
-            </li>
-          ))}
-          <li>
-            <a
-              href="#"
-              className={`grid size-8 place-content-center rounded border border-black transition-colors rtl:rotate-180 ${currentPage === totalPages && "pointer-events-none"}`}
-              onClick={() => handlePageChange(currentPage + 1)}
-              aria-disabled={currentPage === totalPages}
-            >
-              ›
-            </a>
-          </li>
-        </ul>
-      )}
 
       {isModalOpen && (
         <ProductModal

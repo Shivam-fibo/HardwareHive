@@ -8,11 +8,11 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
     <div
       ref={ref}
       onClick={onClick}
-      className="bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 transform hover:scale-105 p-4"
+      className="bg-white border rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 transform hover:scale-105 p-4"
     >
       <div className="flex flex-col items-center justify-center h-full text-center">
         {image && (
-          <div className="w-16 h-16 mb-3 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+          <div className="w-full h-34 object-contain border rounded-lg p-3 shadow-sm">
             <img 
               src={image} 
               alt={category}
@@ -23,7 +23,7 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
             />
           </div>
         )}
-        <h3 className="font-semibold text-gray-800 text-base mb-1 truncate">
+        <h3 className="font-semibold text-gray-800 text-base mb-0 truncate">
           {category}
         </h3>
      

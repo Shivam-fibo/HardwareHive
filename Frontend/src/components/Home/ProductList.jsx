@@ -24,7 +24,7 @@ const ProductList = () => {
 
     setSelectedCategory(categoryLabel); // NEW
     const categorySlug = categoryRoutes[categoryLabel];
-    const apiUrl = `https://hardware-hive-backend.vercel.app/api/category/${categorySlug}/past-data`;
+    const apiUrl = `https://hardware-hive-backend.vercel.app/api/category/user/${categorySlug}/past-data`;
 
     try {
       const response = await fetch(apiUrl);

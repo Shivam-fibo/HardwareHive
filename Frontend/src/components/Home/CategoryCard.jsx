@@ -8,7 +8,7 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
     <div
       ref={ref}
       onClick={onClick}
-      className="bg-white border rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-200 transform hover:scale-105 p-4"
+      className="bg-white border rounded-lg shadow-md cursor-pointer  p-4"
     >
       <div className="flex flex-col items-center justify-center h-full text-center">
         {image && (

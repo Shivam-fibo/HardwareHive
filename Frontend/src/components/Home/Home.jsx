@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './Nabar'
 import ProductList from './ProductList'
+// import ProductList from './Product/ProductList'
 import Footer from '../LandingPage/Module/Footer'
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
     <div className='bg-[#F3F4F6]'>
       <Navbar/>
       <ProductList/>
+
       <Footer/>
     </div>
   )

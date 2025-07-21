@@ -1,6 +1,6 @@
 import { useInView } from "react-intersection-observer";
 
-const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
+const CategoryCard = ({ category, image, onClick, modelNum, model, size, brand }) => {
   console.log(model, size, "-----------")
   const { ref } = useInView({ triggerOnce: true, threshold: 0.5 });
 
@@ -8,7 +8,7 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
     <div
       ref={ref}
       onClick={onClick}
-      className="bg-white border rounded-lg shadow-md cursor-pointer  p-4"
+      className="bg-white border rounded-lg shadow-md cursor-pointer h-60 p-4"
     >
       <div className="flex flex-col items-center justify-center h-full text-center">
         {image && (
@@ -23,9 +23,9 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
             />
           </div>
         )}
-        <h3 className="font-semibold text-gray-800 text-base mb-0 truncate">
+        {/* <h3 className="font-semibold text-gray-800 text-base mb-0 truncate">
           {category}
-        </h3>
+        </h3> */}
      
         <p className="text-xs text-gray-600 leading-tight">
            {modelNum} 
@@ -36,6 +36,11 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size }) => {
               <p className="text-xs text-gray-600 leading-tight">
            {size} 
         </p>
+
+         <p className="text-xs text-gray-600 leading-tight">
+           {brand} 
+        </p>
+
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ const ProductList = () => {
   const categoryRoutes = {
     'Machinery': 'machinery',
     'Brands': 'brands',
-    'Spare-Parts': 'spare-part',
+    'Spare-Parts': 'spare-parts',
     'Accessories': 'accessiers',
   };
 

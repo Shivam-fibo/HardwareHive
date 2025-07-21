@@ -23,12 +23,14 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size, brand }
             />
           </div>
         )}
-        {/* <h3 className="font-semibold text-gray-800 text-base mb-0 truncate">
-          {category}
-        </h3> */}
+
      
-        <p className="text-xs text-gray-600 leading-tight">
+       <div className="mt-2">
+         <p className="text-xs text-gray-600 leading-tight">
            {modelNum} 
+        </p>
+          <p className="text-xs text-gray-600 leading-tight">
+           {brand} 
         </p>
               <p className="text-xs text-gray-600 leading-tight">
            {model} 
@@ -36,10 +38,9 @@ const CategoryCard = ({ category, image, onClick, modelNum, model, size, brand }
               <p className="text-xs text-gray-600 leading-tight">
            {size} 
         </p>
+       </div>
 
-         <p className="text-xs text-gray-600 leading-tight">
-           {brand} 
-        </p>
+       
 
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CategoryCard from './CategoryCard';
 
 const ProductList = () => {
-  const categories = ['Machinery', 'Brands', 'Spare-Parts', 'Accessories'];
+  const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];
 
   const categoryRoutes = {
     'Machinery': 'machinery',

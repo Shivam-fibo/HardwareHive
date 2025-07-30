@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CategoryCard from './CategoryCard';
-import Breadcrumb from './Product/Breadcrumb';
+import Breadcrumb from './Breadcrumb';
 
 const ProductList = () => {
   const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];

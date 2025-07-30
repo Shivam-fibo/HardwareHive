@@ -21,7 +21,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded }) => {
   return (
     <div
       ref={ref}
-      className={`cursor-pointer border rounded-lg p-3 h-71 shadow-sm bg-white flex flex-col justify-between transition-opacity duration-700 ${
+      className={`cursor-pointer border rounded-lg p-3 h-20 shadow-sm bg-white flex flex-col justify-between transition-opacity duration-700 ${
         inView ? "opacity-100" : "opacity-0"
       }`}
     >

@@ -6,6 +6,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
   const [quantity, setQuantity] = useState();
   
+  
   const handleClick = () => {
     if (isAdded) {
       toast.error("Product already added to cart");
@@ -21,7 +22,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded }) => {
   return (
     <div
       ref={ref}
-      className={`cursor-pointer border rounded-lg p-3 h-20 shadow-sm bg-white flex flex-col justify-between transition-opacity duration-700 ${
+      className={`cursor-pointer border rounded-lg p-3 h-69 shadow-sm bg-white flex flex-col justify-between transition-opacity duration-700 ${
         inView ? "opacity-100" : "opacity-0"
       }`}
     >
@@ -36,7 +37,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded }) => {
         <div className="mt-1 flex justify-between items-start">
           <div>
             <h2 className="text-sm font-medium line-clamp-1">{product.title}</h2>
-            <p className="text-sm font-semibold">{product.subheading}</p>
+            {/* <p className="text-sm font-semibold">{product.subheading}</p> */}
           </div>
           <p className="text-sm text-green-600 font-semibold">₹{product.price}</p>
         </div>

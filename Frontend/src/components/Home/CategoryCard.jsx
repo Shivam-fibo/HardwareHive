@@ -24,7 +24,7 @@ className="bg-white border rounded-lg shadow-md cursor-pointer p-2 w-48 h-48 tra
         )}
 
         <div className="mt-1 space-y-0.5 min-h-[60px] flex flex-col justify-center">
-          <p className="text-[10px] text-gray-600 leading-tight">{modelNum || "\u00A0"}</p>
+          <p className="text-[10px] text-gray-600 leading-tight">{category || "\u00A0"}</p>
           <p className="text-[10px] text-gray-600 leading-tight">{brand || "\u00A0"}</p>
           <p className="text-[10px] text-gray-600 leading-tight">{model}</p>
           <p className="text-[10px] text-gray-600 leading-tight">{size || "\u00A0"}</p>

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CategoryCard from './CategoryCard';
 import Breadcrumb from './Breadcrumb';
-
+import ProductCard from './ProductCard';
 const ProductList = () => {
   const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];
+  const [allItemSelected, setAllItemSelected] = useState(false);
 
   const categoryRoutes = {
     'Machinery': 'machinery',
@@ -16,7 +17,7 @@ const ProductList = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-
+  const [product, setAllProduct] = useState([]);
   // Breadcrumb click handler
   const handleBreadcrumbClick = (level) => {
     if (level === 'category') {
@@ -75,10 +76,20 @@ const ProductList = () => {
     ? items.filter(item => item.subcategory === selectedSubcategory)
     : items;
 
+
+
+  useEffect(() => {
+    const fetchAllProduct = async () => {
+      const response = await fetch('http://localhost:5000/api/product/getProductUser');
+      const data = await response.json()
+      setAllProduct(data.allProduct);
+    }
+    fetchAllProduct()
+  }, [])
   return (
     <>
       {/* Breadcrumb */}
-    
+
 
       <div className="flex flex-col md:flex-row mt-4 px-4 gap-4 mb-10">
         {/* Filters */}
@@ -89,18 +100,22 @@ const ProductList = () => {
               <input
                 type="checkbox"
                 className="form-checkbox h-5 w-8 accent-amber-50 rounded"
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setItems([]);
-                  setSubcategories([]);
-                  setSelectedSubcategory(null);
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setAllItemSelected(checked);
+                  if (checked) {
+                    setSelectedCategory(null);
+                    setSelectedSubcategory(null);
+                    setItems([]);
+                    setSubcategories([]);
+                  }
                 }}
-                checked={false}
-                readOnly
+                checked={allItemSelected}
               />
+
             </label>
           </div>
-          
+
 
           {/* Category Filter */}
           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
@@ -144,30 +159,48 @@ const ProductList = () => {
             </div>
           )}
         </div>
+        <div>
           <div>
-           <div>
-              <Breadcrumb
-        getBreadcrumbItems={getBreadcrumbItems}
-        handleBreadcrumbClick={handleBreadcrumbClick}
-      />
-           </div>
-        
-        {/* Product Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          {filteredItems.map((item) => (
-            <CategoryCard
-              key={item._id}
-              category={item.productName}
-              image={item.image}
-              modelNum={item.subcategory}
-              model={item.modelName}
-              size={item.size}
-              brand={item.brand}
+            <Breadcrumb
+              getBreadcrumbItems={getBreadcrumbItems}
+              handleBreadcrumbClick={handleBreadcrumbClick}
             />
-          ))}
+          </div>
+
+          {/* Category Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {allItemSelected
+              ? product.map((item) => (
+                <ProductCard
+                  key={item._id}
+                  product={{
+                    image: item.image,
+                    title: item.title,
+                    subheading: item.modelName || '',
+                    price: item.buyingPrice,
+                    productInfo: item.size || '',
+                    productBrand: item.brand || '',
+                  }}
+                  handleAddToCart={() => { }}
+                  onViewDetails={() => { }}
+                  isAdded={false}
+                />
+              ))
+              : filteredItems.map((item) => (
+                <CategoryCard
+                  key={item._id}
+                  category={item.productName}
+                  image={item.image}
+                  modelNum={item.subcategory}
+                  model={item.modelName}
+                  size={item.size}
+                  brand={item.brand}
+                />
+              ))}
+
+          </div>
         </div>
       </div>
-        </div>
     </>
   );
 };

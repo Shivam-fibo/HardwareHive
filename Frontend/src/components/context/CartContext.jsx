@@ -1,106 +1,81 @@
-import { createContext, useContext, useState, useEffect } from "react";
-
-const CartContext = createContext();
-
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [cartItemLenght, setCartItemLenght] = useState(0);
+  const [cartItemCount, setCartItemCount] = useState(0);
 
-  useEffect(() => {
+  const fetchCartItems = async () => {
     try {
-      const storedCart = localStorage.getItem("cart");
-      if (storedCart) {
-        setCart(JSON.parse(storedCart));
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?._id;
+      if (userId) {
+        const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
+        const data = await response.json();
+        if (data?.items) {
+          setCart(data.items);
+          setCartItemCount(data.items.length);
+        }
       }
     } catch (error) {
-      console.error("Error loading cart from localStorage:", error);
+      console.error("Error fetching cart items:", error);
     }
+  };
+
+  useEffect(() => {
+    fetchCartItems();
   }, []);
 
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
+  const addToCart = async (newItem) => {
     try {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    } catch (error) {
-      console.error("Error saving cart to localStorage:", error);
-    }
-  }, [cart]);
-
-  // Function to fetch cart items from server
-  // const fetchCartItems = async () => {
-  //   try {
-  //     const user = JSON.parse(localStorage.getItem("user"));
-  //     const userId = user?._id;
-  //     if (userId) {
-  //       const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
-  //       const data = await response.json();
-  //       if (data && data.items) {
-  //         setCartItemLenght(data.items.length);
-  //       } else {
-  //         setCartItemLenght(0);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching cart items:", error);
-  //     setCartItemLenght(0);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchCartItems();
-  // }, []);
-
-  const cartItemCount = cartItemLenght;
-
-  const addToCart = (newItem) => {
-   
-    setCart((prevCart) => {
-      const alreadyExists = prevCart.some(item => item._id === newItem._id);
-      if (alreadyExists) {
-        return prevCart; 
-      } else {
-        return [...prevCart, newItem]; 
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userId = user?._id;
+      
+      if (!userId) {
+        toast.error("Please login to add items to cart");
+        return;
       }
-    });
 
-    // setTimeout(() => {
-    //   fetchCartItems();
-    // }, 500);
+      const cartItem = {
+        productId: newItem._id,
+        title: newItem.title,
+        price: newItem.price,
+        image: newItem.image,
+        quantity: newItem.quantity || 1,
+        userId,
+      };
+
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/user/addCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItem),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+
+      // Update local state after successful API call
+      await fetchCartItems();
+      return data;
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      throw error;
+    }
   };
 
-  const clearCart = () => {
-    setCart([]);
-    setCartItemLenght(0);
-    localStorage.removeItem("cart");
-  };
-
-  // Function to refresh cart count (can be called from other components)
-  const refreshCartCount = () => {
-    fetchCartItems();
+  const refreshCartCount = async () => {
+    await fetchCartItems();
   };
 
   return (
     <CartContext.Provider
       value={{
         cart,
-        setCart,
-        clearCart,
-        addToCart,
         cartItemCount,
-        cartItemLenght,
-        refreshCartCount, // Export this function
-        // fetchCartItems   
+        addToCart,
+        refreshCartCount,
       }}
     >
       {children}
     </CartContext.Provider>
   );
-};
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
 };

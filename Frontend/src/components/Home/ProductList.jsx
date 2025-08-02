@@ -5,12 +5,17 @@ import ProductCard from './UploadProduct/ProductCard';
 import { useCart } from '../context/CartContext';
 import LoadingSpinner from './UploadProduct/LoadingSpinner';
 import Pagination from './UploadProduct/Pagination';
+import { toast } from 'react-hot-toast';
+import { moveToCart } from '../hooks/moveToCart'
 
 const ProductList = () => {
   const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];
   const [allItemSelected, setAllItemSelected] = useState(true);
   const { addToCart, refreshCartCount } = useCart();
   const [categoryProducts, setCategoryProducts] = useState([]);
+  const [addedProductIds, setAddedProductIds] = useState(new Set());
+  const [savedForLaterIds, setSavedForLaterIds] = useState(new Set());
+  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
 
   const categoryRoutes = {
     'Machinery': 'machinery',
@@ -27,6 +32,44 @@ const ProductList = () => {
   const [isLoadingCategory, setIsLoadingCategory] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  // Fetch cart and saved items on initial load
+  useEffect(() => {
+    const fetchCartAndSavedItems = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const userId = user?._id;
+
+        const [cartRes, savedRes] = await Promise.all([
+          fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`),
+          fetch(`https://hardware-hive-backend.vercel.app/api/user/savedItems/${userId}`)
+        ]);
+
+        const [cartData, savedData] = await Promise.all([
+          cartRes.json(),
+          savedRes.json()
+        ]);
+
+        if (cartData?.items) {
+          const alreadyAdded = new Set(cartData.items.map(item => item.productId));
+          setAddedProductIds(alreadyAdded);
+        }
+
+        if (savedData?.savedItems) {
+          const savedIds = new Set(savedData.savedItems.map(item => item.productId));
+          setSavedForLaterIds(savedIds);
+        }
+
+        refreshCartCount();
+      } catch (error) {
+        console.error("Error fetching cart and saved items:", error);
+      } finally {
+        setIsLoadingInitial(false);
+      }
+    };
+
+    fetchCartAndSavedItems();
+  }, [refreshCartCount]);
 
   const handleBreadcrumbClick = (level) => {
     if (level === 'category') {
@@ -114,35 +157,42 @@ const ProductList = () => {
   }, []);
 
   const handleAddToCart = async (item, quantity) => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user?._id;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user?._id;
 
-    addToCart({ ...item, quantity });
+  if (!userId) {
+    toast.error("Please login to add items to cart");
+    return;
+  }
 
-    const cartItem = {
-      productId: item._id,
-      title: item.title,
-      price: item.price,
-      image: item.image,
-      quantity,
-      userId,
-    };
-
-    try {
-      const res = await fetch("https://hardware-hive-backend.vercel.app/api/user/addCart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(cartItem),
+  if (addedProductIds.has(item._id)) {
+    toast.error("Product already added to cart");
+    return;
+  }
+  
+  try {
+    if (savedForLaterIds.has(item._id)) {
+      await moveToCart(item._id, userId);
+      toast.success("Moved from saved items to cart");
+      setSavedForLaterIds(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(item._id);
+        return newSet;
       });
-
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.error("Error sending to backend:", error);
+      setAddedProductIds(prev => new Set(prev).add(item._id));
+      await refreshCartCount(); // Wait for cart count to update
+      return;
     }
-  };
+
+    await addToCart({ ...item, quantity });
+    setAddedProductIds(prev => new Set(prev).add(item._id));
+    await refreshCartCount(); // Wait for cart count to update
+    toast.success("Product added to cart");
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    toast.error(error.message || "Failed to add to cart");
+  }
+};
 
   const handleCategoryCardClick = async (itemId) => {
     try {
@@ -180,6 +230,10 @@ const ProductList = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const paginatedProducts = productsToDisplay.slice(startIndex, endIndex);
+
+  if (isLoadingInitial) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -269,7 +323,8 @@ const ProductList = () => {
                           }}
                           handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
                           onViewDetails={() => {}}
-                          isAdded={false}
+                          isAdded={addedProductIds.has(item._id)}
+                          isSaved={savedForLaterIds.has(item._id)}
                         />
                       );
                     }

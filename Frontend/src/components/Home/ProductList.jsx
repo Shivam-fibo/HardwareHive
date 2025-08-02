@@ -3,7 +3,7 @@ import CategoryCard from './CategoryCard';
 import Breadcrumb from './Breadcrumb';
 import ProductCard from './ProductCard';
 import { useCart } from '../context/CartContext';
-
+import LoadingSpinner from './Product/LoadingSpinner';
 
 const ProductList = () => {
   const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];
@@ -23,7 +23,8 @@ const ProductList = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [product, setAllProduct] = useState([]);
-  // Breadcrumb click handler
+  const [isLoadingCategory, setIsLoadingCategory] = useState(false); 
+
   const handleBreadcrumbClick = (level) => {
     if (level === 'category') {
       setSelectedSubcategory(null);
@@ -32,10 +33,10 @@ const ProductList = () => {
       setSelectedSubcategory(null);
       setItems([]);
       setSubcategories([]);
+      setCategoryProducts([]);
     }
   };
 
-  // Generate breadcrumb items dynamically
   const getBreadcrumbItems = () => {
     const items = [{ label: 'Home', level: 'home' }];
     if (selectedCategory) items.push({ label: selectedCategory, level: 'category' });
@@ -44,34 +45,42 @@ const ProductList = () => {
   };
 
   const handleCategoryClick = async (categoryLabel) => {
-    if (selectedCategory === categoryLabel) {
-      setSelectedCategory(null);
-      setItems([]);
-      setSubcategories([]);
-      setSelectedSubcategory(null);
-      return;
-    }
-
-    setSelectedCategory(categoryLabel);
+  if (selectedCategory === categoryLabel) {
+    setSelectedCategory(null);
+    setItems([]);
+    setSubcategories([]);
     setSelectedSubcategory(null);
+    setCategoryProducts([]);
+    return;
+  }
 
-    const categorySlug = categoryRoutes[categoryLabel];
-    const apiUrl = `https://hardware-hive-backend.vercel.app/api/category/user/${categorySlug}/past-data`;
+  setIsLoadingCategory(true); //  Show spinner
+  setSelectedCategory(categoryLabel);
+  setSelectedSubcategory(null);
+  setCategoryProducts([]); //  Clear previous product view
 
-    try {
-      const response = await fetch(apiUrl);
-      const result = await response.json();
-      const products = Array.isArray(result.response) ? result.response : [];
-      setItems(products);
+  const categorySlug = categoryRoutes[categoryLabel];
+  const apiUrl = `https://hardware-hive-backend.vercel.app/api/category/user/${categorySlug}/past-data`;
 
-      const uniqueSubcategories = [...new Set(products.map(item => item.subcategory))];
-      setSubcategories(uniqueSubcategories);
-    } catch (error) {
-      console.error(`Error fetching ${categoryLabel} data:`, error);
-      setItems([]);
-      setSubcategories([]);
-    }
-  };
+  try {
+    const response = await fetch(apiUrl);
+    const result = await response.json();
+    const products = Array.isArray(result.response) ? result.response : [];
+    setItems(products);
+    const uniqueSubcategories = [...new Set(products.map(item => item.subcategory))];
+    setSubcategories(uniqueSubcategories);
+  } catch (error) {
+    console.error(`Error fetching ${categoryLabel} data:`, error);
+    setItems([]);
+    setSubcategories([]);
+  } finally {
+    //  Delay stopping the spinner to prevent flash
+    setTimeout(() => {
+      setIsLoadingCategory(false);
+    }, 400);
+  }
+};
+
 
   const handleSubcategoryClick = (subcategory) => {
     setSelectedSubcategory(prev => (prev === subcategory ? null : subcategory));
@@ -81,43 +90,20 @@ const ProductList = () => {
     ? items.filter(item => item.subcategory === selectedSubcategory)
     : items;
 
-
-
   useEffect(() => {
     const fetchAllProduct = async () => {
       const response = await fetch('https://hardware-hive-backend.vercel.app/api/product/getProductUser');
-      const data = await response.json()
+      const data = await response.json();
       setAllProduct(data.allProduct);
-    }
-    fetchAllProduct()
-  }, [])
+    };
+    fetchAllProduct();
+  }, []);
 
-
-
-   const handleAddToCart = async (item, quantity) => {
-    console.log(item)
+  const handleAddToCart = async (item, quantity) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?._id;
 
-    // if (addedProductIds.has(item._id)) {
-    //   toast.error("Product already added to cart");
-    //   return;
-    // }
-    // if (savedForLaterIds.has(item._id)) {
-    //   await moveToCart(item._id, userId);
-    //   toast.success("Moved from saved items to cart");
-    //   setSavedForLaterIds(prev => {
-    //     const newSet = new Set(prev);
-    //     newSet.delete(item._id);
-    //     return newSet;
-    //   });
-    //   setAddedProductIds(prev => new Set(prev).add(item._id));
-    //   refreshCartCount();
-    //   return;
-    // }
-  console.log("first")
     addToCart({ ...item, quantity });
-    // setAddedProductIds(prev => new Set(prev).add(item._id));
 
     const cartItem = {
       productId: item._id,
@@ -145,33 +131,29 @@ const ProductList = () => {
   };
 
   const handleCategoryCardClick = async (itemId) => {
-  try {
-    const response = await fetch("https://hardware-hive-backend.vercel.app/api/product/getProductFromCategory", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: itemId }),
-    });
+    try {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/product/getProductFromCategory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: itemId }),
+      });
 
-    const data = await response.json();
-    if (data?.products) {
-      setCategoryProducts(data.products);
-    } else {
+      const data = await response.json();
+      if (data?.products) {
+        setCategoryProducts(data.products);
+      } else {
+        setCategoryProducts([]);
+      }
+    } catch (error) {
+      console.error("Failed to fetch category products:", error);
       setCategoryProducts([]);
     }
-  } catch (error) {
-    console.error("Failed to fetch category products:", error);
-    setCategoryProducts([]);
-  }
-};
-
+  };
 
   return (
     <>
-      {/* Breadcrumb */}
-
-
       <div className="flex flex-col md:flex-row mt-4 px-4 gap-4 mb-10">
         {/* Filters */}
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
@@ -189,14 +171,13 @@ const ProductList = () => {
                     setSelectedSubcategory(null);
                     setItems([]);
                     setSubcategories([]);
+                    setCategoryProducts([]);
                   }
                 }}
                 checked={allItemSelected}
               />
-
             </label>
           </div>
-
 
           {/* Category Filter */}
           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
@@ -240,7 +221,9 @@ const ProductList = () => {
             </div>
           )}
         </div>
-        <div>
+
+        {/* Main Content */}
+        <div className="w-full">
           <div>
             <Breadcrumb
               getBreadcrumbItems={getBreadcrumbItems}
@@ -248,57 +231,62 @@ const ProductList = () => {
             />
           </div>
 
+         {isLoadingCategory ? (
+  <div className="flex justify-center items-center min-h-[40vh] w-full">
+    <LoadingSpinner />
+  </div>
+) : (
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-  {allItemSelected ? (
-    product.map((item) => (
-      <ProductCard
-        key={item._id}
-        product={{
-          image: item.image,
-          title: item.title,
-          subheading: item.modelName || '',
-          price: item.buyingPrice,
-          productInfo: item.size || '',
-          productBrand: item.brand || '',
-        }}
-        handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
-        onViewDetails={() => {}}
-        isAdded={false}
-      />
-    ))
-  ) : categoryProducts.length > 0 ? (
-    categoryProducts.map((item) => (
-      <ProductCard
-        key={item._id}
-        product={{
-          image: item.image,
-          title: item.title,
-          price: item.sellingPrice,
-          productInfo: item.size,
-          productBrand: item.brand,
-        }}
-        handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
-        onViewDetails={() => {}}
-        isAdded={false}
-      />
-    ))
-  ) : (
-    filteredItems.map((item) => (
-      <CategoryCard
-        key={item._id}
-        category={item.productName}
-        image={item.image}
-        modelNum={item.subcategory}
-        model={item.modelName}
-        size={item.size}
-        brand={item.brand}
-        onClick={() => handleCategoryCardClick(item._id)}
-      />
-    ))
-  )}
-</div>
-
+              {allItemSelected ? (
+                product.map((item) => (
+                  <ProductCard
+                    key={item._id}
+                    product={{
+                      image: item.image,
+                      title: item.title,
+                      subheading: item.modelName || '',
+                      price: item.buyingPrice,
+                      productInfo: item.size || '',
+                      productBrand: item.brand || '',
+                    }}
+                    handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
+                    onViewDetails={() => {}}
+                    isAdded={false}
+                  />
+                ))
+              ) : categoryProducts.length > 0 ? (
+                categoryProducts.map((item) => (
+                  <ProductCard
+                    key={item._id}
+                    product={{
+                      image: item.image,
+                      title: item.title,
+                      price: item.sellingPrice,
+                      productInfo: item.size,
+                      productBrand: item.brand,
+                    }}
+                    handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
+                    onViewDetails={() => {}}
+                    isAdded={false}
+                  />
+                ))
+              ) : (
+                filteredItems.map((item) => (
+                  <CategoryCard
+                    key={item._id}
+                    category={item.productName}
+                    image={item.image}
+                    modelNum={item.subcategory}
+                    model={item.modelName}
+                    size={item.size}
+                    brand={item.brand}
+                    onClick={() => handleCategoryCardClick(item._id)}
+                  />
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

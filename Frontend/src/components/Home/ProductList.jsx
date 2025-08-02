@@ -85,13 +85,10 @@ const ProductList = () => {
     setCurrentPage(1);
   };
 
-  useEffect(() => {
-    if (!selectedCategory && !selectedSubcategory) {
-      setAllItemSelected(true);
-    } else {
-      setAllItemSelected(false);
-    }
-  }, [selectedCategory, selectedSubcategory]);
+useEffect(() => {
+  const shouldShowAllItems = !selectedCategory && !selectedSubcategory && categoryProducts.length === 0;
+  setAllItemSelected(shouldShowAllItems);
+}, [selectedCategory, selectedSubcategory, categoryProducts]);
 
   const getBreadcrumbItems = () => {
     const items = [{ label: 'Home', level: 'home' }];
@@ -101,42 +98,43 @@ const ProductList = () => {
   };
 
   const handleCategoryClick = async (categoryLabel) => {
-    if (selectedCategory === categoryLabel) {
-      setSelectedCategory(null);
-      setItems([]);
-      setSubcategories([]);
-      setSelectedSubcategory(null);
-      setCategoryProducts([]);
-      setCurrentPage(1);
-      return;
-    }
-
-    setIsLoadingCategory(true);
-    setSelectedCategory(categoryLabel);
+  if (selectedCategory === categoryLabel) {
+    // If clicking the already selected category, deselect it
+    setSelectedCategory(null);
+    setItems([]);
+    setSubcategories([]);
     setSelectedSubcategory(null);
     setCategoryProducts([]);
     setCurrentPage(1);
+    return;
+  }
 
-    const categorySlug = categoryRoutes[categoryLabel];
-    const apiUrl = `https://hardware-hive-backend.vercel.app/api/category/user/${categorySlug}/past-data`;
+  setIsLoadingCategory(true);
+  setSelectedCategory(categoryLabel);
+  setSelectedSubcategory(null);
+  setCategoryProducts([]);
+  setCurrentPage(1);
 
-    try {
-      const response = await fetch(apiUrl);
-      const result = await response.json();
-      const products = Array.isArray(result.response) ? result.response : [];
-      setItems(products);
-      const uniqueSubcategories = [...new Set(products.map(item => item.subcategory))];
-      setSubcategories(uniqueSubcategories);
-    } catch (error) {
-      console.error(`Error fetching ${categoryLabel} data:`, error);
-      setItems([]);
-      setSubcategories([]);
-    } finally {
-      setTimeout(() => {
-        setIsLoadingCategory(false);
-      }, 400);
-    }
-  };
+  const categorySlug = categoryRoutes[categoryLabel];
+  const apiUrl = `https://hardware-hive-backend.vercel.app/api/category/user/${categorySlug}/past-data`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const result = await response.json();
+    const products = Array.isArray(result.response) ? result.response : [];
+    setItems(products);
+    const uniqueSubcategories = [...new Set(products.map(item => item.subcategory))];
+    setSubcategories(uniqueSubcategories);
+  } catch (error) {
+    console.error(`Error fetching ${categoryLabel} data:`, error);
+    setItems([]);
+    setSubcategories([]);
+  } finally {
+    setTimeout(() => {
+      setIsLoadingCategory(false);
+    }, 400);
+  }
+};
 
   const handleSubcategoryClick = (subcategory) => {
     setSelectedSubcategory(prev => (prev === subcategory ? null : subcategory));
@@ -195,27 +193,29 @@ const ProductList = () => {
 };
 
   const handleCategoryCardClick = async (itemId) => {
-    try {
-      const response = await fetch("https://hardware-hive-backend.vercel.app/api/product/getProductFromCategory", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: itemId }),
-      });
+  try {
+    const response = await fetch("https://hardware-hive-backend.vercel.app/api/product/getProductFromCategory", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: itemId }),
+    });
 
-      const data = await response.json();
-      if (data?.products) {
-        setCategoryProducts(data.products);
-        setCurrentPage(1);
-      } else {
-        setCategoryProducts([]);
-      }
-    } catch (error) {
-      console.error("Failed to fetch category products:", error);
+    const data = await response.json();
+    if (data?.products) {
+      setCategoryProducts(data.products);
+      setSelectedCategory(null); // Clear category selection
+      setSelectedSubcategory(null); // Clear subcategory selection
+      setCurrentPage(1);
+    } else {
       setCategoryProducts([]);
     }
-  };
+  } catch (error) {
+    console.error("Failed to fetch category products:", error);
+    setCategoryProducts([]);
+  }
+};
 
   let productsToDisplay = [];
   if (allItemSelected) {
@@ -240,16 +240,24 @@ const ProductList = () => {
       <div className="flex flex-col md:flex-row mt-4 px-4 gap-4 mb-10">
         <div className="hidden md:block w-full md:w-1/4 lg:w-1/5 space-y-4">
           <div className="bg-[#12578c] text-white p-2 rounded-xl border border-[#003865]">
-            <label className="flex items-center justify-between text-[14px] font-semibold cursor-pointer">
-              All Item
-              <input
-                type="checkbox"
-                className="form-checkbox h-5 w-8 accent-amber-50 rounded"
-                checked={allItemSelected}
-                onChange={() => {}}
-              />
-            </label>
-          </div>
+  <label className="flex items-center justify-between text-[14px] font-semibold cursor-pointer">
+    All Item
+    <input
+      type="checkbox"
+      className="form-checkbox h-5 w-8 accent-amber-50 rounded"
+      checked={allItemSelected}
+      onChange={() => {
+        setSelectedCategory(null);
+        setSelectedSubcategory(null);
+        setItems([]);
+        setSubcategories([]);
+        setCategoryProducts([]);
+        setAllItemSelected(true);
+        setCurrentPage(1);
+      }}
+    />
+  </label>
+</div>
 
           <div className="bg-[#12578c] text-white p-4 rounded-xl border border-[#003865]">
             <h3 className="text-[14px] font-bold mb-3">Categories</h3>

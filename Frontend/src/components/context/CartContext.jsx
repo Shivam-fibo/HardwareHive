@@ -27,28 +27,28 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
 
   // Function to fetch cart items from server
-  const fetchCartItems = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const userId = user?._id;
-      if (userId) {
-        const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
-        const data = await response.json();
-        if (data && data.items) {
-          setCartItemLenght(data.items.length);
-        } else {
-          setCartItemLenght(0);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
-      setCartItemLenght(0);
-    }
-  };
+  // const fetchCartItems = async () => {
+  //   try {
+  //     const user = JSON.parse(localStorage.getItem("user"));
+  //     const userId = user?._id;
+  //     if (userId) {
+  //       const response = await fetch(`https://hardware-hive-backend.vercel.app/api/user/getCartItems/${userId}`);
+  //       const data = await response.json();
+  //       if (data && data.items) {
+  //         setCartItemLenght(data.items.length);
+  //       } else {
+  //         setCartItemLenght(0);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching cart items:", error);
+  //     setCartItemLenght(0);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
+  // useEffect(() => {
+  //   fetchCartItems();
+  // }, []);
 
   const cartItemCount = cartItemLenght;
 
@@ -63,9 +63,9 @@ export const CartProvider = ({ children }) => {
       }
     });
 
-    setTimeout(() => {
-      fetchCartItems();
-    }, 500);
+    // setTimeout(() => {
+    //   fetchCartItems();
+    // }, 500);
   };
 
   const clearCart = () => {
@@ -89,7 +89,7 @@ export const CartProvider = ({ children }) => {
         cartItemCount,
         cartItemLenght,
         refreshCartCount, // Export this function
-        fetchCartItems    // Export this function too
+        // fetchCartItems   
       }}
     >
       {children}

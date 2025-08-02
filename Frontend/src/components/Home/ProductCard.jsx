@@ -8,6 +8,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded }) => {
   
   
   const handleClick = () => {
+    console.log(" added")
     if (isAdded) {
       toast.error("Product already added to cart");
       return;
@@ -16,7 +17,7 @@ const ProductCard = ({ product, handleAddToCart, onViewDetails, isAdded }) => {
       toast.error("Please enter a valid quantity before adding to list.");
       return;
     }
-    handleAddToCart(product, quantity);
+    handleAddToCart( quantity);
   };
 
   return (

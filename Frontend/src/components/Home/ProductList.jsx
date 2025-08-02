@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react';
 import CategoryCard from './CategoryCard';
 import Breadcrumb from './Breadcrumb';
 import ProductCard from './ProductCard';
+import { useCart } from '../context/CartContext';
+
+
 const ProductList = () => {
   const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];
   const [allItemSelected, setAllItemSelected] = useState(false);
+  const { addToCart, refreshCartCount } = useCart();
+  const [categoryProducts, setCategoryProducts] = useState([]);
 
   const categoryRoutes = {
     'Machinery': 'machinery',
@@ -80,12 +85,88 @@ const ProductList = () => {
 
   useEffect(() => {
     const fetchAllProduct = async () => {
-      const response = await fetch('http://localhost:5000/api/product/getProductUser');
+      const response = await fetch('https://hardware-hive-backend.vercel.app/api/product/getProductUser');
       const data = await response.json()
       setAllProduct(data.allProduct);
     }
     fetchAllProduct()
   }, [])
+
+
+
+   const handleAddToCart = async (item, quantity) => {
+    console.log(item)
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user?._id;
+
+    // if (addedProductIds.has(item._id)) {
+    //   toast.error("Product already added to cart");
+    //   return;
+    // }
+    // if (savedForLaterIds.has(item._id)) {
+    //   await moveToCart(item._id, userId);
+    //   toast.success("Moved from saved items to cart");
+    //   setSavedForLaterIds(prev => {
+    //     const newSet = new Set(prev);
+    //     newSet.delete(item._id);
+    //     return newSet;
+    //   });
+    //   setAddedProductIds(prev => new Set(prev).add(item._id));
+    //   refreshCartCount();
+    //   return;
+    // }
+  console.log("first")
+    addToCart({ ...item, quantity });
+    // setAddedProductIds(prev => new Set(prev).add(item._id));
+
+    const cartItem = {
+      productId: item._id,
+      title: item.title,
+      price: item.price,
+      image: item.image,
+      quantity,
+      userId,
+    };
+
+    try {
+      const res = await fetch("https://hardware-hive-backend.vercel.app/api/user/addCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItem),
+      });
+
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error sending to backend:", error);
+    }
+  };
+
+  const handleCategoryCardClick = async (itemId) => {
+  try {
+    const response = await fetch("https://hardware-hive-backend.vercel.app/api/product/getProductFromCategory", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: itemId }),
+    });
+
+    const data = await response.json();
+    if (data?.products) {
+      setCategoryProducts(data.products);
+    } else {
+      setCategoryProducts([]);
+    }
+  } catch (error) {
+    console.error("Failed to fetch category products:", error);
+    setCategoryProducts([]);
+  }
+};
+
+
   return (
     <>
       {/* Breadcrumb */}
@@ -167,38 +248,57 @@ const ProductList = () => {
             />
           </div>
 
-          {/* Category Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {allItemSelected
-              ? product.map((item) => (
-                <ProductCard
-                  key={item._id}
-                  product={{
-                    image: item.image,
-                    title: item.title,
-                    subheading: item.modelName || '',
-                    price: item.buyingPrice,
-                    productInfo: item.size || '',
-                    productBrand: item.brand || '',
-                  }}
-                  handleAddToCart={() => { }}
-                  onViewDetails={() => { }}
-                  isAdded={false}
-                />
-              ))
-              : filteredItems.map((item) => (
-                <CategoryCard
-                  key={item._id}
-                  category={item.productName}
-                  image={item.image}
-                  modelNum={item.subcategory}
-                  model={item.modelName}
-                  size={item.size}
-                  brand={item.brand}
-                />
-              ))}
 
-          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+  {allItemSelected ? (
+    product.map((item) => (
+      <ProductCard
+        key={item._id}
+        product={{
+          image: item.image,
+          title: item.title,
+          subheading: item.modelName || '',
+          price: item.buyingPrice,
+          productInfo: item.size || '',
+          productBrand: item.brand || '',
+        }}
+        handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
+        onViewDetails={() => {}}
+        isAdded={false}
+      />
+    ))
+  ) : categoryProducts.length > 0 ? (
+    categoryProducts.map((item) => (
+      <ProductCard
+        key={item._id}
+        product={{
+          image: item.image,
+          title: item.title,
+          price: item.sellingPrice,
+          productInfo: item.size,
+          productBrand: item.brand,
+        }}
+        handleAddToCart={(quantity) => handleAddToCart(item, quantity)}
+        onViewDetails={() => {}}
+        isAdded={false}
+      />
+    ))
+  ) : (
+    filteredItems.map((item) => (
+      <CategoryCard
+        key={item._id}
+        category={item.productName}
+        image={item.image}
+        modelNum={item.subcategory}
+        model={item.modelName}
+        size={item.size}
+        brand={item.brand}
+        onClick={() => handleCategoryCardClick(item._id)}
+      />
+    ))
+  )}
+</div>
+
         </div>
       </div>
     </>

@@ -3,7 +3,7 @@ import CategoryCard from './CategoryCard';
 import Breadcrumb from './Breadcrumb';
 import ProductCard from './ProductCard';
 import { useCart } from '../context/CartContext';
-import LoadingSpinner from './Product/LoadingSpinner';
+import LoadingSpinner from './UploadProduct/LoadingSpinner'
 
 const ProductList = () => {
   const categories = ['Machinery', 'Spare-Parts', 'Brands', 'Accessories'];

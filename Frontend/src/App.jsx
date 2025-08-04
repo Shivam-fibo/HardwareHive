@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from 'react-hot-toast';
 import { Analytics } from '@vercel/analytics/react';
 import Home from './components/Home/Home';
-import AllPrdouctShow from './components/LandingPage/Module/AllProductShow';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import LandingPage2 from './components/LandingPage/LandingPage2';
@@ -38,8 +37,7 @@ function App() {
             <Route path="/" element={<LandingPage2 />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/allProductShow" element={<AllPrdouctShow />} />
-            
+    
             {/* Protected Routes */}
             <Route path="/home" element={
               <ProtectedRoute>

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
 
-  const handleProduct = (e) => {
+  const handleRegister = (e) => {
     e.stopPropagation(); 
     console.log("handle Product clicked");
-    navigate("/allProductShow");
+    navigate("/register");
   };
 
   return (
@@ -21,9 +21,9 @@ const Header = () => {
         <img src="/logo/ss_power_tool_logo.svg" width={"150px"} className="sm:ml-6" />
         <button
           className="w-[100px] h-[35px] sm:mr-6 bg-[#013E70] rounded-xl border border-[#013E70] text-white cursor-pointer"
-          onClick={handleProduct} 
+          onClick={handleRegister} 
         >
-          Products
+         Register
         </button>
       </header>
     </div>

@@ -125,6 +125,7 @@ const Header = () => {
     };
   }, []);
 
+
   return (
 
     <header className="bg-white p-2 sm:h-12 flex justify-between items-center sm:mx-6">
@@ -301,6 +302,7 @@ const Header = () => {
               </div>
             )}
     </header>
+
   );
 };
 

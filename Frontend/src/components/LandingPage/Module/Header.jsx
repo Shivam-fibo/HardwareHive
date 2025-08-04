@@ -1,27 +1,129 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserLock } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa6";
 import { LuUsers } from "react-icons/lu";
+import { FaCircleUser } from "react-icons/fa6";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
   const navigate = useNavigate();
+  const [loginFormData, setLoginFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showForgotPopup, setShowForgotPopup] = useState(false);
+  const [showChangePasswordPopup, setShowChangePasswordPopup] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [changePasswordData, setChangePasswordData] = useState({
+    email: "",
+    oldPassword: "",
+    newPassword: "",
+  });
+  const [showChangeOldPassword, setShowChangeOldPassword] = useState(false);
+  const [showChangeNewPassword, setShowChangeNewPassword] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handelRegister = () => {
+    navigate("/register");
+  };
 
   useEffect(() => {
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setOpen(false);
-        }
+    if (showPopup) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [showPopup]);
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/login/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginFormData),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("Login successful!");
+        localStorage.setItem("user", JSON.stringify(result.user));
+        navigate("/home");
+      } else {
+        toast.error(result.message || "Invalid credentials");
       }
-  
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+    } catch (error) {
+      toast.error("Login failed");
+    }
+  };
+
+  const handleLoginInputChange = (e) => {
+    const { name, value } = e.target;
+    setLoginFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleForgotSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/login/user/password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("Reset email sent successfully!");
+      } else {
+        toast.error(result.message || "Invalid email");
+      }
+    } catch (error) {
+      toast.error("Password reset failed");
+    }
+  };
+
+  const handleChangePasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("https://hardware-hive-backend.vercel.app/api/login/user/change-password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(changePasswordData),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        toast.success("Password changed successfully!");
+        setShowChangePasswordPopup(false);
+      } else {
+        toast.error(result.message || "Failed to change password");
+      }
+    } catch (error) {
+      toast.error("Change password failed");
+    }
+  };
+
+  const handleChangePasswordInput = (e) => {
+    const { name, value } = e.target;
+    setChangePasswordData((prev) => ({ ...prev, [name]: value }));
+  };
+
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
 
   return (
@@ -34,8 +136,8 @@ const Header = () => {
         <img src="/logo/ss_power_tool_logo.svg" width={"150px"} />
       </div>
 
-      <span onClick={() => setOpen(!open)}>
-        <FaUserLock className="text-xl" />
+      <span onClick={() => setOpen(!open)} className="flex text-[#013e70]">
+        <FaCircleUser className="text-2xl" /> <IoMdArrowDropdown className="text-sm self-end" />
       </span>
 
       {open && (
@@ -43,14 +145,162 @@ const Header = () => {
           ref={ref}
           className="absolute border-gray-500 top-10 sm:top-11 right-4 sm:right-8 bg-white text-black shadow-lg rounded-lg z-50 overflow-hidden text-sm font-medium"
         >
-          <p onClick={() => navigate("/login")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+          <p onClick={() => setShowPopup(true)} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
             <FaRegUser size={14} /> Login
           </p>
-          <p onClick={() => navigate("/register")} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
-            <LuUsers size={14} /> Sign Up
+          <p onClick={handelRegister} className="cursor-pointer hover:bg-gray-300 flex items-center gap-2 px-4 p-1.5">
+            <LuUsers size={14} /> Register
           </p>
         </div>
       )}
+
+      {showPopup && (
+              <div className="fixed inset-0 flex items-center justify-center bg-transparent  p-4 z-10">
+                <div className="relative bg-white p-8 rounded-xl w-full max-w-md shadow-lg border-2  text-gray-900">
+                  <button
+                    className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1"
+                    onClick={() => setShowPopup(false)}
+                    aria-label="Close login modal"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+      
+                  <h2 className="text-lg font-semibold mb-6 text-center text-gray-800">Login</h2>
+      
+                  <form onSubmit={handleLoginSubmit} className="space-y-4">
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email Address"
+                      className="w-full p-3 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
+                      onChange={handleLoginInputChange}
+                      required
+                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Password"
+                        className="w-full p-3 pr-12 border rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-700"
+                        onChange={handleLoginInputChange}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800"
+                      >
+                        {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                      </button>
+                    </div>
+      
+                    <div className="flex justify-between mt-2">
+                      <div
+                        className="text-left text-blue-800 cursor-pointer"
+                        onClick={() => setShowForgotPopup(true)}
+                      >
+                        Forgot Password?
+                      </div>
+                      <div
+                        className="text-right text-blue-800 cursor-pointer"
+                        onClick={() => setShowChangePasswordPopup(true)}
+                      >
+                        Change Password
+                      </div>
+                    </div>
+      
+      
+                    <button
+                      type="submit"
+                      className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:bg-[#013E70] cursor-pointer"
+                    >
+                      Login
+                    </button>
+                  </form>
+      
+                  {/* Forgot Password Popup */}
+                  {showForgotPopup && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-transparent z-100 p-4">
+                      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md h-84 space-y-4">
+                        <h3 className="text-lg font-semibold text-center">Reset Password</h3>
+                        <form onSubmit={handleForgotSubmit} className="space-y-4 ">
+                          <input
+                            type="email"
+                            placeholder="Enter your email"
+                            className="w-full p-3 border rounded-lg text-gray-800"
+                            value={forgotEmail}
+                            onChange={(e) => setForgotEmail(e.target.value)}
+                            required
+                          />
+                          <button type="submit" className="bg-[#013E70] mt-20 text-white w-full p-3 rounded-lg font-semibold cursor-pointer">
+                            Send Reset Link
+                          </button>
+                          <p className="text-center text-sm text-gray-500 cursor-pointer " onClick={() => setShowForgotPopup(false)}>Cancel</p>
+      
+                        </form>
+                      </div>
+                    </div>
+                  )}
+      
+                  {/* Change Password Popup */}
+                  {showChangePasswordPopup && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-transparent z-100 p-4">
+                      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4">
+                        <h3 className="text-lg font-semibold text-center">Change Password</h3>
+                        <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
+                          <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            className="w-full p-3 border rounded-lg text-gray-800"
+                            value={changePasswordData.email}
+                            onChange={handleChangePasswordInput}
+                            required
+                          />
+                          <div className="relative">
+                            <input
+                              type={showChangeOldPassword ? "text" : "password"}
+                              name="oldPassword"
+                              placeholder="Enter old password"
+                              className="w-full p-3 pr-12 border rounded-lg text-gray-800"
+                              value={changePasswordData.oldPassword}
+                              onChange={handleChangePasswordInput}
+                              required
+                            />
+                            <button type="button" onClick={() => setShowChangeOldPassword((prev) => !prev)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              {showChangeOldPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                            </button>
+                          </div>
+      
+                          <div className="relative">
+                            <input
+                              type={showChangeNewPassword ? "text" : "password"}
+                              name="newPassword"
+                              placeholder="Enter new password"
+                              className="w-full p-3 pr-12 border rounded-lg text-gray-800"
+                              value={changePasswordData.newPassword}
+                              onChange={handleChangePasswordInput}
+                              required
+                            />
+                            <button type="button" onClick={() => setShowChangeNewPassword((prev) => !prev)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              {showChangeNewPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+                            </button>
+                          </div>
+      
+                          <button type="submit" className="bg-[#013E70] text-white w-full p-3 rounded-lg font-semibold cursor-pointer">
+                            Change Password
+                          </button>
+                          <p className="text-center text-sm text-gray-500 cursor-pointer" onClick={() => setShowChangePasswordPopup(false)}>Cancel</p>
+                        </form>
+                      </div>
+                    </div>
+                  )}
+      
+                </div>
+              </div>
+            )}
     </header>
 
   );

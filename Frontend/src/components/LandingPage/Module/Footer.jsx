@@ -167,6 +167,7 @@ const Footer = () => {
                 <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="">
                   <img src="icons/youtube.svg" alt="youtube" width={30} height={30} />
                 </a>
+                
               </div>
             </div>
           </div>

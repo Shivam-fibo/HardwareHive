@@ -4,11 +4,7 @@ const images = Array.from({ length: 16 }, (_, i) => `/logo/img${i + 1}.jpg`);
 
 const BrandsSection = () => {
   return (
-    <div className="bg-white py-2 overflow-hidden">
-      <div className="text-center text-[20px] font-inter font-semibold text-[#013760] leading-[150%] mb-4">
-        -----Spare Part Available Multi-Brand------
-      </div>
-
+    <div className="bg-white py-4 overflow-hidden">
       {/* Scrolling wrapper */}
       <div className="relative w-full overflow-hidden">
         <div className="flex w-max scroll-infinite whitespace-nowrap">

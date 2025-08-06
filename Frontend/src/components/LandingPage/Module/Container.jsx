@@ -1,22 +1,20 @@
-import React from "react";
+import React from 'react';
+
+const motors = [
+  { id: 'CM4SA', image: '/images/motor.png' },
+  { id: 'CM4SB', image: '/images/motor.png' },
+  { id: 'CC14STD', image: '/images/motor.png' },
+  { id: 'LG355', image: '/images/motor.png' },
+  { id: 'DW024', image: '/images/motor.png' },
+  { id: 'DW801', image: '/images/motor.png' },
+];
 
 const FeatureSection = () => {
   return (
-    <div>
-      {/* <div className="bg-[#003E71] text-white py-8">
-
-      <div className="text-center text-[20px] font-semibold italic">
-      MULTI-BRAND SPARE PART SUPPLY
-      </div>
-
-      <div className="grid grid-cols-3 mt-8">
-        
-      </div>
-    </div> */}
+    <div className="">
+      <img src="img.jpg" alt="" />
     </div>
   );
 };
 
 export default FeatureSection;
-
-

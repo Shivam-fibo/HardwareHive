@@ -137,7 +137,7 @@ const Header = () => {
       </div>
 
       <span onClick={() => setOpen(!open)} className="flex text-[#013e70]">
-        <FaCircleUser className="text-2xl" /> <IoMdArrowDropdown className="text-sm self-end" />
+        <FaCircleUser className="text-2xl" /> <IoMdArrowDropdown className="text-xl self-end" />
       </span>
 
       {open && (

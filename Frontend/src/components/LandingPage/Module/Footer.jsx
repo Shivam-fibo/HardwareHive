@@ -161,9 +161,6 @@ const Footer = () => {
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <img src="icons/instagram.svg" alt="instagram" width={30} height={30}/>
                 </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                 <img src="icons/x.svg" alt="x" width={30} height={30}/>
-                </a>
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <img src="icons/linkedin.svg" alt="linkedin" width={30} height={30}/>
                 </a>

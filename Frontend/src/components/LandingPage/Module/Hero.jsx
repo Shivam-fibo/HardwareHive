@@ -108,13 +108,13 @@ const Hero = () => {
   return (
     <div className="">
       <div className="sm:h-12">
-        <div className="bg-[#013E70] text-[#000000] py-2 sm:block hidden ">
+        <div className="bg-[#013E70] text-[#000000] py-2">
           <div className="w-full mx-auto flex flex-row justify-center items-center gap-4">
-            <nav className="w-full flex flex-nowrap justify-start sm:justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
-              <h1 className="text-white font-semibold text-lg uppercase">Spare Parts B2B Portel</h1>
+            <nav className="w-full flex flex-nowrap justify-center gap-2 relative scroll-width-none overflow-x-scroll sm:overflow-visible whitespace-nowrap px-4">
+              <h1 className="text-white font-bold text-lg">-----Spare Part Available Multi-Brand-----</h1>
             </nav>
 
-            <div className="text-white font-semibold text-[16px] whitespace-nowrap  sm:flex justify-center items-center sm:gap-1 absolute right-5">
+            <div className="text-white font-semibold text-[16px] whitespace-nowrap hidden sm:flex justify-center items-center sm:gap-1 absolute right-5">
               <RiCustomerService2Fill size={20} />
               <span className="font-bold">+91 9804611111</span>
             </div>
